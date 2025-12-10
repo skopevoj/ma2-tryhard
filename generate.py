@@ -68,6 +68,7 @@ def generate_html(questions):
             --success: #3ba55d;
             --error: #ed4245;
             --border: #202225;
+            --text-size: 1;
         }
         
         [data-theme="light"] {
@@ -108,8 +109,9 @@ def generate_html(questions):
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
-            padding: 15px;
             transition: background 0.3s, color 0.3s;
+            font-size: calc(16px * var(--text-size));
+            position: relative;
         }
         
         .welcome-overlay {
@@ -186,101 +188,95 @@ def generate_html(questions):
             background: var(--accent-hover);
         }
         
-        .logo {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: var(--accent);
-            letter-spacing: 2px;
-            margin-bottom: 20px;
+        .settings-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
         }
         
-        .main-container {
+        .settings-modal.visible {
             display: flex;
-            gap: 15px;
-            max-width: 1200px;
-            margin: 0 auto;
         }
-        .sidebar {
-            width: 220px;
+        
+        .settings-content {
             background: var(--bg-secondary);
-            border-radius: 8px;
-            padding: 16px;
-            flex-shrink: 0;
-            height: fit-content;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
-        .sidebar h2 {
-            font-size: 0.95em;
-            margin-bottom: 14px;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .stat-item {
+        
+        .settings-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
-            padding: 8px 10px;
-            margin-bottom: 6px;
-            background: var(--bg-primary);
-            border-radius: 6px;
-            font-size: 0.85em;
+            align-items: center;
         }
-        .stat-label {
-            color: var(--text-secondary);
-        }
-        .stat-value {
-            font-weight: 600;
+        
+        .settings-header h2 {
+            font-size: 1.3em;
             color: var(--text-primary);
         }
         
-        .progress-display {
-            margin-top: 10px;
-            padding: 10px;
-            background: var(--bg-primary);
-            border-radius: 6px;
-            font-size: 0.85em;
-        }
-        
-        .progress-display .progress-fraction {
-            text-align: center;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--accent);
-        }
-        
-        .progress-display .progress {
-            background: var(--bg-input);
-            height: 8px;
+        .close-settings {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 4px 8px;
             border-radius: 4px;
-            overflow: hidden;
+            transition: background 0.2s;
         }
         
-        .progress-display .progress-bar {
-            background: var(--accent);
-            height: 100%;
-            transition: width 0.3s ease;
+        .close-settings:hover {
+            background: var(--bg-tertiary);
         }
         
-        .theme-switcher {
-            margin-top: 20px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
+        .settings-body {
+            padding: 24px;
+        }
+        
+        .settings-section {
+            margin-bottom: 28px;
+        }
+        
+        .settings-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .settings-section h3 {
+            font-size: 0.95em;
+            color: var(--accent);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .theme-buttons {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-            margin-top: 10px;
+            gap: 8px;
         }
         
         .theme-btn {
-            padding: 8px;
+            padding: 10px;
             border: 2px solid transparent;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s;
-            font-size: 0.75em;
+            font-size: 0.9em;
             background: var(--bg-primary);
             color: var(--text-primary);
         }
@@ -295,177 +291,272 @@ def generate_html(questions):
             background: var(--bg-tertiary);
         }
         
-        .category-filters {
-            margin-top: 20px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
+        .text-size-control {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
+        
+        .text-size-slider {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--bg-input);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .text-size-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--accent);
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        
+        .text-size-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: var(--accent);
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+        }
+        
+        .text-size-label {
+            min-width: 80px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
         .category-filter {
             display: flex;
             align-items: center;
-            padding: 8px 10px;
-            margin-bottom: 6px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
             background: var(--bg-primary);
             border-radius: 6px;
             cursor: pointer;
             transition: background 0.2s;
-            font-size: 0.8em;
         }
+        
         .category-filter:hover {
             background: var(--bg-tertiary);
         }
+        
         .category-filter input[type="checkbox"] {
-            margin-right: 8px;
+            margin-right: 10px;
             cursor: pointer;
+            width: 18px;
+            height: 18px;
         }
+        
         .category-filter label {
             cursor: pointer;
             flex: 1;
             color: var(--text-primary);
-            line-height: 1.3;
         }
+        
         .filter-actions {
             display: flex;
-            gap: 6px;
-            margin-top: 10px;
+            gap: 8px;
+            margin-top: 12px;
         }
-        .filter-btn {
+        
+        .filter-btn, .shuffle-btn {
             flex: 1;
-            padding: 6px;
+            padding: 10px;
             background: var(--bg-tertiary);
             color: var(--text-primary);
             border: none;
-            border-radius: 4px;
-            font-size: 0.75em;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .filter-btn:hover {
-            opacity: 0.8;
-        }
-        
-        .shuffle-btn {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background: var(--accent);
-            color: white;
-            border: none;
             border-radius: 6px;
-            font-size: 0.85em;
-            font-weight: 600;
+            font-size: 0.9em;
             cursor: pointer;
             transition: background 0.2s;
+            font-weight: 500;
         }
         
-        .shuffle-btn:hover {
-            background: var(--accent-hover);
+        .filter-btn:hover, .shuffle-btn:hover {
+            background: var(--bg-primary);
         }
         
-        .container {
-            flex: 1;
-            background: var(--bg-tertiary);
-            border-radius: 8px;
-            overflow: hidden;
+        .main-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
         }
-        .header {
+        
+        .page-wrapper {
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        .stats-bar {
+            width: 100%;
             background: var(--bg-secondary);
-            padding: 20px;
-        }
-        
-        .header-top {
+            border-radius: 16px;
+            padding: 16px 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 16px;
         }
         
-        .header h1 {
-            font-size: 1.3em;
+        .stats-left {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 2px;
+        }
+        
+        .settings-btn {
+            background: var(--bg-primary);
+            border: none;
             color: var(--text-primary);
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background 0.2s;
         }
         
-        .header-subtitle {
-            color: var(--text-secondary);
-            font-size: 0.85em;
-            margin-bottom: 12px;
+        .settings-btn:hover {
+            background: var(--bg-tertiary);
         }
+        
+        .stats-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+        }
+        
+        .stat-icon {
+            font-size: 1.2em;
+        }
+        
+        .stat-value {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 1em;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+        }
+        
+        .progress-fraction {
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--accent);
+            font-size: 1em;
+        }
+        
         .progress {
             background: var(--bg-input);
-            height: 4px;
-            border-radius: 2px;
+            height: 8px;
+            border-radius: 4px;
             overflow: hidden;
         }
+        
         .progress-bar {
             background: var(--accent);
             height: 100%;
             transition: width 0.3s ease;
         }
-        .question-container {
-            padding: 25px;
+        
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
-        .category {
-            display: inline-block;
-            background: var(--accent);
-            color: #ffffff;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75em;
-            margin-bottom: 14px;
-            font-weight: 500;
-        }
-        .toggle-image-btn {
-            display: inline-block;
-            margin-left: 10px;
-            padding: 4px 12px;
+        
+        .container {
+            width: 100%;
             background: var(--bg-secondary);
-            color: var(--text-primary);
-            border: none;
-            border-radius: 4px;
-            font-size: 0.75em;
-            cursor: pointer;
-            transition: background 0.2s;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
-        .toggle-image-btn:hover {
-            background: var(--bg-tertiary);
+        
+        .question-container {
+            min-height: 400px;
         }
+        
         .question-image {
             width: 100%;
-            max-height: 300px;
+            max-height: 400px;
             object-fit: contain;
             margin-bottom: 20px;
-            border-radius: 6px;
+            border-radius: 8px;
             display: none;
         }
+        
         .question-image.visible {
             display: block;
         }
+        
         .question-text {
-            font-size: 1.05em;
-            margin-bottom: 20px;
+            font-size: 1.1em;
+            margin-bottom: 24px;
             line-height: 1.7;
             color: var(--text-primary);
         }
+        
         .answers {
             display: grid;
-            gap: 8px;
+            gap: 10px;
         }
+        
         .answer-row {
             display: flex;
             align-items: center;
-            padding: 10px 14px;
+            padding: 12px 16px;
             background: var(--bg-secondary);
-            border-radius: 6px;
+            border-radius: 8px;
             border: 2px solid transparent;
             transition: all 0.2s ease;
         }
+        
         .answer-row:hover {
-            background: var(--bg-primary);
+            background: var(--bg-tertiary);
         }
+        
         .answer-row.correct {
             background: rgba(59, 165, 93, 0.15);
             border-color: var(--success);
         }
+        
         .answer-row.incorrect {
             background: rgba(237, 66, 69, 0.15);
             border-color: var(--error);
@@ -474,15 +565,15 @@ def generate_html(questions):
         .answer-buttons {
             display: flex;
             gap: 6px;
-            margin-right: 12px;
+            margin-right: 14px;
             flex-shrink: 0;
         }
         
         .answer-btn {
-            width: 40px;
-            height: 32px;
+            width: 42px;
+            height: 34px;
             border: 2px solid var(--border);
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -522,94 +613,267 @@ def generate_html(questions):
         
         .answer-text {
             flex: 1;
-            font-size: 0.95em;
-            line-height: 1.5;
+            font-size: 1em;
+            line-height: 1.6;
             color: var(--text-primary);
         }
+        
         .controls {
+            width: 100%;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+        
+        .controls-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 25px;
-            background: var(--bg-secondary);
+            padding: 16px 28px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
             gap: 10px;
         }
+        
+        .category {
+            display: inline-block;
+            background: var(--accent);
+            color: #ffffff;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .toggle-image-btn {
+            padding: 6px 14px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .toggle-image-btn:hover {
+            background: var(--bg-primary);
+        }
+        
+        .controls-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 28px;
+            gap: 10px;
+        }
+        
         .nav-arrows {
             display: flex;
             gap: 8px;
         }
+        
         .nav-btn {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             padding: 0;
             background: var(--bg-tertiary);
             color: var(--text-primary);
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s ease;
-            font-size: 1.2em;
+            font-size: 1.3em;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+        
         .nav-btn:hover:not(:disabled) {
             background: var(--bg-primary);
         }
+        
         .nav-btn:disabled {
             opacity: 0.3;
             cursor: not-allowed;
         }
+        
         button.control-btn {
-            padding: 10px 22px;
-            font-size: 0.9em;
+            padding: 12px 26px;
+            font-size: 0.95em;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s ease;
             font-weight: 600;
         }
+        
         .btn-evaluate {
             background: var(--accent);
             color: white;
         }
+        
         .btn-evaluate:hover {
             background: var(--accent-hover);
         }
+        
         .btn-evaluate:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
+        
         .feedback {
-            margin-top: 16px;
-            padding: 12px 16px;
-            border-radius: 6px;
-            font-size: 0.95em;
+            margin-top: 20px;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 1em;
             text-align: center;
             font-weight: 600;
         }
+        
         .feedback.correct {
             background: rgba(59, 165, 93, 0.15);
             color: var(--success);
         }
+        
         .feedback.incorrect {
             background: rgba(237, 66, 69, 0.15);
             color: var(--error);
         }
+        
         .hidden {
             display: none;
         }
+        
         .no-questions {
             text-align: center;
-            padding: 40px;
+            padding: 60px 20px;
             color: var(--text-secondary);
+            font-size: 1.1em;
         }
+        
+        .footer {
+            width: 100%;
+            padding: 16px 24px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85em;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-link {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .footer-link:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+        
+        .footer p {
+            margin: 0;
+        }
+        
+        @media (max-width: 1200px) {
+            .sidebar {
+                left: 15px;
+            }
+            .page-wrapper {
+                gap: 20px;
+            }
+        }
+        
         @media (max-width: 968px) {
+            body {
+                font-size: calc(15px * var(--text-size));
+            }
+            
             .main-container {
+                padding: 20px 10px;
+            }
+            
+            .stats-bar {
+                padding: 12px 16px;
+            }
+            
+            .logo {
+                font-size: 1.2em;
+            }
+            
+            .stats-left,
+            .stats-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .stat-item {
+                padding: 6px 10px;
+            }
+            
+            .container {
+                padding: 24px 20px;
+            }
+            
+            .controls-top {
+                padding: 12px 16px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .controls-bottom {
+                padding: 16px;
                 flex-direction: column;
             }
-            .sidebar {
+            
+            .nav-arrows {
                 width: 100%;
+                justify-content: center;
+            }
+            
+            .btn-evaluate {
+                width: 100%;
+            }
+            
+            .answer-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .answer-buttons {
+                margin-right: 0;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .answer-text {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .footer {
+                padding: 12px 16px;
+                margin-top: 20px;
+                font-size: 0.8em;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 8px;
+                margin-bottom: 6px;
             }
         }
     </style>
@@ -622,91 +886,114 @@ def generate_html(questions):
             <p>Vítejte v interaktivním kvízu pro přípravu na zkoušku z matematiky 2!</p>
             <ul>
                 <li><strong>Označte správné odpovědi</strong> pomocí tlačítek ✓ (správně), − (nevím), ✕ (špatně)</li>
-                <li><strong>Vyberte kategorie</strong>, které chcete procvičovat</li>
+                <li><strong>Nastavte si kvíz</strong> kliknutím na ikonu ⚙️ v levém panelu</li>
                 <li><strong>Sledujte svůj pokrok</strong> v levém panelu</li>
-                <li><strong>Přepínejte motivy</strong> podle svých preferencí</li>
-                <li><strong>Používejte šipky</strong> pro navigaci mezi otázkami</li>
+                <li><strong>Používejte šipky</strong> (← →) pro navigaci mezi otázkami</li>
             </ul>
             <p>Po správném zodpovězení se vám otázka už nebude zobrazovat. Držíme palce! 🎓</p>
             <button class="welcome-btn" onclick="closeWelcome()">Rozumím, začít kvíz</button>
         </div>
     </div>
 
-    <div class="main-container">
-        <div class="sidebar">
-            <div class="logo">MARAST</div>
-            <h2>⚙ Stav</h2>
-            <div class="stat-item">
-                <span class="stat-label"># dobrých odpovědí</span>
-                <span class="stat-value" id="correctCount">0</span>
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h2>Nastavení</h2>
+                <button class="close-settings" onclick="closeSettings()">×</button>
             </div>
-            <div class="stat-item">
-                <span class="stat-label">cílový počet</span>
-                <span class="stat-value" id="targetCount">""" + str(len(shuffled_questions)) + """</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label"># zobrazených otázek</span>
-                <span class="stat-value" id="answeredCount">0</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">série špatných odpovědí</span>
-                <span class="stat-value" id="wrongStreak">0</span>
-            </div>
-            
-            <div class="progress-display">
-                <div class="progress-fraction" id="progressFraction">0 / """ + str(len(shuffled_questions)) + """</div>
-                <div class="progress">
-                    <div class="progress-bar" id="sidebarProgressBar"></div>
+            <div class="settings-body">
+                <div class="settings-section">
+                    <h3>Motiv</h3>
+                    <div class="theme-buttons">
+                        <button class="theme-btn active" onclick="setTheme('dark')">Tmavý</button>
+                        <button class="theme-btn" onclick="setTheme('light')">Světlý</button>
+                        <button class="theme-btn" onclick="setTheme('orange')">Oranžový</button>
+                    </div>
                 </div>
-            </div>
-            
-            <button class="shuffle-btn" onclick="shuffleQuestions()">🔀 Zamíchat otázky</button>
-            
-            <div class="theme-switcher">
-                <h2>🎨 Motiv</h2>
-                <div class="theme-buttons">
-                    <button class="theme-btn active" onclick="setTheme('dark')">Tmavý</button>
-                    <button class="theme-btn" onclick="setTheme('light')">Světlý</button>
-                    <button class="theme-btn" onclick="setTheme('orange')">Oranžový</button>
+                
+                <div class="settings-section">
+                    <h3>Velikost textu</h3>
+                    <div class="text-size-control">
+                        <span class="text-size-label" id="textSizeLabel">Normální</span>
+                        <input type="range" min="0.8" max="1.4" step="0.1" value="1" class="text-size-slider" id="textSizeSlider" oninput="changeTextSize(this.value)">
+                    </div>
                 </div>
-            </div>
+                
+                <div class="settings-section">
+                    <h3>Kategorie</h3>
+                    """ + ''.join([f'''
+                    <div class="category-filter">
+                        <input type="checkbox" id="cat_{i}" checked onchange="updateCategoryFilter()">
+                        <label for="cat_{i}">{cat}</label>
+                    </div>
+                    ''' for i, cat in enumerate(categories)]) + """
+                    <div class="filter-actions">
+                        <button class="filter-btn" onclick="selectAllCategories()">Vše</button>
+                        <button class="filter-btn" onclick="deselectAllCategories()">Žádná</button>
+                    </div>
+                </div>
             
-            <div class="category-filters">
-                <h2>📚 Kategorie</h2>
-                """ + ''.join([f'''
-                <div class="category-filter">
-                    <input type="checkbox" id="cat_{i}" checked onchange="updateCategoryFilter()">
-                    <label for="cat_{i}">{cat}</label>
-                </div>
-                ''' for i, cat in enumerate(categories)]) + """
-                <div class="filter-actions">
-                    <button class="filter-btn" onclick="selectAllCategories()">Vše</button>
-                    <button class="filter-btn" onclick="deselectAllCategories()">Žádná</button>
-                </div>
             </div>
         </div>
-        
-        <div class="container">
-            <div class="header">
-                <div class="header-top">
-                    <h1>Kvíz: BI-MA2</h1>
+    </div>
+
+    <div class="main-container">
+        <div class="page-wrapper">
+            <div class="stats-bar">
+                <div class="stats-left">
+                    <div class="logo">MARAST</div>
+                    <button class="settings-btn" onclick="openSettings()" title="Nastavení">⚙️</button>
                 </div>
-                <p class="header-subtitle" id="questionNumber">V tomto kvízu je """ + str(len(shuffled_questions)) + """ otázek. Po správném zodpovězení se vám už otázka nebude zobrazovat.</p>
-                <div class="progress">
-                    <div class="progress-bar" id="progressBar"></div>
+                <div class="stats-right">
+                    <div class="stat-item" title="Správně zodpovězené otázky">
+                        <span class="stat-icon">✓</span>
+                        <span class="stat-value" id="correctCount">0</span>
+                    </div>
+                    <div class="stat-item" title="Zobrazené otázky">
+                        <span class="stat-icon">👁</span>
+                        <span class="stat-value" id="answeredCount">0</span>
+                    </div>
+                    <div class="stat-item" title="Série chyb">
+                        <span class="stat-icon">✗</span>
+                        <span class="stat-value" id="wrongStreak">0</span>
+                    </div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-fraction" id="progressFraction">0 / """ + str(len(shuffled_questions)) + """</div>
+                    <div class="progress">
+                        <div class="progress-bar" id="sidebarProgressBar"></div>
+                    </div>
                 </div>
             </div>
             
-            <div class="question-container" id="questionContainer">
-                <!-- Question will be inserted here -->
-            </div>
-            
-            <div class="controls">
-                <div class="nav-arrows">
-                    <button class="nav-btn" id="prevBtn" onclick="previousQuestion()" title="Předchozí otázka">←</button>
-                    <button class="nav-btn" id="nextBtn" onclick="skipQuestion()" title="Následující otázka">→</button>
+            <div class="content-wrapper">
+                <div class="container">
+                    <div class="question-container" id="questionContainer">
+                        <!-- Question will be inserted here -->
+                    </div>
                 </div>
-                <button class="control-btn btn-evaluate" id="evaluateBtn" onclick="submitAnswer()">vyhodnotit</button>
+                
+                <div class="controls">
+                    <div class="controls-top" id="controlsTop">
+                        <!-- Category and image toggle will be inserted here -->
+                    </div>
+                    <div class="controls-bottom">
+                        <div class="nav-arrows">
+                            <button class="nav-btn" id="prevBtn" onclick="previousQuestion()" title="Předchozí otázka (←)">←</button>
+                            <button class="nav-btn" id="nextBtn" onclick="skipQuestion()" title="Následující otázka (→)">→</button>
+                        </div>
+                        <button class="control-btn btn-evaluate" id="evaluateBtn" onclick="submitAnswer()">Vyhodnotit</button>
+                    </div>
+                </div>
+                
+                <div class="footer">
+                    <div class="footer-links">
+                        <a href="https://github.com/yourusername/ma2-quiz" class="footer-link" target="_blank">GitHub</a>
+                        <a href="mailto:your.email@example.com" class="footer-link">Kontakt</a>
+                        <a href="https://fit.cvut.cz" class="footer-link" target="_blank">FIT ČVUT</a>
+                    </div>
+                    <p>MARAST - BI-MA2 Kvíz © 2024</p>
+                </div>
             </div>
         </div>
     </div>
@@ -725,7 +1012,15 @@ def generate_html(questions):
         
         function closeWelcome() {
             document.getElementById('welcomeOverlay').classList.add('hidden');
-            localStorage.setItem('welcomeShown', 'true');
+            sessionStorage.setItem('welcomeClosed', 'true');
+        }
+        
+        function openSettings() {
+            document.getElementById('settingsModal').classList.add('visible');
+        }
+        
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('visible');
         }
         
         function setTheme(theme) {
@@ -738,11 +1033,26 @@ def generate_html(questions):
             event.target.classList.add('active');
         }
         
+        function changeTextSize(value) {
+            document.documentElement.style.setProperty('--text-size', value);
+            localStorage.setItem('textSize', value);
+            
+            const labels = ['Velmi malý', 'Malý', 'Normální', 'Velký', 'Velmi velký', 'Extra velký', 'Maximální'];
+            const index = Math.round((value - 0.8) / 0.1);
+            document.getElementById('textSizeLabel').textContent = labels[index] || 'Normální';
+            
+            if (window.MathJax) {
+                MathJax.typesetClear();
+                MathJax.typesetPromise().catch((err) => console.log('MathJax error:', err));
+            }
+        }
+        
         function shuffleQuestions() {
             filteredQuestions.sort(() => Math.random() - 0.5);
             currentQuestion = 0;
             userAnswers = [];
             renderQuestion();
+            closeSettings();
         }
 
         function updateCategoryFilter() {
@@ -762,8 +1072,11 @@ def generate_html(questions):
             currentQuestion = 0;
             userAnswers = [];
             answeredQuestions.clear();
+            correctCount = 0;
+            answeredCount = 0;
+            wrongStreak = 0;
             
-            document.getElementById('targetCount').textContent = filteredQuestions.length;
+            updateProgressFraction();
             
             if (filteredQuestions.length > 0) {
                 renderQuestion();
@@ -786,21 +1099,26 @@ def generate_html(questions):
             });
             updateCategoryFilter();
         }
+        
+        function updateProgressFraction() {
+            document.getElementById('progressFraction').textContent = `${correctCount} / ${filteredQuestions.length}`;
+        }
 
         function renderQuestion() {
             if (filteredQuestions.length === 0) {
                 document.getElementById('questionContainer').innerHTML = 
                     '<div class="no-questions">Vyberte alespoň jednu kategorii pro trénování.</div>';
+                document.getElementById('controlsTop').innerHTML = '';
                 return;
             }
 
             const q = filteredQuestions[currentQuestion];
             const container = document.getElementById('questionContainer');
+            const controlsTop = document.getElementById('controlsTop');
             
-            let html = `<div class="category">${q.category || 'Matematika'}</div>`;
-            
+            // Render question with image at top if exists
+            let html = '';
             if (q.image) {
-                html += `<button class="toggle-image-btn" onclick="toggleImage()">Zobrazit původní otázku</button>`;
                 html += `<img src="${q.image}" alt="Quiz question" class="question-image" id="questionImage">`;
             }
             
@@ -827,6 +1145,13 @@ def generate_html(questions):
             
             html += '</div>';
             container.innerHTML = html;
+            
+            // Render controls top
+            let controlsHtml = `<div class="category">${q.category || 'Matematika'}</div>`;
+            if (q.image) {
+                controlsHtml += `<button class="toggle-image-btn" onclick="toggleImage()">Zobrazit původní otázku</button>`;
+            }
+            controlsTop.innerHTML = controlsHtml;
             
             imageVisible = false;
             updateStats();
@@ -875,9 +1200,8 @@ def generate_html(questions):
             document.getElementById('wrongStreak').textContent = wrongStreak;
             
             const progressPercent = filteredQuestions.length > 0 ? (correctCount / filteredQuestions.length) * 100 : 0;
-            document.getElementById('progressBar').style.width = `${progressPercent}%`;
             document.getElementById('sidebarProgressBar').style.width = `${progressPercent}%`;
-            document.getElementById('progressFraction').textContent = `${correctCount} / ${filteredQuestions.length}`;
+            updateProgressFraction();
         }
 
         function submitAnswer() {
@@ -972,13 +1296,45 @@ def generate_html(questions):
             renderQuestion();
         }
         
-        // Load saved theme and welcome state
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('settingsModal').classList.contains('visible') || 
+                !document.getElementById('welcomeOverlay').classList.contains('hidden')) {
+                return;
+            }
+            
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                if (currentQuestion > 0) {
+                    previousQuestion();
+                }
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                if (currentQuestion < filteredQuestions.length - 1) {
+                    skipQuestion();
+                }
+            }
+        });
+        
+        // Close settings modal when clicking outside
+        document.getElementById('settingsModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSettings();
+            }
+        });
+        
+        // Load saved preferences
         window.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme') || 'dark';
             document.body.setAttribute('data-theme', savedTheme);
             
-            const welcomeShown = localStorage.getItem('welcomeShown');
-            if (welcomeShown) {
+            const savedTextSize = localStorage.getItem('textSize') || '1';
+            document.getElementById('textSizeSlider').value = savedTextSize;
+            changeTextSize(savedTextSize);
+            
+            // Always show welcome on refresh (check sessionStorage instead of localStorage)
+            const welcomeClosed = sessionStorage.getItem('welcomeClosed');
+            if (welcomeClosed) {
                 document.getElementById('welcomeOverlay').classList.add('hidden');
             }
             
