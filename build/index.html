@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matematika - Kvíz</title>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #36393f;
+            color: #dcddde;
+            min-height: 100vh;
+            padding: 15px;
+        }
+        .main-container {
+            display: flex;
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .sidebar {
+            width: 220px;
+            background: #2f3136;
+            border-radius: 8px;
+            padding: 16px;
+            flex-shrink: 0;
+            height: fit-content;
+        }
+        .sidebar h2 {
+            font-size: 0.95em;
+            margin-bottom: 14px;
+            color: #5eb3d6;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            background: #36393f;
+            border-radius: 6px;
+            font-size: 0.85em;
+        }
+        .stat-label {
+            color: #b5bac1;
+        }
+        .stat-value {
+            font-weight: 600;
+            color: #dcddde;
+        }
+        .category-filters {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #202225;
+        }
+        .category-filter {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            background: #36393f;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 0.8em;
+        }
+        .category-filter:hover {
+            background: #40444b;
+        }
+        .category-filter input[type="checkbox"] {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        .category-filter label {
+            cursor: pointer;
+            flex: 1;
+            color: #dcddde;
+            line-height: 1.3;
+        }
+        .filter-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .filter-btn {
+            flex: 1;
+            padding: 6px;
+            background: #4f545c;
+            color: #dcddde;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.75em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .filter-btn:hover {
+            background: #5d6269;
+        }
+        .container {
+            flex: 1;
+            background: #40444b;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .header {
+            background: #2f3136;
+            padding: 20px;
+        }
+        .header h1 {
+            font-size: 1.3em;
+            margin-bottom: 6px;
+            color: #dcddde;
+        }
+        .header-subtitle {
+            color: #b5bac1;
+            font-size: 0.85em;
+            margin-bottom: 12px;
+        }
+        .progress {
+            background: #202225;
+            height: 4px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            background: #5eb3d6;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+        .question-container {
+            padding: 25px;
+        }
+        .category {
+            display: inline-block;
+            background: #5eb3d6;
+            color: #ffffff;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            margin-bottom: 14px;
+            font-weight: 500;
+        }
+        .toggle-image-btn {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 4px 12px;
+            background: #4f545c;
+            color: #dcddde;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.75em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .toggle-image-btn:hover {
+            background: #5d6269;
+        }
+        .question-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            display: none;
+        }
+        .question-image.visible {
+            display: block;
+        }
+        .question-text {
+            font-size: 1.05em;
+            margin-bottom: 20px;
+            line-height: 1.7;
+            color: #dcddde;
+        }
+        .answers {
+            display: grid;
+            gap: 8px;
+        }
+        .answer-row {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            background: #2f3136;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .answer-row:hover {
+            background: #36393f;
+        }
+        .answer-row.correct {
+            background: #2d3f2f;
+            border-color: #3ba55d;
+        }
+        .answer-row.incorrect {
+            background: #3f2d2d;
+            border-color: #ed4245;
+        }
+        .answer-buttons {
+            display: flex;
+            gap: 6px;
+            margin-right: 12px;
+        }
+        .answer-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            background: #202225;
+            color: #b5bac1;
+        }
+        .answer-btn:hover:not(:disabled) {
+            background: #36393f;
+        }
+        .answer-btn.active {
+            background: #5eb3d6;
+            color: white;
+        }
+        .answer-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .answer-btn.btn-yes.active {
+            background: #3ba55d;
+        }
+        .answer-btn.btn-no.active {
+            background: #ed4245;
+        }
+        .answer-btn.btn-minus.active {
+            background: #5eb3d6;
+        }
+        .answer-text {
+            flex: 1;
+            font-size: 0.95em;
+            line-height: 1.5;
+            color: #dcddde;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            background: #2f3136;
+            gap: 10px;
+        }
+        .nav-arrows {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-btn {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            background: #4f545c;
+            color: #dcddde;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-btn:hover:not(:disabled) {
+            background: #5d6269;
+        }
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        button.control-btn {
+            padding: 10px 22px;
+            font-size: 0.9em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+        }
+        .btn-save {
+            background: #4f545c;
+            color: #dcddde;
+        }
+        .btn-save:hover {
+            background: #5d6269;
+        }
+        .btn-evaluate {
+            background: #5865f2;
+            color: white;
+        }
+        .btn-evaluate:hover {
+            background: #4752c4;
+        }
+        .btn-evaluate:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .feedback {
+            margin-top: 16px;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 0.95em;
+            text-align: center;
+            font-weight: 600;
+        }
+        .feedback.correct {
+            background: #2d3f2f;
+            color: #3ba55d;
+        }
+        .feedback.incorrect {
+            background: #3f2d2d;
+            color: #ed4245;
+        }
+        .hidden {
+            display: none;
+        }
+        .no-questions {
+            text-align: center;
+            padding: 40px;
+            color: #b5bac1;
+        }
+        @media (max-width: 968px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>⚙ Stav</h2>
+            <div class="stat-item">
+                <span class="stat-label"># dobrých odpovědí</span>
+                <span class="stat-value" id="correctCount">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">cílový počet</span>
+                <span class="stat-value" id="targetCount">36</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label"># zobrazených otázek</span>
+                <span class="stat-value" id="answeredCount">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">série špatných odpovědí</span>
+                <span class="stat-value" id="wrongStreak">0</span>
+            </div>
+            
+            <div class="category-filters">
+                <h2>📚 Kategorie</h2>
+                
+                <div class="category-filter">
+                    <input type="checkbox" id="cat_0" checked onchange="updateCategoryFilter()">
+                    <label for="cat_0">Neurčitý integrál a primitivní funkce</label>
+                </div>
+                
+                <div class="category-filter">
+                    <input type="checkbox" id="cat_1" checked onchange="updateCategoryFilter()">
+                    <label for="cat_1">Určitý integrál</label>
+                </div>
+                
+                <div class="filter-actions">
+                    <button class="filter-btn" onclick="selectAllCategories()">Vše</button>
+                    <button class="filter-btn" onclick="deselectAllCategories()">Žádná</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="header">
+                <h1>Kvíz: BI-MA2</h1>
+                <p class="header-subtitle" id="questionNumber">V tomto kvízu je 36 otázek. Po správném zodpovězení se vám už otázka nebude zobrazovat.</p>
+                <div class="progress">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+            
+            <div class="question-container" id="questionContainer">
+                <!-- Question will be inserted here -->
+            </div>
+            
+            <div class="controls">
+                <div class="nav-arrows">
+                    <button class="nav-btn" id="prevBtn" onclick="previousQuestion()" title="Předchozí otázka">←</button>
+                    <button class="nav-btn" id="nextBtn" onclick="skipQuestion()" title="Následující otázka">→</button>
+                </div>
+                <button class="control-btn btn-evaluate" id="evaluateBtn" onclick="submitAnswer()">vyhodnotit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const allQuestions = [{"question": "Nechť $F$ je primitivní funkcí k funkci $f$ na intervalu $(a, b)$, $\\varphi$ je na intervalu $(\\alpha, \beta)$ diferencovatelná a $\\varphi((\\alpha, \beta)) = (a, b)$. Vyberte pravdivá tvrzení.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "$F(\\varphi(x))$ je primitivní funkcí k $f(\\varphi(x))\\varphi'(x)$ na intervalu $(\\alpha, \beta)$.", "correct": true}, {"text": "$F(\\varphi(x))$ je primitivní funkcí k $f(\\varphi(x))\\varphi'(x)$ na intervalu $(a, b)$.", "correct": false}, {"text": "$F(\\varphi(x))$ je primitivní funkcí k $f(\\varphi(x))$ na intervalu $(\\alpha, \beta)$.", "correct": false}, {"text": "$f(\\varphi(x))\\varphi'(x)$ má na intervalu $(\\alpha, \beta)$ primitivní funkci.", "correct": true}], "image": "images/Screenshot 2025-12-10 at 20-54-20 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-54-20 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-54-20 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Určete, u kterých z následujících integrálů byla správně použita metoda substituce.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "$\\int \\frac{x^2}{x^3 + 5} dx = \\frac{1}{3} \\int \\frac{1}{u} du.$", "correct": true}, {"text": "$\\int \\frac{e^x}{1 + e^{2x}} dx = \\int \\frac{1}{1 + u^2} du.$", "correct": true}, {"text": "$\\int \\frac{x^4 + 2}{(x^5 + 10x)^3} dx = \\frac{1}{5} \\int \\frac{1}{u^4} du.$", "correct": false}, {"text": "$\\int \\frac{x^3 + x^2}{x^4 + x^3 + 5} dx = \\frac{1}{4} \\int \\frac{1}{u} du.$", "correct": false}], "image": "images/Screenshot 2025-12-10 at 20-50-49 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-50-49 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-50-49 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Nechť je funkce $f$ diferencovatelná na intervalu $(a,b)$. Vyberte všechna pravdivá tvrzení.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "Na $(a,b)$ existuje primitivní funkce k $f$.", "correct": true}, {"text": "Primitivní funkce k $f$ na $(a,b)$ neexistuje.", "correct": false}, {"text": "$f'$ je na $(a,b)$ primitivní funkcí k $f$.", "correct": false}, {"text": "Primitivní funkce $F$ k $f$ má spojitou derivaci na $(a,b)$.", "correct": true}], "image": "images/Screenshot 2025-12-10 at 20-54-08 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-54-08 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-54-08 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Nechť $F$ je primitivní funkcí k funkci $f$ na $\\mathbb{R}$. Vyberte všechna pravdivá tvrzení.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "$\\int \\frac{f(\\ln x)}{x} dx = F(\\ln x) + C$ na intervalu $(1, 10)$.", "correct": true}, {"text": "Funkce $F(x^3)$ je primitivní funkcí k $3x^2 f(x^3)$ na intervalu $(0, 1)$.", "correct": true}, {"text": "$\\int \\frac{f(\\ln x)}{x} dx = F(\\ln x) + C$ na intervalu $(0, +\\infty)$.", "correct": true}, {"text": "Funkce $F(e^x)$ je primitivní funkcí k $e^x f(\\ln x)$ na intervalu $(0, +\\infty)$.", "correct": false}], "image": "images/Screenshot 2025-12-10 at 20-54-16 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-54-16 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-54-16 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Ověřte následující výpočty neurčitých integrálů a vyberte ty, které jsou správně.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "$\\int \\frac{1}{\\cos^2(x)} dx = \\operatorname{tg} x + C$ na $(-\\frac{\\pi}{2}, \\frac{\\pi}{2})$.", "correct": true}, {"text": "$\\int 2x + 2e^x - x^{-1} dx = x^2 + 2e^x - \\ln x + C$ na $(0, +\\infty)$.", "correct": true}, {"text": "$\\int x \\sin x dx = -x \\cos x + \\sin x + C$ na $\\mathbb{R}$.", "correct": true}, {"text": "$\\int x \\cos(x) dx = x^2 \\sin(x) + \\cos(x) + C$ na $\\mathbb{R}$.", "correct": false}], "image": "images/Screenshot 2025-12-10 at 20-51-14 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-51-14 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-51-14 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Určete u kterých z následujících integrálů byla správně použita metoda per-partes.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "$\\int e^x \\sin x dx = e^x \\sin x - \\int e^x \\cos x dx$ na $\\mathbb{R}$.", "correct": true}, {"text": "$\\int e^{-x^2} dx = xe^{-x^2} + 2 \\int x^2 e^{-x^2} dx$ na $\\mathbb{R}$.", "correct": true}, {"text": "$\\int x^2 \\sin x dx = -x^2 \\cos x - \\int 2x \\cos x dx$ na $\\mathbb{R}$.", "correct": false}, {"text": "$\\int \\sin^2(x) dx = - \\sin x \\cos x + \\int \\cos^2(x) dx$ na $\\mathbb{R}$.", "correct": true}], "image": "images/Screenshot 2025-12-10 at 20-54-43 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-54-43 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-54-43 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Nechť $\\varphi$ má spojitou derivaci na $\\mathbb{R}$. Vyberte pravdivá tvrzení.", "category": "Určitý integrál", "answers": [{"text": "Rovnost $\\int_a^b \\frac{\\varphi'(x)}{1 + \\varphi^2(x)} dx = \\int_{\\varphi(a)}^{\\varphi(b)} \\frac{1}{1 + x^2} dx$ platí pro libovolná reálná $a$ a $b$.", "correct": true}, {"text": "Rovnost $\\int_a^b \\frac{\\varphi'(x)}{1 + \\varphi^2(x)} dx = \\int_a^b \\frac{1}{1 + y^2} dy$ platí pro libovolná reálná $a$ a $b$.", "correct": false}, {"text": "Rovnost $\\int_a^b \\frac{\\varphi'(x)}{1 + \\varphi^2(x)} dx = [\\operatorname{arctg}(x)]_{\\varphi(a)}^{\\varphi(b)}$ platí pro libovolná reálná $a$ a $b$.", "correct": true}, {"text": "Rovnost $\\int_a^b \\frac{\\varphi'(x)}{1 + \\varphi^2(x)} dx = \\operatorname{arctg}(\\varphi(b)) - \\operatorname{arctg}(\\varphi(a))$ platí pro libovolná reálná $a$ a $b$.", "correct": true}], "image": "images/Screenshot 2025-12-10 at 21-19-28 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-19-28 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-19-28 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Nechť $f$ a $g$ jsou spojité funkce na $\\mathbb{R}$. Vyberte pravdivá tvrzení.", "category": "Určitý integrál", "answers": [{"text": "$\\int_{-10}^{10} f(x)g(x)dx = \\int_{-10}^{10} f(x) dx \\int_{-10}^{10} g(x) dx.$", "correct": false}, {"text": "$\\int_{-1}^{0} f(x) dx = - \\int_{0}^{1} f(x) dx.$", "correct": false}, {"text": "$\\int_{0}^{2} f(x) dx = \\int_{0}^{1} f(x) dx + \\int_{1}^{2} f(x) dx.$", "correct": true}, {"text": "$\\int_{-10}^{10} (f(x) - g(x))dx = \\int_{-10}^{10} f(x) dx - \\int_{-10}^{10} g(x) dx.$", "correct": true}], "image": "images/Screenshot 2025-12-10 at 21-18-30 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-18-30 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-18-30 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Nechť $f$ je spojitá funkce na $\\mathbb{R}$. Vyberte platná tvrzení.", "category": "Určitý integrál", "answers": [{"text": "$\\int_{0}^{1} (f(x) + x) dx = \\int_{0}^{1} f(x) dx + x$", "correct": false}, {"text": "$\\int_{0}^{1} (f(x) + 1) dx = \\int_{0}^{1} f(x) dx + 1$", "correct": true}, {"text": "$\\int_{0}^{1} (f(x) + x) dx = \\int_{0}^{1} f(x) dx + \\frac{1}{2}$", "correct": true}, {"text": "$\\int_{0}^{1} (f(x) + x) dx = \\int_{0}^{1} f(x) dx + \\frac{x^2}{2}$", "correct": false}], "image": "images/Screenshot 2025-12-10 at 21-19-34 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-19-34 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-19-34 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Nechť funkce $F(x)$ a $G(x)$ jsou primitivní funkce k funkci $f(x)$ na otevřeném intervalu $I$. Vyberte všechna pravdivá tvrzení.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "Pro každé $x \\in I$ platí $(F - G)'(x) = 0$.", "correct": true}, {"text": "Platí $\\int F(x) dx = \\int G(x) dx$.", "correct": false}, {"text": "Existuje konstanta $c$ taková, že pro každé $x \\in I$ platí $F(x) = G(x) + c$.", "correct": true}, {"text": "Funkce $F(x) - G(x)$ je konstantní na $I$.", "correct": true}], "image": "images/Screenshot 2025-12-10 at 20-51-27 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-51-27 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-51-27 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Vyberte všechna pravdivá tvrzení o integrálu $\\int_{0}^{+\\infty} e^{-x} dx$.", "category": "Určitý integrál", "answers": [{"text": "Hodnota tohoto integrálu je 1.", "correct": true}, {"text": "Tento integrál nelze spočítat pomocí Riemannovy konstrukce, protože integrační interval $(0, +\\infty)$ není omezený.", "correct": true}, {"text": "Hodnota tohoto integrálu nemůže být reálné číslo, protože integrační interval $(0, +\\infty)$ není omezený.", "correct": false}, {"text": "Tomuto integrálu se můžeme pokusit dát dobrý smysl pomocí limity $\\lim_{c \\to +\\infty} \\int_{0}^{c} e^{-x} dx$.", "correct": true}], "image": "images/Screenshot 2025-12-10 at 21-18-09 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-18-09 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-18-09 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Nechť funkce $f$ má spojitou derivaci na intervalu $(a,b)$ a $G$ je primitivní funkce k funkci $g$ na intervalu $(a,b)$. Potom platí:", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "$\\int f(x) dx = xf(x) - \\int xf'(x) dx$ na $(a,b)$", "correct": true}, {"text": "$\\int xf(x) dx = xf(x) - \\int x^2 f'(x) dx$ na $(a,b)$", "correct": false}, {"text": "$\\int xg(x) dx = xG(x) - \\int G(x) dx$ na $(a,b)$", "correct": true}, {"text": "$\\int xg(x) dx = xG(x) - G(x) + C$ na $(a,b)$", "correct": false}], "image": "images/Screenshot 2025-12-10 at 20-19-49 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-19-49 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-19-49 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Uvažme funkci $f$, která je spojitá a ostře rostoucí na $\\mathbb{R}$. Vyberte všechna pravdivá tvrzení.", "category": "Určitý integrál", "answers": [{"text": "Horní integrál funkce $f$ na intervalu $\\langle a,b \\rangle$ je roven dolnímu integrálu funkce $f$ na intervalu $\\langle a,b \\rangle$ pro každé $a < b$.", "correct": true}, {"text": "Horní integrál funkce $f$ na intervalu $\\langle a,b \\rangle$ je ostře větší než dolní integrál funkce $f$ na intervalu $\\langle a,b \\rangle$ pro každé $a < b$.", "correct": false}, {"text": "Pro horní součet $S(f, \\sigma)$ funkce $f$ na intervalu $\\langle a,b \\rangle$ při dělení $\\sigma = \\{x_0, x_1, \\dots, x_n\\}$ tohoto intervalu platí $S(f, \\sigma) = \\sum_{k=1}^{n} f(x_k)(x_k - x_{k-1})$.", "correct": true}, {"text": "Pro horní součet $S(f, \\sigma)$ funkce $f$ na intervalu $\\langle a,b \\rangle$ při dělení $\\sigma = \\{x_0, x_1, \\dots, x_n\\}$ tohoto intervalu platí $S(f, \\sigma) = \\sum_{k=1}^{n} f(x_{k-1})(x_k - x_{k-1})$.", "correct": false}], "image": "images/Screenshot 2025-12-10 at 21-18-41 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-18-41 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-18-41 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Uvažme funkci $f$ spojitou na $\\mathbb{R}$. Nechť $F$ je primitivní funkce k funkci $f$ na $\\mathbb{R}$ a $a, b \\in \\mathbb{R}$. Vyberte všechna pravdivá tvrzení.", "category": "Určitý integrál", "answers": [{"text": "Platí $\\int_{a}^{b} f(x) dx = [F(x)]_{a}^{b}$.", "correct": true}, {"text": "Pro každé reálné $x$ platí $f(x) - f(a) = \\int_{a}^{x} F(t) dt$.", "correct": false}, {"text": "Platí $F(2) - F(1) = \\int_{1}^{2} f(x) dx$.", "correct": true}, {"text": "Pro každé reálné $x$ platí $F(x) = F(a) + \\int_{a}^{x} f(t) dt$.", "correct": true}], "image": "images/Screenshot 2025-12-10 at 21-19-08 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-19-08 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-19-08 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Nechť funkce $f$ má spojitou derivaci na intervalu $(a,b)$ a $G$ je primitivní funkce k funkci $g$ na intervalu $(a,b)$. Potom platí:", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "$\\int f(x) dx = xf(x) - \\int xf'(x) dx$ na $(a,b)$", "correct": true}, {"text": "$\\int xf(x) dx = xf(x) - \\int x^2 f'(x) dx$ na $(a,b)$", "correct": false}, {"text": "$\\int f(x) dx = f'(x) - \\int xf'(x) dx$ na $(a,b)$", "correct": false}, {"text": "$\\int xg(x) dx = xG(x) - G(x) + C$ na $(a,b)$", "correct": false}], "image": "images/Screenshot 2025-12-10 at 20-54-52 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-54-52 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-54-52 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Ověřte následující výpočty neurčitých integrálů a vyberte ty, které jsou správně.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "$\\int x \\sin x \\, dx = -x \\cos x + \\sin x + C$ na $\\mathbb{R}$.", "correct": true}, {"text": "$\\int x \\cos(x) \\, dx = x^2 \\sin(x) + \\cos(x) + C$ na $\\mathbb{R}$.", "correct": false}, {"text": "$\\int \\frac{1}{\\cos^2(x)} \\, dx = \\operatorname{tg} x + C$ na $(-\\frac{\\pi}{2}, \\frac{\\pi}{2})$.", "correct": true}, {"text": "$\\int 2x + 2e^x - x^{-1} \\, dx = x^2 + 2e^x - \\ln x + C$ na $(0, +\\infty)$.", "correct": true}], "image": "images/Screenshot 2025-12-10 at 20-54-56 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-54-56 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-54-56 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Nechť funkce $f$ má spojitou derivaci v intervalu $(a,b)$ a $G$ je primitivní funkce k funkci $g$ na intervalu $(a,b)$. Potom platí:", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "$\\int f(x)g(x) dx = f(x)G(x) - \\int f'(x)G(x) dx$ na $(a,b)$.", "correct": true}, {"text": "$f(x)G(x) + C = \\int f(x)g(x) + f'(x)G(x) dx$ na $(a,b)$.", "correct": true}, {"text": "$\\int f(x)g(x) dx = f(x)g(x) - \\int f'(x)G(x) dx$ na $(a,b)$.", "correct": false}, {"text": "$\\int f(x)g(x) dx = f'(x)G(x) - \\int f'(x)G(x) dx$ na $(a,b)$.", "correct": false}], "image": "images/Screenshot 2025-12-10 at 20-51-49 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-51-49 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-51-49 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Určete u kterých z následujících integrálů byla správně použita metoda per-partes.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "$\\int \\sin^2(x) dx = - \\sin x \\cos x + \\int \\cos^2(x) dx$ na $\\mathbb{R}$.", "correct": true}, {"text": "$\\int x^2 \\sin x dx = -x^2 \\cos x - \\int 2x \\cos x dx$ na $\\mathbb{R}$.", "correct": false}, {"text": "$\\int e^{-x^2} dx = xe^{-x^2} + 2 \\int x^2 e^{-x^2} dx$ na $\\mathbb{R}$.", "correct": true}, {"text": "$\\int e^x \\sin x dx = e^x \\sin x - \\int e^x \\cos x dx$ na $\\mathbb{R}$.", "correct": true}], "image": "images/Screenshot 2025-12-10 at 20-54-12 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-54-12 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-54-12 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Které z následujících tvrzení jsou pravdivá?", "category": "Určitý integrál", "answers": [{"text": "Normou rozdělení $\\sigma = \\{x_0, x_1, \\dots, x_n\\}$ intervalu $\\langle a,b \\rangle$ nazýváme hodnotu $x_n - x_0$ a označujeme ji $\\nu(\\sigma)$.", "correct": false}, {"text": "Pokud existuje Riemannův integrál omezené funkce $f$ na uzavřeném intervalu $\\langle a,b \\rangle$, potom je funkce $f$ spojitá na intervalu $\\langle a,b \\rangle$.", "correct": false}, {"text": "Dolní součet omezené funkce $f$ při rozdělení $\\sigma = \\{x_0, x_1, \\dots, x_n\\}$ intervalu $\\langle a,b \\rangle$ je roven $\\sum_{k=1}^{n} (x_k - x_{k-1}) \\inf_{x \\in \\langle x_{k-1}, x_k \\rangle} f(x)$.", "correct": true}, {"text": "Riemannův integrál omezené funkce $f$ na uzavřeném intervalu $\\langle a,b \\rangle$ existuje právě tehdy, když $\\overline{\\int_{a}^{b}} f(x) dx = \\underline{\\int_{a}^{b}} f(x) dx$.", "correct": true}], "image": "images/Screenshot 2025-12-10 at 21-19-23 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-19-23 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-19-23 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Které z následujících rovností jsou pravdivé?", "category": "Určitý integrál", "answers": [{"text": "$\\int_0^1 x^2 e^x dx = x^2 e^x - \\int_0^1 2x e^x dx$", "correct": false}, {"text": "$\\int_0^{\\pi/2} x \\cos x dx = \\int_0^{\\pi/2} \\sin x dx$", "correct": false}, {"text": "$\\int_0^{\\pi/2} x \\sin x dx = \\int_0^{\\pi/2} \\cos x dx$", "correct": true}, {"text": "$\\int_0^1 \\arctan x dx = \\frac{\\pi}{4} - \\int_0^1 \\frac{x}{1+x^2} dx$", "correct": true}], "image": "images/Screenshot 2025-12-10 at 21-19-38 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-19-38 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-19-38 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Nechť funkce $f$ a $g$ jsou spojité funkce na $\\mathbb{R}$ a $a, b \\in \\mathbb{R}$, $a < b$. Potom platí:", "category": "Určitý integrál", "answers": [{"text": "$\\int_a^b f(x) dx = -\\int_b^a f(x) dx$", "correct": true}, {"text": "$\\int_0^2 (f(x) - g(x)) dx = 2 \\int_0^1 f(x) dx - 2 \\int_0^1 g(x) dx$", "correct": false}, {"text": "$\\int_0^1 (5f(x) - g(x)) dx = 5 \\int_0^1 f(x) dx + \\int_1^0 g(x) dx$", "correct": true}, {"text": "$\\int_{-1}^1 f(x) dx = - \\int_{-1}^1 f(x) dx$", "correct": false}], "image": "images/Screenshot 2025-12-10 at 21-18-23 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-18-23 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-18-23 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Nechť je funkce $f$ diferencovatelná na intervalu $(a, b)$. Vyberte všechna pravdivá tvrzení.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "Platí $\\int f'(x) dx = f(x) + C$, $x \\in (a, b)$.", "correct": true}, {"text": "Na $(a, b)$ existuje primitivní funkce k $f$.", "correct": true}, {"text": "Primitivní funkce $F$ k $f$ má spojitou derivaci na $(a, b)$.", "correct": true}, {"text": "$f'$ je na $(a, b)$ primitivní funkcí k $f$.", "correct": false}], "image": "images/Screenshot 2025-12-10 at 20-54-25 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-54-25 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-54-25 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Nechť $\\varphi$ má spojitou derivaci na $\\mathbb{R}$. Vyberte pravdivá tvrzení.", "category": "Určitý integrál", "answers": [{"text": "Rovnost $\\int_{a}^{b} \frac{\\varphi'(x)}{1+\\varphi^2(x)} dx = \\int_{\\varphi(a)}^{\\varphi(b)} \frac{1}{1+x^2} dx$ platí pro libovolná reálná $a$ a $b$.", "correct": true}, {"text": "Rovnost $\\int_{a}^{b} \frac{\\varphi'(x)}{1+\\varphi^2(x)} dx = \\operatorname{arctg}(\\varphi(b)) - \\operatorname{arctg}(\\varphi(a))$ platí pro libovolná reálná $a$ a $b$.", "correct": true}, {"text": "Rovnost $\\int_{a}^{b} \frac{\\varphi'(x)}{1+\\varphi^2(x)} dx = \\int_{a}^{b} \frac{1}{1+y^2} dy$ platí pro libovolná reálná $a$ a $b$.", "correct": false}, {"text": "Rovnost $\\int_{a}^{b} \frac{\\varphi'(x)}{1+\\varphi^2(x)} dx = [\\operatorname{arctg}(x)]_{\\varphi(a)}^{\\varphi(b)}$ platí pro libovolná reálná $a$ a $b$.", "correct": true}], "image": "images/Screenshot 2025-12-10 at 21-18-13 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-18-13 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-18-13 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Určete, u kterých z následujících integrálů byla správně použita metoda substituce.", "category": "Určitý integrál", "answers": [{"text": "$\\int_{1}^{2} 2x \\sqrt{1 + x^2} dx = \\int_{1}^{4} \\sqrt{u} du.$", "correct": false}, {"text": "$\\int_{0}^{1} \\frac{1}{\\sqrt{1 - x^2}} dx = \\int_{0}^{\\pi/2} \\frac{\\cos(y)}{\\sqrt{1 - \\sin^2(y)}} dy.$", "correct": true}, {"text": "$\\int_{0}^{\\pi} 2x \\sin(x^2) dx = \\int_{0}^{\\pi^2} \\sin y dy.$", "correct": true}, {"text": "$\\int_{1}^{2} 2x \\sqrt{1 + x^2} dx = \\int_{2}^{5} \\sqrt{u} du.$", "correct": true}], "image": "images/Screenshot 2025-12-10 at 21-18-45 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-18-45 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-18-45 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Nechť pro všechna $x$ z otevřeného intervalu $I$ platí $\\int f(x)dx = F(x) + C$. Vyberte všechna pravdivá tvrzení.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "Funkce $F(x)$ je primitivní funkcí k funkci $f(x)$ na intervalu $I$.", "correct": true}, {"text": "$F'(x) = f(x)$ pro všechna $x \\in I$.", "correct": true}, {"text": "Funkce $f(x)$ je primitivní funkcí k funkci $F(x)$.", "correct": false}, {"text": "Funkce $F(x) - 1$ je primitivní funkcí k funkci $f(x)$ na intervalu $I$.", "correct": true}], "image": "images/Screenshot 2025-12-10 at 20-51-04 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-51-04 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-51-04 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Ověřte následující výpočty neurčitých integrálů a vyberte ty, které jsou správné.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "$\\int \\sin^2(x) + \\cos^2(x) dx = x + C$ na $\\mathbb{R}$.", "correct": true}, {"text": "$\\int 2xe^{-x^2} dx = -e^{-x^2} + C$ na $\\mathbb{R}$.", "correct": true}, {"text": "$\\int x^2 e^x dx = (x - 1)^2 e^x + C$ na $\\mathbb{R}$.", "correct": false}, {"text": "$\\int \\operatorname{arctg} x dx = x \\operatorname{arctg} x - \\ln(1 + x^2) + C$ na $\\mathbb{R}$.", "correct": false}], "image": "images/Screenshot 2025-12-10 at 20-54-30 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-54-30 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-54-30 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Nechť funkce $F(x)$ a $G(x)$ jsou primitivní funkce k funkci $f(x)$ na otevřeném intervalu $I$. Vyberte všechna pravdivá tvrzení.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "Pro každé $x \\in I$ platí $(F - G)'(x) = 0$.", "correct": true}, {"text": "Existuje konstanta $c$ taková, že pro každé $x \\in I$ platí $F(x) = G(x) + c$.", "correct": true}, {"text": "Platí $\\int F(x) dx = \\int G(x) dx$.", "correct": false}, {"text": "Funkce $F(x) - G(x)$ je konstantní na $I$.", "correct": true}], "image": "images/Screenshot 2025-12-10 at 20-54-35 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-54-35 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-54-35 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Nechť $f$ je spojitá funkce na $\\mathbb{R}$. Vyberte platná tvrzení.", "category": "Určitý integrál", "answers": [{"text": "$\\int_0^1 (f(x) + x) dx = \\int_0^1 f(x) dx + \\frac{1}{2}$", "correct": true}, {"text": "$\\int_0^1 (f(x) + x) dx = \\int_0^1 f(x) dx + \\frac{x^2}{2}$", "correct": false}, {"text": "$\\int_0^1 (f(x) + 1) dx = \\int_0^1 f(x) dx + 1$", "correct": true}, {"text": "$\\int_0^1 (f(x) + x) dx = \\int_0^1 f(x) dx + x$", "correct": false}], "image": "images/Screenshot 2025-12-10 at 21-18-17 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-18-17 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-18-17 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Nechť pro všechna $x$ z otevřeného intervalu $I$ platí\n\n$\\int f(x)dx = F(x) + C$.\n\nVyberte všechna pravdivá tvrzení.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "Funkce $F(x) - 1$ je primitivní funkcí k funkci $f(x)$ na intervalu $I$.", "correct": true}, {"text": "Funkce $f(x)$ je primitivní funkcí k funkci $F(x)$.", "correct": false}, {"text": "$F'(x) = f(x)$ pro všechna $x \\in I$.", "correct": true}, {"text": "Funkce $F(x)$ je primitivní funkcí k funkci $f(x)$ na intervalu $I$.", "correct": true}], "image": "images/Screenshot 2025-12-10 at 20-54-48 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-54-48 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-54-48 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Nechť $F$ je primitivní funkcí k funkci $f$ na intervalu $(a, b)$, $\\varphi$ je na intervalu $(\\alpha, \beta)$ diferencovatelná a $\\varphi((\\alpha, \beta)) = (a, b)$. Vyberte pravdivá tvrzení.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "$F(\\varphi(x))$ je primitivní funkcí k $f(\\varphi(x))$ na intervalu $(\\alpha, \beta)$.", "correct": false}, {"text": "$F(\\varphi(x))$ je primitivní funkcí k $f(\\varphi(x))\\varphi'(x)$ na intervalu $(\\alpha, \beta)$.", "correct": true}, {"text": "$f(\\varphi(x))\\varphi'(x)$ má na intervalu $(\\alpha, \beta)$ primitivní funkci.", "correct": true}, {"text": "$F(\\varphi(x))$ je primitivní funkcí k $f(\\varphi(x))\\varphi'(x)$ na intervalu $(a, b)$.", "correct": false}], "image": "images/Screenshot 2025-12-10 at 20-54-40 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-54-40 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-54-40 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Které z následujících tvrzení jsou pravdivá?", "category": "Určitý integrál", "answers": [{"text": "Riemannův integrál omezené funkce $f$ na uzavřeném intervalu $\\langle a,b \\rangle$ existuje právě tehdy, když $\\overline{\\int_a^b} f(x) dx = \\underline{\\int_a^b} f(x) dx.$", "correct": true}, {"text": "Dolní součet omezené funkce $f$ při rozdělení $\\sigma = \\{x_0, x_1, \\dots, x_n\\}$ intervalu $\\langle a,b \\rangle$ je roven $\\sum_{k=1}^n (x_k - x_{k-1}) \\inf_{x \\in (x_{k-1}, x_k)} f(x).$", "correct": true}, {"text": "Normou rozdělení $\\sigma = \\{x_0, x_1, \\dots, x_n\\}$ intervalu $\\langle a,b \\rangle$ nazýváme hodnotu $x_n - x_0$ a označujeme ji $\\nu(\\sigma).$", "correct": false}, {"text": "Pokud existuje Riemannův integrál omezené funkce $f$ na uzavřeném intervalu $\\langle a,b \\rangle$, potom je funkce $f$ spojitá na intervalu $\\langle a,b \\rangle.$", "correct": false}], "image": "images/Screenshot 2025-12-10 at 21-18-51 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-18-51 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-18-51 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Ověřte následující výpočty neurčitých integrálů a vyberte ty, které jsou správně.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "$\\int (\\sin^2(x) + \\cos^2(x)) dx = x + C$ na $\\mathbb{R}$.", "correct": true}, {"text": "$\\int 2xe^{-x^2} dx = -e^{-x^2} + C$ na $\\mathbb{R}$.", "correct": true}, {"text": "$\\int x^2 e^x dx = (x-1)^2 e^x + C$ na $\\mathbb{R}$.", "correct": false}, {"text": "$\\int \\operatorname{arctg} x dx = x \\operatorname{arctg} x - \\ln(1 + x^2) + C$ na $\\mathbb{R}$.", "correct": false}], "image": "images/Screenshot 2025-12-10 at 20-51-44 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-51-44 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-51-44 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}, {"question": "Které z následujících rovností jsou pravdivé?", "category": "Určitý integrál", "answers": [{"text": "$\\int_{0}^{1} x^2 e^x dx = x^2 e^x - \\int_{0}^{2} 2xe^x dx$", "correct": false}, {"text": "$\\int_{0}^{\\frac{\\pi}{2}} x \\cos x dx = \\int_{0}^{\\frac{\\pi}{2}} \\sin x dx$", "correct": false}, {"text": "$\\int_{0}^{\\frac{\\pi}{2}} x \\sin x dx = \\int_{0}^{\\frac{\\pi}{2}} \\cos x dx$", "correct": true}, {"text": "$\\int_{0}^{1} \\arctan x dx = \\frac{\\pi}{4} - \\int_{0}^{1} \\frac{x}{1+x^2} dx$", "correct": true}], "image": "images/Screenshot 2025-12-10 at 21-19-12 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-19-12 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-19-12 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Vyberte všechna pravdivá tvrzení.", "category": "Určitý integrál", "answers": [{"text": "$\\int_{1}^{+\\infty} \\frac{1}{x^2} dx = 1$", "correct": true}, {"text": "Integrál $\\int_{1}^{+\\infty} \\frac{1}{x^2} dx$ diverguje.", "correct": false}, {"text": "Integrál $\\int_{1}^{+\\infty} \\frac{1}{\\sqrt{x}} dx$ diverguje.", "correct": true}, {"text": "$\\int_{-1}^{1} x^3 e^{x^4} dx = 0$", "correct": true}], "image": "images/Screenshot 2025-12-10 at 21-18-57 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-18-57 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-18-57 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Vyberte všechna pravdivá tvrzení o integrálu $\\int_0^{+\\infty} e^{-x} dx$.", "category": "Určitý integrál", "answers": [{"text": "Tomuto integrálu se můžeme pokusit dát dobrý smysl pomocí limity $\\lim_{c \\to +\\infty} \\int_0^c e^{-x} dx$.", "correct": true}, {"text": "Hodnota tohoto integrálu je 1.", "correct": true}, {"text": "Tento integrál nelze spočítat pomocí Riemannovy konstrukce, protože integrační interval $(0, +\\infty)$ není omezený.", "correct": true}, {"text": "Hodnota tohoto integrálu nemůže být reálné číslo, protože integrační interval $(0, +\\infty)$ není omezený.", "correct": false}], "image": "images/Screenshot 2025-12-10 at 21-19-19 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf/Screenshot 2025-12-10 at 21-19-19 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf.png", "source_folder": "Screenshot 2025-12-10 at 21-19-19 ma2_marast_kviz_2.xopp - bi-ma2_marast_2022_2.pdf"}, {"question": "Nechť $f$ je definována na intervalu $(a,b)$ a nechť $\\varphi$ je bijekce $(\\alpha, \beta)$ na $(a,b)$ s nenulovou konečnou derivací. Vyberte všechna pravdivá tvrzení.", "category": "Neurčitý integrál a primitivní funkce", "answers": [{"text": "Je-li funkce $G(x)$ primitivní funkcí k funkci $f(\\varphi(x))\\varphi'(x)$ na intervalu $(\\alpha, \beta)$, pak je $G(\\varphi^{-1}(x))$ primitivní funkcí k $f(x)$ na intervalu $(a,b)$.", "correct": true}, {"text": "Primitivní funkce k funkci $f(\\varphi(x))\\varphi'(x)$ na intervalu $(\\alpha, \beta)$, je také primitivní funkcí k $f(x)$ na intervalu $(a,b)$.", "correct": false}, {"text": "Je-li funkce $G(x)$ primitivní funkcí k funkci $f(\\varphi(x))\\varphi'(x)$ na intervalu $(\\alpha, \beta)$, pak $\\int f(x) dx = G(\\varphi^{-1}(x)) + C$ na $(a,b)$.", "correct": true}, {"text": "$\\int f(x) dx = \\int f(\\varphi(x))\\varphi'(x) dx + C$ na $(a,b)$.", "correct": false}], "image": "images/Screenshot 2025-12-10 at 20-54-02 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf/Screenshot 2025-12-10 at 20-54-02 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf.png", "source_folder": "Screenshot 2025-12-10 at 20-54-02 ma2_marast_kviz_1.xopp - bi-ma2_marast_2022_1.pdf"}];
+        const categories = ["Neurčitý integrál a primitivní funkce", "Určitý integrál"];
+        let filteredQuestions = [...allQuestions];
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let correctCount = 0;
+        let answeredCount = 0;
+        let wrongStreak = 0;
+        let answeredQuestions = new Set();
+        let imageVisible = false;
+
+        function updateCategoryFilter() {
+            const selectedCategories = categories.filter((_, idx) => 
+                document.getElementById(`cat_${idx}`).checked
+            );
+            
+            if (selectedCategories.length === 0) {
+                filteredQuestions = [];
+            } else {
+                filteredQuestions = allQuestions.filter(q => 
+                    selectedCategories.includes(q.category || 'Matematika')
+                );
+            }
+            
+            // Shuffle filtered questions
+            filteredQuestions.sort(() => Math.random() - 0.5);
+            
+            // Reset state
+            currentQuestion = 0;
+            userAnswers = [];
+            answeredQuestions.clear();
+            
+            // Update stats
+            document.getElementById('targetCount').textContent = filteredQuestions.length;
+            
+            // Render first question or show message
+            if (filteredQuestions.length > 0) {
+                renderQuestion();
+            } else {
+                document.getElementById('questionContainer').innerHTML = 
+                    '<div class="no-questions">Vyberte alespoň jednu kategorii pro trénování.</div>';
+            }
+        }
+
+        function selectAllCategories() {
+            categories.forEach((_, idx) => {
+                document.getElementById(`cat_${idx}`).checked = true;
+            });
+            updateCategoryFilter();
+        }
+
+        function deselectAllCategories() {
+            categories.forEach((_, idx) => {
+                document.getElementById(`cat_${idx}`).checked = false;
+            });
+            updateCategoryFilter();
+        }
+
+        function renderQuestion() {
+            if (filteredQuestions.length === 0) {
+                document.getElementById('questionContainer').innerHTML = 
+                    '<div class="no-questions">Vyberte alespoň jednu kategorii pro trénování.</div>';
+                return;
+            }
+
+            const q = filteredQuestions[currentQuestion];
+            const container = document.getElementById('questionContainer');
+            
+            let html = `<div class="category">${q.category || 'Matematika'}</div>`;
+            
+            if (q.image) {
+                html += `<button class="toggle-image-btn" onclick="toggleImage()">Zobrazit původní otázku</button>`;
+                html += `<img src="${q.image}" alt="Quiz question" class="question-image" id="questionImage">`;
+            }
+            
+            html += `<div class="question-text">${q.question}</div>`;
+            html += '<div class="answers">';
+            
+            q.answers.forEach((answer, idx) => {
+                const userAnswer = userAnswers[currentQuestion] ? userAnswers[currentQuestion][idx] : null;
+                const yesActive = userAnswer === true ? 'active btn-yes' : '';
+                const minusActive = userAnswer === null ? 'active btn-minus' : '';
+                const noActive = userAnswer === false ? 'active btn-no' : '';
+                
+                html += `
+                    <div class="answer-row" id="answerRow${idx}">
+                        <div class="answer-buttons">
+                            <button class="answer-btn ${yesActive}" onclick="setAnswer(${idx}, true)">✓</button>
+                            <button class="answer-btn ${minusActive}" onclick="setAnswer(${idx}, null)">−</button>
+                            <button class="answer-btn ${noActive}" onclick="setAnswer(${idx}, false)">✕</button>
+                        </div>
+                        <div class="answer-text">${answer.text}</div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+            
+            imageVisible = false;
+            updateStats();
+            updateNavigationButtons();
+            
+            // Render MathJax after content is inserted
+            MathJax.typesetPromise([container]).catch((err) => console.log('MathJax error:', err));
+        }
+
+        function updateNavigationButtons() {
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            document.getElementById('nextBtn').disabled = currentQuestion >= filteredQuestions.length - 1;
+        }
+
+        function toggleImage() {
+            const img = document.getElementById('questionImage');
+            const btn = document.querySelector('.toggle-image-btn');
+            if (img) {
+                imageVisible = !imageVisible;
+                if (imageVisible) {
+                    img.classList.add('visible');
+                    btn.textContent = 'Skrýt původní otázku';
+                } else {
+                    img.classList.remove('visible');
+                    btn.textContent = 'Zobrazit původní otázku';
+                }
+            }
+        }
+
+        function setAnswer(idx, value) {
+            if (!userAnswers[currentQuestion]) {
+                userAnswers[currentQuestion] = [];
+            }
+            
+            // Toggle if clicking the same button
+            if (userAnswers[currentQuestion][idx] === value) {
+                userAnswers[currentQuestion][idx] = undefined;
+            } else {
+                userAnswers[currentQuestion][idx] = value;
+            }
+            
+            renderQuestion();
+        }
+
+        function updateStats() {
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('answeredCount').textContent = answeredCount;
+            document.getElementById('wrongStreak').textContent = wrongStreak;
+            document.getElementById('progressBar').style.width = 
+                `${filteredQuestions.length > 0 ? (correctCount / filteredQuestions.length) * 100 : 0}%`;
+        }
+
+        function submitAnswer() {
+            if (filteredQuestions.length === 0) return;
+
+            const q = filteredQuestions[currentQuestion];
+            const answers = document.querySelectorAll('.answer-row');
+            let allCorrect = true;
+            let hasAnswered = false;
+            
+            q.answers.forEach((answer, idx) => {
+                const userSelected = userAnswers[currentQuestion] ? userAnswers[currentQuestion][idx] : undefined;
+                const shouldBeSelected = answer.correct;
+                
+                if (userSelected !== undefined) {
+                    hasAnswered = true;
+                }
+                
+                if (userSelected === shouldBeSelected) {
+                    answers[idx].classList.add('correct');
+                } else {
+                    answers[idx].classList.add('incorrect');
+                    allCorrect = false;
+                }
+                
+                // Disable buttons
+                answers[idx].querySelectorAll('.answer-btn').forEach(btn => {
+                    btn.disabled = true;
+                });
+            });
+            
+            if (!hasAnswered) {
+                alert('Prosím, zodpovězte alespoň jednu otázku.');
+                answers.forEach(row => {
+                    row.querySelectorAll('.answer-btn').forEach(btn => {
+                        btn.disabled = false;
+                    });
+                    row.classList.remove('correct', 'incorrect');
+                });
+                return;
+            }
+            
+            if (!answeredQuestions.has(currentQuestion)) {
+                answeredCount++;
+                answeredQuestions.add(currentQuestion);
+            }
+            
+            if (allCorrect) {
+                correctCount++;
+                wrongStreak = 0;
+            } else {
+                wrongStreak++;
+            }
+            
+            const feedback = document.createElement('div');
+            feedback.className = `feedback ${allCorrect ? 'correct' : 'incorrect'}`;
+            feedback.textContent = allCorrect ? '✓ Správně!' : '✗ Zkuste to znovu příště';
+            document.getElementById('questionContainer').appendChild(feedback);
+            
+            updateStats();
+            
+            setTimeout(() => {
+                nextQuestion();
+            }, 1500);
+        }
+
+        function nextQuestion() {
+            if (filteredQuestions.length === 0) return;
+
+            if (currentQuestion < filteredQuestions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                // Loop back to start
+                currentQuestion = 0;
+                renderQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            if (filteredQuestions.length === 0 || currentQuestion === 0) return;
+            currentQuestion--;
+            renderQuestion();
+        }
+
+        function skipQuestion() {
+            // Skip to next question without answering
+            if (filteredQuestions.length === 0) return;
+            
+            if (currentQuestion < filteredQuestions.length - 1) {
+                currentQuestion++;
+            } else {
+                currentQuestion = 0;
+            }
+            renderQuestion();
+        }
+
+        renderQuestion();
+    </script>
+</body>
+</html>

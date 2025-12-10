@@ -1,0 +1,16 @@
+```json
+{
+    "questions": [
+        {
+            "question": "Nechť $f$ je spojitá funkce na $\mathbb{R}$. Vyberte platná tvrzení.",
+            "category": "Určitý integrál",
+            "answers": [
+                {"text": "$\\int_{0}^{1} (f(x) + x) dx = \\int_{0}^{1} f(x) dx + x$", "correct": false},
+                {"text": "$\\int_{0}^{1} (f(x) + 1) dx = \\int_{0}^{1} f(x) dx + 1$", "correct": true},
+                {"text": "$\\int_{0}^{1} (f(x) + x) dx = \\int_{0}^{1} f(x) dx + \\frac{1}{2}$", "correct": true},
+                {"text": "$\\int_{0}^{1} (f(x) + x) dx = \\int_{0}^{1} f(x) dx + \\frac{x^2}{2}$", "correct": false}
+            ]
+        }
+    ]
+}
+```

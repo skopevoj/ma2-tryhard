@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "Nechť funkce $f$ a $g$ jsou spojité funkce na $\\mathbb{R}$ a $a, b \\in \\mathbb{R}$, $a < b$. Potom platí:",
+      "category": "Určitý integrál",
+      "answers": [
+        {
+          "text": "$\\int_a^b f(x) dx = -\\int_b^a f(x) dx$",
+          "correct": true
+        },
+        {
+          "text": "$\\int_0^2 (f(x) - g(x)) dx = 2 \\int_0^1 f(x) dx - 2 \\int_0^1 g(x) dx$",
+          "correct": false
+        },
+        {
+          "text": "$\\int_0^1 (5f(x) - g(x)) dx = 5 \\int_0^1 f(x) dx + \\int_1^0 g(x) dx$",
+          "correct": true
+        },
+        {
+          "text": "$\\int_{-1}^1 f(x) dx = - \\int_{-1}^1 f(x) dx$",
+          "correct": false
+        }
+      ]
+    }
+  ]
+}

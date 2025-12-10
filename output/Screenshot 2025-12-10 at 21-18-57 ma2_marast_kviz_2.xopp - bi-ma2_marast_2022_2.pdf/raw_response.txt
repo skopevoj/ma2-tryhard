@@ -1,0 +1,16 @@
+```json
+{
+    "questions": [
+        {
+            "question": "Vyberte všechna pravdivá tvrzení.",
+            "category": "Určitý integrál",
+            "answers": [
+                {"text": "$\\int_{1}^{+\\infty} \\frac{1}{x^2} dx = 1$", "correct": true},
+                {"text": "Integrál $\\int_{1}^{+\\infty} \\frac{1}{x^2} dx$ diverguje.", "correct": false},
+                {"text": "Integrál $\\int_{1}^{+\\infty} \\frac{1}{\\sqrt{x}} dx$ diverguje.", "correct": true},
+                {"text": "$\\int_{-1}^{1} x^3 e^{x^4} dx = 0$", "correct": true}
+            ]
+        }
+    ]
+}
+```

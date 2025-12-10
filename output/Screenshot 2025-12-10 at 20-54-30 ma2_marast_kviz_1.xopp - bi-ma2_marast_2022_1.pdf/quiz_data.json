@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "Ověřte následující výpočty neurčitých integrálů a vyberte ty, které jsou správné.",
+      "category": "Neurčitý integrál a primitivní funkce",
+      "answers": [
+        {
+          "text": "$\\int \\sin^2(x) + \\cos^2(x) dx = x + C$ na $\\mathbb{R}$.",
+          "correct": true
+        },
+        {
+          "text": "$\\int 2xe^{-x^2} dx = -e^{-x^2} + C$ na $\\mathbb{R}$.",
+          "correct": true
+        },
+        {
+          "text": "$\\int x^2 e^x dx = (x - 1)^2 e^x + C$ na $\\mathbb{R}$.",
+          "correct": false
+        },
+        {
+          "text": "$\\int \\operatorname{arctg} x dx = x \\operatorname{arctg} x - \\ln(1 + x^2) + C$ na $\\mathbb{R}$.",
+          "correct": false
+        }
+      ]
+    }
+  ]
+}

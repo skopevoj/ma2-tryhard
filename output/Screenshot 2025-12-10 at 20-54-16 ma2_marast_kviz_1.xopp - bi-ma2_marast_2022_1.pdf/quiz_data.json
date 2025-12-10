@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "Nechť $F$ je primitivní funkcí k funkci $f$ na $\\mathbb{R}$. Vyberte všechna pravdivá tvrzení.",
+      "category": "Neurčitý integrál a primitivní funkce",
+      "answers": [
+        {
+          "text": "$\\int \\frac{f(\\ln x)}{x} dx = F(\\ln x) + C$ na intervalu $(1, 10)$.",
+          "correct": true
+        },
+        {
+          "text": "Funkce $F(x^3)$ je primitivní funkcí k $3x^2 f(x^3)$ na intervalu $(0, 1)$.",
+          "correct": true
+        },
+        {
+          "text": "$\\int \\frac{f(\\ln x)}{x} dx = F(\\ln x) + C$ na intervalu $(0, +\\infty)$.",
+          "correct": true
+        },
+        {
+          "text": "Funkce $F(e^x)$ je primitivní funkcí k $e^x f(\\ln x)$ na intervalu $(0, +\\infty)$.",
+          "correct": false
+        }
+      ]
+    }
+  ]
+}

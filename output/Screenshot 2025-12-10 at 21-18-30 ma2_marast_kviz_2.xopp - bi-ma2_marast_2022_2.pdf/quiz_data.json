@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "Nechť $f$ a $g$ jsou spojité funkce na $\\mathbb{R}$. Vyberte pravdivá tvrzení.",
+      "category": "Určitý integrál",
+      "answers": [
+        {
+          "text": "$\\int_{-10}^{10} f(x)g(x)dx = \\int_{-10}^{10} f(x) dx \\int_{-10}^{10} g(x) dx.$",
+          "correct": false
+        },
+        {
+          "text": "$\\int_{-1}^{0} f(x) dx = - \\int_{0}^{1} f(x) dx.$",
+          "correct": false
+        },
+        {
+          "text": "$\\int_{0}^{2} f(x) dx = \\int_{0}^{1} f(x) dx + \\int_{1}^{2} f(x) dx.$",
+          "correct": true
+        },
+        {
+          "text": "$\\int_{-10}^{10} (f(x) - g(x))dx = \\int_{-10}^{10} f(x) dx - \\int_{-10}^{10} g(x) dx.$",
+          "correct": true
+        }
+      ]
+    }
+  ]
+}

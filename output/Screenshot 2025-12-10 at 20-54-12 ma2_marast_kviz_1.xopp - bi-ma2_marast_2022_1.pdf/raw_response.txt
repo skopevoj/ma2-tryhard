@@ -1,0 +1,28 @@
+```json
+{
+    "questions": [
+        {
+            "question": "Určete u kterých z následujících integrálů byla správně použita metoda per-partes.",
+            "category": "Neurčitý integrál a primitivní funkce",
+            "answers": [
+                {
+                    "text": "$\\int \\sin^2(x) dx = - \\sin x \\cos x + \\int \\cos^2(x) dx$ na $\\mathbb{R}$.",
+                    "correct": true
+                },
+                {
+                    "text": "$\\int x^2 \\sin x dx = -x^2 \\cos x - \\int 2x \\cos x dx$ na $\\mathbb{R}$.",
+                    "correct": false
+                },
+                {
+                    "text": "$\\int e^{-x^2} dx = xe^{-x^2} + 2 \\int x^2 e^{-x^2} dx$ na $\\mathbb{R}$.",
+                    "correct": true
+                },
+                {
+                    "text": "$\\int e^x \\sin x dx = e^x \\sin x - \\int e^x \\cos x dx$ na $\\mathbb{R}$.",
+                    "correct": true
+                }
+            ]
+        }
+    ]
+}
+```
