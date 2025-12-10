@@ -2,7 +2,7 @@
 
 ## Disclaimer
 Celý repo je kromě otázek 100% vibe coded (Kuznetsov Approved) ✨
-
+    
 ## Zdroje otázek
 
 Otázky jsou převzaty z FIT Wiki:

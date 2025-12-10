@@ -204,7 +204,6 @@ def generate_html(questions):
             position: absolute;
             inset: -2px;
             border-radius: 24px;
-            background: linear-gradient(180deg, rgba(139, 92, 246, 0.4) 0%, rgba(139, 92, 246, 0.05) 100%);
             z-index: -1;
         }
         
