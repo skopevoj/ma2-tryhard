@@ -1021,14 +1021,14 @@ def generate_html(questions):
         <div class="welcome-modal">
             <div class="logo">MARNOST</div>
             <h2>BI-MA2 Kvíz</h2>
-            <p>Vítejte v interaktivním kvízu pro přípravu na zkoušku z matematiky 2!</p>
             <ul>
-                <li><strong>Označte správné odpovědi</strong> pomocí tlačítek ✓ (správně), − (nevím), ✕ (špatně)</li>
-                <li><strong>Nastavte si kvíz</strong> kliknutím na ikonu ⚙️ v levém panelu</li>
-                <li><strong>Sledujte svůj pokrok</strong> v levém panelu</li>
+                <li><strong>Vyberte kategorii k procvičování</strong> v nastavení</li>
+                <li>
+  <strong>Na případné chyby v přepisu prosím vytvořte issue</strong>
+  <a href="https://github.com/skopevoj/ma2-tryhard/issues">https://github.com/skopevoj/ma2-tryhard/issues</a>
+</li>
                 <li><strong>Používejte šipky</strong> (← →) pro navigaci mezi otázkami</li>
             </ul>
-            <p>Po správném zodpovězení se vám otázka už nebude zobrazovat. Držíme palce! 🎓</p>
             <button class="welcome-btn" onclick="closeWelcome()">Rozumím, začít kvíz</button>
         </div>
     </div>
