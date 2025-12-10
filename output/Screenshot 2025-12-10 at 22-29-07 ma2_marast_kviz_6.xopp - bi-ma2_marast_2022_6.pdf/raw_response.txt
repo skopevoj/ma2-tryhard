@@ -1,0 +1,28 @@
+```json
+{
+    "questions": [
+        {
+            "question": "Uvažujeme funkci $f(x, y, z) = x^3 y + y \\ln(z^2)$.",
+            "category": "Diferenciální počet funkcí více proměnných",
+            "answers": [
+                {
+                    "text": "Gradient funkce $f$ v bodě $(1, 1, 1)^T$ je 6.",
+                    "correct": false
+                },
+                {
+                    "text": "Funkce $f$ má ve svém definičním oboru alespoň jeden stacionární bod.",
+                    "correct": true
+                },
+                {
+                    "text": "Definiční obor $f$ je $\\mathbb{R}^3$.",
+                    "correct": false
+                },
+                {
+                    "text": "Gradient funkce $f$ v bodě $(1, 1, 1)^T$ je $(3, 1, 2)^T$.",
+                    "correct": true
+                }
+            ]
+        }
+    ]
+}
+```

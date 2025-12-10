@@ -40,7 +40,7 @@ def generate_html(questions):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matematika - Kvíz</title>
+    <title>MARAST - BI-MA2 Kvíz</title>
     <script>
         MathJax = {
             tex: {
@@ -56,6 +56,48 @@ def generate_html(questions):
     </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
+        :root {
+            --bg-primary: #36393f;
+            --bg-secondary: #2f3136;
+            --bg-tertiary: #40444b;
+            --bg-input: #202225;
+            --text-primary: #dcddde;
+            --text-secondary: #b5bac1;
+            --accent: #5eb3d6;
+            --accent-hover: #4a9bb8;
+            --success: #3ba55d;
+            --error: #ed4245;
+            --border: #202225;
+        }
+        
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f2f3f5;
+            --bg-tertiary: #e3e5e8;
+            --bg-input: #ebedef;
+            --text-primary: #2e3338;
+            --text-secondary: #4e5058;
+            --accent: #5865f2;
+            --accent-hover: #4752c4;
+            --success: #3ba55d;
+            --error: #ed4245;
+            --border: #d1d5db;
+        }
+        
+        [data-theme="orange"] {
+            --bg-primary: #2c2520;
+            --bg-secondary: #3a302a;
+            --bg-tertiary: #4a3d35;
+            --bg-input: #1f1a17;
+            --text-primary: #f5e6d3;
+            --text-secondary: #d4c4b0;
+            --accent: #ff6b35;
+            --accent-hover: #e55a2b;
+            --success: #4caf50;
+            --error: #f44336;
+            --border: #1f1a17;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -63,11 +105,95 @@ def generate_html(questions):
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #36393f;
-            color: #dcddde;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
             padding: 15px;
+            transition: background 0.3s, color 0.3s;
         }
+        
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+        
+        .welcome-overlay.hidden {
+            display: none;
+        }
+        
+        .welcome-modal {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        
+        .welcome-modal h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .welcome-modal h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+        
+        .welcome-modal p {
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        .welcome-modal ul {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+        
+        .welcome-modal li {
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .welcome-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+        
+        .welcome-btn:hover {
+            background: var(--accent-hover);
+        }
+        
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+        
         .main-container {
             display: flex;
             gap: 15px;
@@ -76,7 +202,7 @@ def generate_html(questions):
         }
         .sidebar {
             width: 220px;
-            background: #2f3136;
+            background: var(--bg-secondary);
             border-radius: 8px;
             padding: 16px;
             flex-shrink: 0;
@@ -85,7 +211,7 @@ def generate_html(questions):
         .sidebar h2 {
             font-size: 0.95em;
             margin-bottom: 14px;
-            color: #5eb3d6;
+            color: var(--accent);
             display: flex;
             align-items: center;
             gap: 6px;
@@ -95,35 +221,98 @@ def generate_html(questions):
             justify-content: space-between;
             padding: 8px 10px;
             margin-bottom: 6px;
-            background: #36393f;
+            background: var(--bg-primary);
             border-radius: 6px;
             font-size: 0.85em;
         }
         .stat-label {
-            color: #b5bac1;
+            color: var(--text-secondary);
         }
         .stat-value {
             font-weight: 600;
-            color: #dcddde;
+            color: var(--text-primary);
         }
+        
+        .progress-display {
+            margin-top: 10px;
+            padding: 10px;
+            background: var(--bg-primary);
+            border-radius: 6px;
+            font-size: 0.85em;
+        }
+        
+        .progress-display .progress-fraction {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+        
+        .progress-display .progress {
+            background: var(--bg-input);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-display .progress-bar {
+            background: var(--accent);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+        
+        .theme-switcher {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .theme-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-top: 10px;
+        }
+        
+        .theme-btn {
+            padding: 8px;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.75em;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        
+        .theme-btn.active {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: white;
+        }
+        
+        .theme-btn:hover {
+            background: var(--bg-tertiary);
+        }
+        
         .category-filters {
             margin-top: 20px;
             padding-top: 16px;
-            border-top: 1px solid #202225;
+            border-top: 1px solid var(--border);
         }
         .category-filter {
             display: flex;
             align-items: center;
             padding: 8px 10px;
             margin-bottom: 6px;
-            background: #36393f;
+            background: var(--bg-primary);
             border-radius: 6px;
             cursor: pointer;
             transition: background 0.2s;
             font-size: 0.8em;
         }
         .category-filter:hover {
-            background: #40444b;
+            background: var(--bg-tertiary);
         }
         .category-filter input[type="checkbox"] {
             margin-right: 8px;
@@ -132,7 +321,7 @@ def generate_html(questions):
         .category-filter label {
             cursor: pointer;
             flex: 1;
-            color: #dcddde;
+            color: var(--text-primary);
             line-height: 1.3;
         }
         .filter-actions {
@@ -143,8 +332,8 @@ def generate_html(questions):
         .filter-btn {
             flex: 1;
             padding: 6px;
-            background: #4f545c;
-            color: #dcddde;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
             border: none;
             border-radius: 4px;
             font-size: 0.75em;
@@ -152,36 +341,63 @@ def generate_html(questions):
             transition: background 0.2s;
         }
         .filter-btn:hover {
-            background: #5d6269;
+            opacity: 0.8;
         }
+        
+        .shuffle-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .shuffle-btn:hover {
+            background: var(--accent-hover);
+        }
+        
         .container {
             flex: 1;
-            background: #40444b;
+            background: var(--bg-tertiary);
             border-radius: 8px;
             overflow: hidden;
         }
         .header {
-            background: #2f3136;
+            background: var(--bg-secondary);
             padding: 20px;
         }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
         .header h1 {
             font-size: 1.3em;
-            margin-bottom: 6px;
-            color: #dcddde;
+            color: var(--text-primary);
         }
+        
         .header-subtitle {
-            color: #b5bac1;
+            color: var(--text-secondary);
             font-size: 0.85em;
             margin-bottom: 12px;
         }
         .progress {
-            background: #202225;
+            background: var(--bg-input);
             height: 4px;
             border-radius: 2px;
             overflow: hidden;
         }
         .progress-bar {
-            background: #5eb3d6;
+            background: var(--accent);
             height: 100%;
             transition: width 0.3s ease;
         }
@@ -190,7 +406,7 @@ def generate_html(questions):
         }
         .category {
             display: inline-block;
-            background: #5eb3d6;
+            background: var(--accent);
             color: #ffffff;
             padding: 4px 10px;
             border-radius: 12px;
@@ -202,8 +418,8 @@ def generate_html(questions):
             display: inline-block;
             margin-left: 10px;
             padding: 4px 12px;
-            background: #4f545c;
-            color: #dcddde;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
             border: none;
             border-radius: 4px;
             font-size: 0.75em;
@@ -211,7 +427,7 @@ def generate_html(questions):
             transition: background 0.2s;
         }
         .toggle-image-btn:hover {
-            background: #5d6269;
+            background: var(--bg-tertiary);
         }
         .question-image {
             width: 100%;
@@ -228,7 +444,7 @@ def generate_html(questions):
             font-size: 1.05em;
             margin-bottom: 20px;
             line-height: 1.7;
-            color: #dcddde;
+            color: var(--text-primary);
         }
         .answers {
             display: grid;
@@ -238,74 +454,84 @@ def generate_html(questions):
             display: flex;
             align-items: center;
             padding: 10px 14px;
-            background: #2f3136;
+            background: var(--bg-secondary);
             border-radius: 6px;
             border: 2px solid transparent;
             transition: all 0.2s ease;
         }
         .answer-row:hover {
-            background: #36393f;
+            background: var(--bg-primary);
         }
         .answer-row.correct {
-            background: #2d3f2f;
-            border-color: #3ba55d;
+            background: rgba(59, 165, 93, 0.15);
+            border-color: var(--success);
         }
         .answer-row.incorrect {
-            background: #3f2d2d;
-            border-color: #ed4245;
+            background: rgba(237, 66, 69, 0.15);
+            border-color: var(--error);
         }
+        
         .answer-buttons {
             display: flex;
             gap: 6px;
             margin-right: 12px;
+            flex-shrink: 0;
         }
+        
         .answer-btn {
-            width: 36px;
-            height: 36px;
-            border: none;
-            border-radius: 6px;
+            width: 40px;
+            height: 32px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1em;
+            font-size: 1em;
             font-weight: 600;
             transition: all 0.2s ease;
-            background: #202225;
-            color: #b5bac1;
+            background: var(--bg-input);
+            color: var(--text-secondary);
         }
+        
         .answer-btn:hover:not(:disabled) {
-            background: #36393f;
+            border-color: var(--accent);
+            background: var(--bg-tertiary);
         }
+        
         .answer-btn.active {
-            background: #5eb3d6;
+            border-color: var(--accent);
+            background: var(--accent);
             color: white;
         }
+        
         .answer-btn:disabled {
             cursor: not-allowed;
             opacity: 0.6;
         }
+        
         .answer-btn.btn-yes.active {
-            background: #3ba55d;
+            border-color: var(--success);
+            background: var(--success);
         }
+        
         .answer-btn.btn-no.active {
-            background: #ed4245;
+            border-color: var(--error);
+            background: var(--error);
         }
-        .answer-btn.btn-minus.active {
-            background: #5eb3d6;
-        }
+        
         .answer-text {
             flex: 1;
             font-size: 0.95em;
             line-height: 1.5;
-            color: #dcddde;
+            color: var(--text-primary);
         }
         .controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 25px;
-            background: #2f3136;
+            background: var(--bg-secondary);
             gap: 10px;
         }
         .nav-arrows {
@@ -316,8 +542,8 @@ def generate_html(questions):
             width: 36px;
             height: 36px;
             padding: 0;
-            background: #4f545c;
-            color: #dcddde;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -328,7 +554,7 @@ def generate_html(questions):
             justify-content: center;
         }
         .nav-btn:hover:not(:disabled) {
-            background: #5d6269;
+            background: var(--bg-primary);
         }
         .nav-btn:disabled {
             opacity: 0.3;
@@ -343,19 +569,12 @@ def generate_html(questions):
             transition: all 0.2s ease;
             font-weight: 600;
         }
-        .btn-save {
-            background: #4f545c;
-            color: #dcddde;
-        }
-        .btn-save:hover {
-            background: #5d6269;
-        }
         .btn-evaluate {
-            background: #5865f2;
+            background: var(--accent);
             color: white;
         }
         .btn-evaluate:hover {
-            background: #4752c4;
+            background: var(--accent-hover);
         }
         .btn-evaluate:disabled {
             opacity: 0.5;
@@ -370,12 +589,12 @@ def generate_html(questions):
             font-weight: 600;
         }
         .feedback.correct {
-            background: #2d3f2f;
-            color: #3ba55d;
+            background: rgba(59, 165, 93, 0.15);
+            color: var(--success);
         }
         .feedback.incorrect {
-            background: #3f2d2d;
-            color: #ed4245;
+            background: rgba(237, 66, 69, 0.15);
+            color: var(--error);
         }
         .hidden {
             display: none;
@@ -383,7 +602,7 @@ def generate_html(questions):
         .no-questions {
             text-align: center;
             padding: 40px;
-            color: #b5bac1;
+            color: var(--text-secondary);
         }
         @media (max-width: 968px) {
             .main-container {
@@ -395,9 +614,27 @@ def generate_html(questions):
         }
     </style>
 </head>
-<body>
+<body data-theme="dark">
+    <div class="welcome-overlay" id="welcomeOverlay">
+        <div class="welcome-modal">
+            <div class="logo">MARAST</div>
+            <h2>BI-MA2 Kvíz</h2>
+            <p>Vítejte v interaktivním kvízu pro přípravu na zkoušku z matematiky 2!</p>
+            <ul>
+                <li><strong>Označte správné odpovědi</strong> pomocí tlačítek ✓ (správně), − (nevím), ✕ (špatně)</li>
+                <li><strong>Vyberte kategorie</strong>, které chcete procvičovat</li>
+                <li><strong>Sledujte svůj pokrok</strong> v levém panelu</li>
+                <li><strong>Přepínejte motivy</strong> podle svých preferencí</li>
+                <li><strong>Používejte šipky</strong> pro navigaci mezi otázkami</li>
+            </ul>
+            <p>Po správném zodpovězení se vám otázka už nebude zobrazovat. Držíme palce! 🎓</p>
+            <button class="welcome-btn" onclick="closeWelcome()">Rozumím, začít kvíz</button>
+        </div>
+    </div>
+
     <div class="main-container">
         <div class="sidebar">
+            <div class="logo">MARAST</div>
             <h2>⚙ Stav</h2>
             <div class="stat-item">
                 <span class="stat-label"># dobrých odpovědí</span>
@@ -414,6 +651,24 @@ def generate_html(questions):
             <div class="stat-item">
                 <span class="stat-label">série špatných odpovědí</span>
                 <span class="stat-value" id="wrongStreak">0</span>
+            </div>
+            
+            <div class="progress-display">
+                <div class="progress-fraction" id="progressFraction">0 / """ + str(len(shuffled_questions)) + """</div>
+                <div class="progress">
+                    <div class="progress-bar" id="sidebarProgressBar"></div>
+                </div>
+            </div>
+            
+            <button class="shuffle-btn" onclick="shuffleQuestions()">🔀 Zamíchat otázky</button>
+            
+            <div class="theme-switcher">
+                <h2>🎨 Motiv</h2>
+                <div class="theme-buttons">
+                    <button class="theme-btn active" onclick="setTheme('dark')">Tmavý</button>
+                    <button class="theme-btn" onclick="setTheme('light')">Světlý</button>
+                    <button class="theme-btn" onclick="setTheme('orange')">Oranžový</button>
+                </div>
             </div>
             
             <div class="category-filters">
@@ -433,7 +688,9 @@ def generate_html(questions):
         
         <div class="container">
             <div class="header">
-                <h1>Kvíz: BI-MA2</h1>
+                <div class="header-top">
+                    <h1>Kvíz: BI-MA2</h1>
+                </div>
                 <p class="header-subtitle" id="questionNumber">V tomto kvízu je """ + str(len(shuffled_questions)) + """ otázek. Po správném zodpovězení se vám už otázka nebude zobrazovat.</p>
                 <div class="progress">
                     <div class="progress-bar" id="progressBar"></div>
@@ -465,6 +722,28 @@ def generate_html(questions):
         let wrongStreak = 0;
         let answeredQuestions = new Set();
         let imageVisible = false;
+        
+        function closeWelcome() {
+            document.getElementById('welcomeOverlay').classList.add('hidden');
+            localStorage.setItem('welcomeShown', 'true');
+        }
+        
+        function setTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+        
+        function shuffleQuestions() {
+            filteredQuestions.sort(() => Math.random() - 0.5);
+            currentQuestion = 0;
+            userAnswers = [];
+            renderQuestion();
+        }
 
         function updateCategoryFilter() {
             const selectedCategories = categories.filter((_, idx) => 
@@ -479,18 +758,13 @@ def generate_html(questions):
                 );
             }
             
-            // Shuffle filtered questions
             filteredQuestions.sort(() => Math.random() - 0.5);
-            
-            // Reset state
             currentQuestion = 0;
             userAnswers = [];
             answeredQuestions.clear();
             
-            // Update stats
             document.getElementById('targetCount').textContent = filteredQuestions.length;
             
-            // Render first question or show message
             if (filteredQuestions.length > 0) {
                 renderQuestion();
             } else {
@@ -558,7 +832,6 @@ def generate_html(questions):
             updateStats();
             updateNavigationButtons();
             
-            // Render MathJax after content is inserted
             MathJax.typesetPromise([container]).catch((err) => console.log('MathJax error:', err));
         }
 
@@ -587,7 +860,6 @@ def generate_html(questions):
                 userAnswers[currentQuestion] = [];
             }
             
-            // Toggle if clicking the same button
             if (userAnswers[currentQuestion][idx] === value) {
                 userAnswers[currentQuestion][idx] = undefined;
             } else {
@@ -601,8 +873,11 @@ def generate_html(questions):
             document.getElementById('correctCount').textContent = correctCount;
             document.getElementById('answeredCount').textContent = answeredCount;
             document.getElementById('wrongStreak').textContent = wrongStreak;
-            document.getElementById('progressBar').style.width = 
-                `${filteredQuestions.length > 0 ? (correctCount / filteredQuestions.length) * 100 : 0}%`;
+            
+            const progressPercent = filteredQuestions.length > 0 ? (correctCount / filteredQuestions.length) * 100 : 0;
+            document.getElementById('progressBar').style.width = `${progressPercent}%`;
+            document.getElementById('sidebarProgressBar').style.width = `${progressPercent}%`;
+            document.getElementById('progressFraction').textContent = `${correctCount} / ${filteredQuestions.length}`;
         }
 
         function submitAnswer() {
@@ -628,7 +903,6 @@ def generate_html(questions):
                     allCorrect = false;
                 }
                 
-                // Disable buttons
                 answers[idx].querySelectorAll('.answer-btn').forEach(btn => {
                     btn.disabled = true;
                 });
@@ -676,7 +950,6 @@ def generate_html(questions):
                 currentQuestion++;
                 renderQuestion();
             } else {
-                // Loop back to start
                 currentQuestion = 0;
                 renderQuestion();
             }
@@ -689,7 +962,6 @@ def generate_html(questions):
         }
 
         function skipQuestion() {
-            // Skip to next question without answering
             if (filteredQuestions.length === 0) return;
             
             if (currentQuestion < filteredQuestions.length - 1) {
@@ -699,8 +971,27 @@ def generate_html(questions):
             }
             renderQuestion();
         }
-
-        renderQuestion();
+        
+        // Load saved theme and welcome state
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.body.setAttribute('data-theme', savedTheme);
+            
+            const welcomeShown = localStorage.getItem('welcomeShown');
+            if (welcomeShown) {
+                document.getElementById('welcomeOverlay').classList.add('hidden');
+            }
+            
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                if (btn.textContent.toLowerCase().includes(savedTheme === 'dark' ? 'tmavý' : savedTheme === 'light' ? 'světlý' : 'oranžový')) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            renderQuestion();
+        });
     </script>
 </body>
 </html>"""

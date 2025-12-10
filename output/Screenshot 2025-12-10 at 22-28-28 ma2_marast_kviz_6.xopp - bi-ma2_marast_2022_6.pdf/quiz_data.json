@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "Které z následujících vektorů nejsou gradientem v bodě $(x,y)^T$ žádné funkce $f: \\mathbb{R}^2 \\to \\mathbb{R}$?",
+      "category": "Diferenciální počet funkcí více proměnných",
+      "answers": [
+        {
+          "text": "$(ye^{y^2}, xe^{y^2})$.",
+          "correct": true
+        },
+        {
+          "text": "$(3x^2 - 2 \\cos(x + y), -2 \\cos(x + y))$.",
+          "correct": false
+        },
+        {
+          "text": "$(xe^{x^2 - 2y}, -e^{x^2 - 2y})$.",
+          "correct": false
+        },
+        {
+          "text": "$(\\frac{2xy}{1+x^2}, \\ln(1 + x^2))$.",
+          "correct": false
+        }
+      ]
+    }
+  ]
+}

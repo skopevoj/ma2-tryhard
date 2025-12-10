@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "Uvažme funkci $f: \\mathbb{R}^n \\rightarrow \\mathbb{R}$ mající všechny parciální derivace až do řádu tři včetně spojité na okolí bodu $\\mathbf{a} \\in \\mathbb{R}^n$. Vyberte všechna pravdivá tvrzení.",
+      "category": "Diferenciální počet funkcí více proměnných",
+      "answers": [
+        {
+          "text": "Je-li matice $\\nabla^2 f(\\mathbf{a})$ pozitivně definitní, potom má $f$ v bodě $\\mathbf{a}$ lokální minimum.",
+          "correct": false
+        },
+        {
+          "text": "Je-li $\\nabla f(\\mathbf{a}) = 0$ a matice $\\nabla^2 f(\\mathbf{a})$ pozitivně semidefinitní, potom má $f$ v bodě $\\mathbf{a}$ lokální minimum.",
+          "correct": false
+        },
+        {
+          "text": "Je-li $\\nabla f(\\mathbf{a}) = 0$, potom má $f$ v bodě $\\mathbf{a}$ lokální extrém.",
+          "correct": false
+        },
+        {
+          "text": "Má-li $f$ v bodě $\\mathbf{a}$ lokální minimum, potom je matice $\\nabla^2 f(\\mathbf{a})$ pozitivně semidefinitní.",
+          "correct": true
+        }
+      ]
+    }
+  ]
+}
