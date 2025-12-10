@@ -40,7 +40,7 @@ def generate_html(questions):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARAST - BI-MA2 Kvíz</title>
+    <title>MARNOST</title>
     <script>
         MathJax = {
             tex: {
@@ -1019,7 +1019,7 @@ def generate_html(questions):
 <body data-theme="dark">
     <div class="welcome-overlay" id="welcomeOverlay">
         <div class="welcome-modal">
-            <div class="logo">MARAST</div>
+            <div class="logo">MARNOST</div>
             <h2>BI-MA2 Kvíz</h2>
             <p>Vítejte v interaktivním kvízu pro přípravu na zkoušku z matematiky 2!</p>
             <ul>
@@ -1079,7 +1079,7 @@ def generate_html(questions):
         <div class="page-wrapper">
             <div class="stats-bar">
                 <div class="stats-left">
-                    <div class="logo">MARAST</div>
+                    <div class="logo">MARNOST</div>
                     <button class="settings-btn" onclick="openSettings()" title="Nastavení">⚙️</button>
                 </div>
                 <div class="stats-right">
