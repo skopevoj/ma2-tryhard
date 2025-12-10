@@ -38,15 +38,25 @@ def process_quiz_image(image_path):
        - Lineární rekurentní rovnice
        - Diferenciální počet funkcí více proměnných
     
-    EXAMPLE of CORRECT format:
-    Question: "Nechť funkce $f$ má spojitou derivaci. Potom platí:"
-    Answer 1: "$\\int f(x) dx = xf(x) - \\int xf'(x) dx$ na $(a,b)$"
-    Answer 2: "$\\int xf(x) dx = xf(x) - \\int x^2 f'(x) dx$ na $(a,b)$"
-    Answer 3: "$\\int xg(x) dx = xG(x) - \\int G(x) dx$ na $(a,b)$"
-    Answer 4: "$\\int xg(x) dx = xG(x) - G(x) + C$ na $(a,b)$"
+    CRITICAL - LaTeX Escaping Rules:
+    - In JSON strings, backslashes MUST be escaped
+    - Greek letters: \\alpha, \\beta, \\gamma, \\varphi, \\phi, \\theta, etc.
+    - Operators: \\int, \\sum, \\prod, \\frac, \\sqrt, \\operatorname, etc.
+    - ALWAYS use double backslash in JSON: "\\varphi" NOT "\varphi"
     
-    WRONG format (DO NOT USE):
-    Creating 4 separate questions each with "True"/"False" answers
+    EXAMPLE of CORRECT JSON format:
+    {
+        "question": "Nechť $F$ je primitivní funkcí k funkci $f$ na intervalu $(a, b)$, $\\varphi$ je na intervalu $(\\alpha, \\beta)$ diferencovatelná.",
+        "answers": [
+            {"text": "$F(\\varphi(x))$ je primitivní funkcí k $f(\\varphi(x))\\varphi'(x)$ na $(\\alpha, \\beta)$.", "correct": true}
+        ]
+    }
+    
+    WRONG - Single backslash (will break JSON):
+    {"text": "$F(\varphi(x))$"}
+    
+    CORRECT - Double backslash in JSON:
+    {"text": "$F(\\varphi(x))$"}
     
     Return ONLY valid JSON in this exact format:
     {
@@ -68,7 +78,8 @@ def process_quiz_image(image_path):
     - There is exactly ONE question object in the "questions" array
     - The question has exactly FOUR answer objects
     - Each answer contains the full mathematical expression or statement
-    - All mathematical notation is properly formatted in LaTeX
+    - All mathematical notation is properly formatted in LaTeX with DOUBLE backslashes in JSON
+    - Greek letters like \\alpha, \\beta, \\varphi MUST have double backslashes
     """
     
     # Generate content with the image

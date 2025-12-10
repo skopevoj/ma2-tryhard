@@ -1,0 +1,28 @@
+```json
+{
+    "questions": [
+        {
+            "question": "Která z následujících řad je konvergentní, ale není absolutně konvergentní?",
+            "category": "Číselné a mocninné řady",
+            "answers": [
+                {
+                    "text": "\\sum_{k=1}^{\\infty} \\frac{(-1)^k}{2k + 1}",
+                    "correct": true
+                },
+                {
+                    "text": "\\sum_{k=1}^{\\infty} (-2)^k",
+                    "correct": false
+                },
+                {
+                    "text": "\\sum_{k=1}^{\\infty} \\frac{e^{-\\ln k}}{(-1)^k}",
+                    "correct": true
+                },
+                {
+                    "text": "\\sum_{k=1}^{\\infty} (-1)^k \\frac{k}{1+k}",
+                    "correct": false
+                }
+            ]
+        }
+    ]
+}
+```

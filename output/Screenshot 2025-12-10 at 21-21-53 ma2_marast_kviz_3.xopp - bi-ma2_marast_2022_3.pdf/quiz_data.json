@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "Které z následujících řad jsou divergentní?",
+      "category": "Číselné a mocninné řady",
+      "answers": [
+        {
+          "text": "$\\sum_{n=1}^{\\infty} c$, kde $c$ je nenulová konstanta.",
+          "correct": true
+        },
+        {
+          "text": "$\\sum_{n=1}^{\\infty} (e/\\pi)^n$.",
+          "correct": false
+        },
+        {
+          "text": "$\\sum_{n=1}^{\\infty} \\frac{n^2}{n^2+1}$.",
+          "correct": true
+        },
+        {
+          "text": "$\\sum_{n=1}^{\\infty} \\sqrt{n}$.",
+          "correct": true
+        }
+      ]
+    }
+  ]
+}

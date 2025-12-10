@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "Leibnizovo kritérium zaručuje, že řada $\\sum_{k=1}^{\\infty} (-1)^k a_k$ je konvergentní, pokud",
+      "category": "Číselné a mocninné řady",
+      "answers": [
+        {
+          "text": "$(a_k)_{k=1}^{\\infty}$ je monotónní posloupnost kladných čísel a $\\lim_{k \\to \\infty} a_k = +\\infty$.",
+          "correct": false
+        },
+        {
+          "text": "$(a_k)_{k=1}^{\\infty}$ je monotónní posloupnost a $\\lim_{k \\to \\infty} a_k = 0$.",
+          "correct": true
+        },
+        {
+          "text": "$a_k > 0$ pro každé $k \\in \\mathbb{N}$, $(a_k)_{k=1}^{\\infty}$ je monotónní a $\\lim_{k \\to \\infty} a_k = 0$.",
+          "correct": true
+        },
+        {
+          "text": "$(a_k)_{k=1}^{\\infty}$ je posloupnost střídající znaménka a $\\lim_{k \\to \\infty} a_k = 0$.",
+          "correct": false
+        }
+      ]
+    }
+  ]
+}

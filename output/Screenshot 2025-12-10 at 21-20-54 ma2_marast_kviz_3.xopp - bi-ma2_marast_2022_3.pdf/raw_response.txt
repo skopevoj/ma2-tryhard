@@ -1,0 +1,16 @@
+```json
+{
+    "questions": [
+        {
+            "question": "Pro řadu $\\sum_{k=1}^{\\infty} q^k$, kde $q$ je reálný parametr, platí:",
+            "category": "Číselné a mocninné řady",
+            "answers": [
+                {"text": "Pro $q = 2$ splňuje nutnou podmínku konvergence.", "correct": false},
+                {"text": "Pokud $q \\ge 1$, pak je divergentní.", "correct": true},
+                {"text": "Pokud $q < 1$, pak je absolutně konvergentní.", "correct": false},
+                {"text": "Pokud $|q| < 1$, pak je konvergentní.", "correct": true}
+            ]
+        }
+    ]
+}
+```
