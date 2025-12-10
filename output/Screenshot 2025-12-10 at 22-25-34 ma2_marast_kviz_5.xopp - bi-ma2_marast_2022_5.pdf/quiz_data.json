@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "Z posloupnosti níže vyberte všechny, kterými LZE (příslušnou volbou parametrů) popsat právě všechna řešení homogenní rekurentní rovnice $a_n = 2a_{n-1} - 2a_{n-2} + 2a_{n-3} - a_{n-4}$ pro $n \\geq 2$.",
+      "category": "Lineární rekurentní rovnice",
+      "answers": [
+        {
+          "text": "$A - Bn + C \\cos\\left(\\frac{n\\pi}{2}\\right) - D \\sin\\left(\\frac{n\\pi}{2}\\right)$.",
+          "correct": true
+        },
+        {
+          "text": "$An(1 + B) + C \\cos\\left(\\frac{n\\pi}{2}\\right) + D \\sin\\left(\\frac{n\\pi}{2}\\right)$.",
+          "correct": false
+        },
+        {
+          "text": "$An - B + C(i^n + (-i)^n)$.",
+          "correct": false
+        },
+        {
+          "text": "$An - B + Ci^n + D(-i)^n$.",
+          "correct": true
+        }
+      ]
+    }
+  ]
+}

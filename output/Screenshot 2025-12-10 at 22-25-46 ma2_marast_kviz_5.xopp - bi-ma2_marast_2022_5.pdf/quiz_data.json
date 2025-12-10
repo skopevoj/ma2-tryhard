@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "Vyberte všechny funkce $f(n)$ takové, že pro řešení rekurence $T(n) = 3T(n/2) + f(n)$ platí $T(n) = O(n^{\\log_2 3} \\log n)$.",
+      "category": "Lineární rekurentní rovnice",
+      "answers": [
+        {
+          "text": "$f(n) = (n + 1)\\sqrt{n}$.",
+          "correct": true
+        },
+        {
+          "text": "$f(n) = n^2$.",
+          "correct": false
+        },
+        {
+          "text": "$f(n) = n^{\\log_2 3}$.",
+          "correct": true
+        },
+        {
+          "text": "$f(n) = \\frac{n^2}{\\log n}$.",
+          "correct": false
+        }
+      ]
+    }
+  ]
+}
