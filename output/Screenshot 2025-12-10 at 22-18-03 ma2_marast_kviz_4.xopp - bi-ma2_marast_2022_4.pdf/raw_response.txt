@@ -1,0 +1,28 @@
+```json
+{
+    "questions": [
+        {
+            "question": "Nech\\u0165 pro funkci $f$ plat\\u00ed: $f(0) = 1$, $f'(0) = 0$, $f''(0) = 2$ a $f(1) = 0$, $f'(1) = 2$, $f''(1) = 1$. Vyberte pravdiv\\u00e1 tvrzen\\u00ed o $n$-t\\u00e9m Taylorov\\u011b polynomu funkce $f$ v bod\\u011b $a$, ozn. $T_{n,a}$.",
+            "category": "Taylorovy polynomy, \\u0159ady a v\\u011bta",
+            "answers": [
+                {
+                    "text": "$T_{2,1}(x) = x^2 + 2x$",
+                    "correct": false
+                },
+                {
+                    "text": "$T_{2,0}(x) = 2x^2 + 1$",
+                    "correct": false
+                },
+                {
+                    "text": "$T_{2,1}(x) = (x - 1)^2 + 2(x - 1)$",
+                    "correct": false
+                },
+                {
+                    "text": "$T_{2,1}(x) = \\frac{1}{2}(x - 1)^2 + 2(x - 1)$",
+                    "correct": true
+                }
+            ]
+        }
+    ]
+}
+```

@@ -1,0 +1,28 @@
+```json
+{
+    "questions": [
+        {
+            "question": "n-tý Taylorův polynom funkce $f$ v bodě $a$ je dán předpisem",
+            "category": "Taylorovy polynomy, řady a věta",
+            "answers": [
+                {
+                    "text": "$T_{n,a}(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!} x^k$",
+                    "correct": false
+                },
+                {
+                    "text": "$T_{n,a}(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(x)}{k!} (x-a)^k$",
+                    "correct": false
+                },
+                {
+                    "text": "$T_{n,a}(x) = \\sum_{k=0}^{n} \\frac{f^k(a)}{k!} (x-a)^k$",
+                    "correct": false
+                },
+                {
+                    "text": "$T_{n,a}(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!} (x-a)^k$",
+                    "correct": true
+                }
+            ]
+        }
+    ]
+}
+```
