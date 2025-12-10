@@ -121,7 +121,7 @@ def extract_json_from_response(response_text):
 def main():
     # Define paths
     quiz_folder = Path("./quiz")
-    output_base = Path("./output")
+    output_base = Path("./questions")
     output_base.mkdir(exist_ok=True)
     
     # Get all image files

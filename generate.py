@@ -5,7 +5,7 @@ import random
 
 def collect_all_questions():
     """Collect all questions from output folders."""
-    output_folder = Path("./output")
+    output_folder = Path("./questions")
     all_questions = []
     
     for folder in output_folder.iterdir():
@@ -57,46 +57,52 @@ def generate_html(questions):
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         :root {
-            --bg-primary: #36393f;
-            --bg-secondary: #2f3136;
-            --bg-tertiary: #40444b;
-            --bg-input: #202225;
-            --text-primary: #dcddde;
-            --text-secondary: #b5bac1;
-            --accent: #5eb3d6;
-            --accent-hover: #4a9bb8;
-            --success: #3ba55d;
-            --error: #ed4245;
-            --border: #202225;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: rgba(20, 20, 30, 0.4);
+            --bg-tertiary: rgba(30, 30, 45, 0.6);
+            --bg-input: rgba(15, 15, 25, 0.5);
+            --bg-card: rgba(20, 20, 30, 0.5);
+            --text-primary: #f0f2f5;
+            --text-secondary: #b8bdc8;
+            --accent: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --accent-glow: rgba(139, 92, 246, 0.4);
+            --success: #10b981;
+            --error: #ef4444;
+            --border: rgba(139, 92, 246, 0.1);
             --text-size: 1;
         }
         
         [data-theme="light"] {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f2f3f5;
-            --bg-tertiary: #e3e5e8;
-            --bg-input: #ebedef;
-            --text-primary: #2e3338;
+            --bg-primary: #f5f5f7;
+            --bg-secondary: rgba(255, 255, 255, 0.7);
+            --bg-tertiary: rgba(240, 240, 245, 0.8);
+            --bg-input: rgba(235, 235, 240, 0.6);
+            --bg-card: rgba(255, 255, 255, 0.6);
+            --text-primary: #1a1a1f;
             --text-secondary: #4e5058;
-            --accent: #5865f2;
-            --accent-hover: #4752c4;
-            --success: #3ba55d;
-            --error: #ed4245;
-            --border: #d1d5db;
+            --accent: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --accent-glow: rgba(139, 92, 246, 0.3);
+            --success: #10b981;
+            --error: #ef4444;
+            --border: rgba(139, 92, 246, 0.15);
         }
         
         [data-theme="orange"] {
-            --bg-primary: #2c2520;
-            --bg-secondary: #3a302a;
-            --bg-tertiary: #4a3d35;
-            --bg-input: #1f1a17;
+            --bg-primary: #0f0a0a;
+            --bg-secondary: rgba(30, 20, 20, 0.4);
+            --bg-tertiary: rgba(45, 30, 30, 0.6);
+            --bg-input: rgba(25, 15, 15, 0.5);
+            --bg-card: rgba(30, 20, 20, 0.5);
             --text-primary: #f5e6d3;
             --text-secondary: #d4c4b0;
             --accent: #ff6b35;
             --accent-hover: #e55a2b;
-            --success: #4caf50;
-            --error: #f44336;
-            --border: #1f1a17;
+            --accent-glow: rgba(255, 107, 53, 0.4);
+            --success: #10b981;
+            --error: #ef4444;
+            --border: rgba(255, 107, 53, 0.1);
         }
 
         * {
@@ -104,6 +110,7 @@ def generate_html(questions):
             padding: 0;
             box-sizing: border-box;
         }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-primary);
@@ -112,6 +119,52 @@ def generate_html(questions):
             transition: background 0.3s, color 0.3s;
             font-size: calc(16px * var(--text-size));
             position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(167, 139, 250, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .glass-card {
+            position: relative;
+            overflow: visible;
+            border-radius: 24px;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: none;
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            padding: 2px;
+            background: linear-gradient(180deg, rgba(139, 92, 246, 0.4) 0%, rgba(139, 92, 246, 0.05) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        
+        .card-blob {
+            display: none;
         }
         
         .welcome-overlay {
@@ -120,7 +173,8 @@ def generate_html(questions):
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -133,18 +187,32 @@ def generate_html(questions):
         }
         
         .welcome-modal {
-            background: var(--bg-secondary);
-            border-radius: 12px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 24px;
             max-width: 600px;
             width: 100%;
             padding: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 12px 48px var(--accent-glow);
+            border: 2px solid var(--border);
+            position: relative;
+        }
+        
+        .welcome-modal::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 24px;
+            background: linear-gradient(180deg, rgba(139, 92, 246, 0.4) 0%, rgba(139, 92, 246, 0.05) 100%);
+            z-index: -1;
         }
         
         .welcome-modal h1 {
             font-size: 2em;
             margin-bottom: 10px;
             color: var(--accent);
+            text-shadow: 0 0 20px var(--accent-glow);
         }
         
         .welcome-modal h2 {
@@ -176,16 +244,19 @@ def generate_html(questions):
             background: var(--accent);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 12px;
             font-size: 1.1em;
             font-weight: 600;
             cursor: pointer;
             margin-top: 20px;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px var(--accent-glow);
         }
         
         .welcome-btn:hover {
             background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px var(--accent-glow);
         }
         
         .settings-modal {
@@ -195,6 +266,7 @@ def generate_html(questions):
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
             display: none;
             align-items: center;
             justify-content: center;
@@ -207,13 +279,16 @@ def generate_html(questions):
         }
         
         .settings-content {
-            background: var(--bg-secondary);
-            border-radius: 12px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 24px;
             max-width: 500px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 12px 48px var(--accent-glow);
+            border: 2px solid var(--border);
         }
         
         .settings-header {
@@ -236,12 +311,13 @@ def generate_html(questions):
             font-size: 1.5em;
             cursor: pointer;
             padding: 4px 8px;
-            border-radius: 4px;
-            transition: background 0.2s;
+            border-radius: 8px;
+            transition: all 0.2s;
         }
         
         .close-settings:hover {
             background: var(--bg-tertiary);
+            color: var(--accent);
         }
         
         .settings-body {
@@ -262,6 +338,7 @@ def generate_html(questions):
             margin-bottom: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            text-shadow: 0 0 10px var(--accent-glow);
         }
         
         .theme-buttons {
@@ -272,12 +349,13 @@ def generate_html(questions):
         
         .theme-btn {
             padding: 10px;
-            border: 2px solid transparent;
-            border-radius: 6px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s;
             font-size: 0.9em;
-            background: var(--bg-primary);
+            background: var(--bg-input);
+            backdrop-filter: blur(10px);
             color: var(--text-primary);
         }
         
@@ -285,10 +363,12 @@ def generate_html(questions):
             border-color: var(--accent);
             background: var(--accent);
             color: white;
+            box-shadow: 0 4px 16px var(--accent-glow);
         }
         
         .theme-btn:hover {
             background: var(--bg-tertiary);
+            transform: translateY(-2px);
         }
         
         .text-size-control {
@@ -315,6 +395,7 @@ def generate_html(questions):
             background: var(--accent);
             cursor: pointer;
             border-radius: 50%;
+            box-shadow: 0 2px 8px var(--accent-glow);
         }
         
         .text-size-slider::-moz-range-thumb {
@@ -324,6 +405,7 @@ def generate_html(questions):
             cursor: pointer;
             border-radius: 50%;
             border: none;
+            box-shadow: 0 2px 8px var(--accent-glow);
         }
         
         .text-size-label {
@@ -338,14 +420,18 @@ def generate_html(questions):
             align-items: center;
             padding: 10px 12px;
             margin-bottom: 8px;
-            background: var(--bg-primary);
-            border-radius: 6px;
+            background: var(--bg-input);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            border: 1px solid transparent;
         }
         
         .category-filter:hover {
             background: var(--bg-tertiary);
+            border-color: var(--border);
+            transform: translateX(4px);
         }
         
         .category-filter input[type="checkbox"] {
@@ -353,6 +439,7 @@ def generate_html(questions):
             cursor: pointer;
             width: 18px;
             height: 18px;
+            accent-color: var(--accent);
         }
         
         .category-filter label {
@@ -371,17 +458,21 @@ def generate_html(questions):
             flex: 1;
             padding: 10px;
             background: var(--bg-tertiary);
+            backdrop-filter: blur(10px);
             color: var(--text-primary);
-            border: none;
-            border-radius: 6px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
             font-size: 0.9em;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
             font-weight: 500;
         }
         
         .filter-btn:hover, .shuffle-btn:hover {
-            background: var(--bg-primary);
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--accent-glow);
         }
         
         .main-container {
@@ -390,6 +481,8 @@ def generate_html(questions):
             align-items: center;
             justify-content: center;
             padding: 40px 20px;
+            position: relative;
+            z-index: 1;
         }
         
         .page-wrapper {
@@ -399,16 +492,32 @@ def generate_html(questions):
         
         .stats-bar {
             width: 100%;
-            background: var(--bg-secondary);
-            border-radius: 16px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 24px;
             padding: 16px 24px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 16px;
+            border: 2px solid var(--border);
+            position: relative;
+        }
+        
+        .stats-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.5;
         }
         
         .stats-left {
@@ -423,21 +532,26 @@ def generate_html(questions):
             font-weight: 700;
             color: var(--accent);
             letter-spacing: 2px;
+            text-shadow: 0 0 20px var(--accent-glow);
         }
         
         .settings-btn {
-            background: var(--bg-primary);
-            border: none;
+            background: var(--bg-input);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
             color: var(--text-primary);
             font-size: 1.2em;
             cursor: pointer;
             padding: 8px 12px;
-            border-radius: 6px;
-            transition: background 0.2s;
+            border-radius: 12px;
+            transition: all 0.2s;
         }
         
         .settings-btn:hover {
-            background: var(--bg-tertiary);
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--accent-glow);
         }
         
         .stats-right {
@@ -452,8 +566,17 @@ def generate_html(questions):
             align-items: center;
             gap: 8px;
             padding: 8px 14px;
-            background: var(--bg-primary);
-            border-radius: 8px;
+            background: var(--bg-input);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+            box-shadow: 0 4px 16px var(--accent-glow);
         }
         
         .stat-icon {
@@ -470,8 +593,10 @@ def generate_html(questions):
             width: 100%;
             margin-top: 12px;
             padding: 12px;
-            background: var(--bg-primary);
-            border-radius: 8px;
+            background: var(--bg-input);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid var(--border);
         }
         
         .progress-fraction {
@@ -480,19 +605,21 @@ def generate_html(questions):
             margin-bottom: 8px;
             color: var(--accent);
             font-size: 1em;
+            text-shadow: 0 0 10px var(--accent-glow);
         }
         
         .progress {
-            background: var(--bg-input);
+            background: rgba(0, 0, 0, 0.3);
             height: 8px;
             border-radius: 4px;
             overflow: hidden;
         }
         
         .progress-bar {
-            background: var(--accent);
+            background: linear-gradient(90deg, var(--accent-hover), var(--accent));
             height: 100%;
             transition: width 0.3s ease;
+            box-shadow: 0 0 10px var(--accent-glow);
         }
         
         .content-wrapper {
@@ -503,10 +630,7 @@ def generate_html(questions):
         
         .container {
             width: 100%;
-            background: var(--bg-secondary);
-            border-radius: 16px;
-            padding: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            position: relative;
         }
         
         .question-container {
@@ -518,8 +642,9 @@ def generate_html(questions):
             max-height: 400px;
             object-fit: contain;
             margin-bottom: 20px;
-            border-radius: 8px;
+            border-radius: 16px;
             display: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
         
         .question-image.visible {
@@ -542,24 +667,29 @@ def generate_html(questions):
             display: flex;
             align-items: center;
             padding: 12px 16px;
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            border: 2px solid transparent;
+            background: var(--bg-input);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 2px solid var(--border);
             transition: all 0.2s ease;
         }
         
         .answer-row:hover {
             background: var(--bg-tertiary);
+            transform: translateX(4px);
+            border-color: var(--accent);
         }
         
         .answer-row.correct {
-            background: rgba(59, 165, 93, 0.15);
+            background: rgba(16, 185, 129, 0.15);
             border-color: var(--success);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
         }
         
         .answer-row.incorrect {
-            background: rgba(237, 66, 69, 0.15);
+            background: rgba(239, 68, 68, 0.15);
             border-color: var(--error);
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
         }
         
         .answer-buttons {
@@ -573,7 +703,7 @@ def generate_html(questions):
             width: 42px;
             height: 34px;
             border: 2px solid var(--border);
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -582,18 +712,21 @@ def generate_html(questions):
             font-weight: 600;
             transition: all 0.2s ease;
             background: var(--bg-input);
+            backdrop-filter: blur(10px);
             color: var(--text-secondary);
         }
         
         .answer-btn:hover:not(:disabled) {
             border-color: var(--accent);
             background: var(--bg-tertiary);
+            transform: scale(1.05);
         }
         
         .answer-btn.active {
             border-color: var(--accent);
             background: var(--accent);
             color: white;
+            box-shadow: 0 4px 16px var(--accent-glow);
         }
         
         .answer-btn:disabled {
@@ -604,11 +737,13 @@ def generate_html(questions):
         .answer-btn.btn-yes.active {
             border-color: var(--success);
             background: var(--success);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
         }
         
         .answer-btn.btn-no.active {
             border-color: var(--error);
             background: var(--error);
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
         }
         
         .answer-text {
@@ -620,10 +755,8 @@ def generate_html(questions):
         
         .controls {
             width: 100%;
-            background: var(--bg-secondary);
-            border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
+            position: relative;
+            overflow: visible;
         }
         
         .controls-top {
@@ -644,21 +777,26 @@ def generate_html(questions):
             border-radius: 16px;
             font-size: 0.85em;
             font-weight: 600;
+            box-shadow: 0 4px 16px var(--accent-glow);
         }
         
         .toggle-image-btn {
             padding: 6px 14px;
             background: var(--bg-tertiary);
+            backdrop-filter: blur(10px);
             color: var(--text-primary);
-            border: none;
-            border-radius: 6px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
             font-size: 0.85em;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
         
         .toggle-image-btn:hover {
-            background: var(--bg-primary);
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--accent-glow);
         }
         
         .controls-bottom {
@@ -679,9 +817,10 @@ def generate_html(questions):
             height: 40px;
             padding: 0;
             background: var(--bg-tertiary);
+            backdrop-filter: blur(10px);
             color: var(--text-primary);
-            border: none;
-            border-radius: 6px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s ease;
             font-size: 1.3em;
@@ -691,7 +830,10 @@ def generate_html(questions):
         }
         
         .nav-btn:hover:not(:disabled) {
-            background: var(--bg-primary);
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--accent-glow);
         }
         
         .nav-btn:disabled {
@@ -703,7 +845,7 @@ def generate_html(questions):
             padding: 12px 26px;
             font-size: 0.95em;
             border: none;
-            border-radius: 6px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s ease;
             font-weight: 600;
@@ -712,10 +854,13 @@ def generate_html(questions):
         .btn-evaluate {
             background: var(--accent);
             color: white;
+            box-shadow: 0 4px 16px var(--accent-glow);
         }
         
         .btn-evaluate:hover {
             background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
         }
         
         .btn-evaluate:disabled {
@@ -726,20 +871,24 @@ def generate_html(questions):
         .feedback {
             margin-top: 20px;
             padding: 14px 18px;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 1em;
             text-align: center;
             font-weight: 600;
         }
         
         .feedback.correct {
-            background: rgba(59, 165, 93, 0.15);
+            background: rgba(16, 185, 129, 0.15);
             color: var(--success);
+            border: 2px solid var(--success);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
         }
         
         .feedback.incorrect {
-            background: rgba(237, 66, 69, 0.15);
+            background: rgba(239, 68, 68, 0.15);
             color: var(--error);
+            border: 2px solid var(--error);
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
         }
         
         .hidden {
@@ -759,8 +908,6 @@ def generate_html(questions):
             text-align: center;
             color: var(--text-secondary);
             font-size: 0.85em;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
             margin-top: 40px;
         }
         
@@ -775,25 +922,17 @@ def generate_html(questions):
         .footer-link {
             color: var(--accent);
             text-decoration: none;
-            transition: color 0.2s;
+            transition: all 0.2s;
         }
         
         .footer-link:hover {
             color: var(--accent-hover);
             text-decoration: underline;
+            text-shadow: 0 0 10px var(--accent-glow);
         }
         
         .footer p {
             margin: 0;
-        }
-        
-        @media (max-width: 1200px) {
-            .sidebar {
-                left: 15px;
-            }
-            .page-wrapper {
-                gap: 20px;
-            }
         }
         
         @media (max-width: 968px) {
@@ -823,7 +962,7 @@ def generate_html(questions):
                 padding: 6px 10px;
             }
             
-            .container {
+            .glass-card {
                 padding: 24px 20px;
             }
             
@@ -967,13 +1106,15 @@ def generate_html(questions):
             </div>
             
             <div class="content-wrapper">
-                <div class="container">
+                <div class="container glass-card">
+                    <div class="card-blob"></div>
                     <div class="question-container" id="questionContainer">
                         <!-- Question will be inserted here -->
                     </div>
                 </div>
                 
-                <div class="controls">
+                <div class="controls glass-card">
+                    <div class="card-blob"></div>
                     <div class="controls-top" id="controlsTop">
                         <!-- Category and image toggle will be inserted here -->
                     </div>
@@ -988,11 +1129,9 @@ def generate_html(questions):
                 
                 <div class="footer">
                     <div class="footer-links">
-                        <a href="https://github.com/yourusername/ma2-quiz" class="footer-link" target="_blank">GitHub</a>
-                        <a href="mailto:your.email@example.com" class="footer-link">Kontakt</a>
-                        <a href="https://fit.cvut.cz" class="footer-link" target="_blank">FIT ČVUT</a>
+                        <a href="https://github.com/skopevoj/ma2-tryhard" class="footer-link" target="_blank">GitHub</a>
+                        <a  class="footer-link">Discord: @darkkw</a>
                     </div>
-                    <p>MARAST - BI-MA2 Kvíz © 2024</p>
                 </div>
             </div>
         </div>
@@ -1257,14 +1396,10 @@ def generate_html(questions):
             
             const feedback = document.createElement('div');
             feedback.className = `feedback ${allCorrect ? 'correct' : 'incorrect'}`;
-            feedback.textContent = allCorrect ? '✓ Správně!' : '✗ Zkuste to znovu příště';
+            feedback.textContent = allCorrect ? '✓ Správně!' : '✗ Špatně';
             document.getElementById('questionContainer').appendChild(feedback);
             
             updateStats();
-            
-            setTimeout(() => {
-                nextQuestion();
-            }, 1500);
         }
 
         function nextQuestion() {
@@ -1371,7 +1506,7 @@ def main():
     images_folder.mkdir()
     
     # Copy images from output to build
-    output_folder = Path("./output")
+    output_folder = Path("./questions")
     for folder in output_folder.iterdir():
         if folder.is_dir():
             dest_folder = images_folder / folder.name
@@ -1390,8 +1525,75 @@ def main():
     with open(build_folder / "index.html", 'w', encoding='utf-8') as f:
         f.write(html_content)
     
+    # Create Dockerfile
+    dockerfile_content = """FROM nginx:alpine
+
+# Copy the HTML file and images to nginx html directory
+COPY index.html /usr/share/nginx/html/
+COPY images /usr/share/nginx/html/images
+
+# Copy custom nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port 80
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
+"""
+    with open(build_folder / "Dockerfile", 'w', encoding='utf-8') as f:
+        f.write(dockerfile_content)
+    
+    # Create nginx.conf
+    nginx_conf = """server {
+    listen 80;
+    server_name _;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml+rss application/javascript application/json image/svg+xml;
+
+    # Cache static assets
+    location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # Serve index.html for all routes
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+}
+"""
+    with open(build_folder / "nginx.conf", 'w', encoding='utf-8') as f:
+        f.write(nginx_conf)
+    
+    # Create .dockerignore
+    dockerignore = """.git
+.gitignore
+*.md
+.DS_Store
+Thumbs.db
+"""
+    with open(build_folder / ".dockerignore", 'w', encoding='utf-8') as f:
+        f.write(dockerignore)
+    
     print(f"✓ Generated build/index.html with {len(questions)} questions")
     print(f"✓ Copied images to build/images/")
+    print(f"✓ Created Dockerfile and nginx.conf for deployment")
+    print(f"\nTo deploy on Railway:")
+    print(f"1. cd build")
+    print(f"2. Connect your Railway project")
+    print(f"3. Railway will automatically detect and build the Dockerfile")
 
 if __name__ == "__main__":
     main()
