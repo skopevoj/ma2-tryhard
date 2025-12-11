@@ -1542,6 +1542,13 @@ def generate_html(questions):
 </body>
 </html>"""
     
+    # Insert Umami tracking script into the head (right before </head>)
+    html = html.replace(
+        "</head>",
+        '<script defer src="https://cloud.umami.is/script.js" data-website-id="609922cf-1e3a-4962-9266-f870cff26fe9"></script>\n</head>',
+        1
+    )
+    
     return html
 
 def main():
