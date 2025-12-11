@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import CategorySelector from '@/components/CategorySelector';
 import QuizQuestion from '@/components/QuizQuestion';
 import LatexRenderer from '@/components/LatexRenderer';
@@ -181,6 +181,79 @@ export default function Home() {
     }
   };
 
+  const exportStats = () => {
+    const data = {
+      questionStats,
+      exportDate: new Date().toISOString(),
+      version: '1.0'
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ma2-statistiky-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const importStats = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/json';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const data = JSON.parse(event.target?.result as string);
+          if (data.questionStats) {
+            // Merge with existing stats
+            const mergedStats = { ...questionStats };
+            Object.keys(data.questionStats).forEach(quizId => {
+              const imported = data.questionStats[quizId];
+              if (mergedStats[quizId]) {
+                // Merge stats for existing questions
+                mergedStats[quizId].correct += imported.correct || 0;
+                mergedStats[quizId].incorrect += imported.incorrect || 0;
+                // Merge answer stats
+                if (imported.answerStats) {
+                  if (!mergedStats[quizId].answerStats) {
+                    mergedStats[quizId].answerStats = {};
+                  }
+                  Object.keys(imported.answerStats).forEach(idx => {
+                    const ansIdx = parseInt(idx);
+                    if (!mergedStats[quizId].answerStats![ansIdx]) {
+                      mergedStats[quizId].answerStats![ansIdx] = { ...imported.answerStats[idx] };
+                    } else {
+                      mergedStats[quizId].answerStats![ansIdx].selected += imported.answerStats[idx].selected || 0;
+                    }
+                  });
+                }
+              } else {
+                // Add new question stats
+                mergedStats[quizId] = { ...imported };
+              }
+            });
+            setQuestionStats(mergedStats);
+            localStorage.setItem('questionStats', JSON.stringify(mergedStats));
+            alert('Statistiky byly úspěšně importovány a sloučeny s existujícími daty!');
+          } else {
+            alert('Neplatný formát souboru!');
+          }
+        } catch (error) {
+          alert('Chyba při načítání souboru!');
+          console.error(error);
+        }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
+  };
+
   const toggleStatsEnabled = (enabled: boolean) => {
     setStatsEnabled(enabled);
     localStorage.setItem('statsEnabled', enabled.toString());
@@ -241,6 +314,7 @@ export default function Home() {
               <QuizQuestion
                 question={currentQuestion}
                 onSubmit={handleSubmit}
+                onEvaluate={() => (window as any).__quizEvaluate?.()}
                 isSubmitted={isSubmitted}
                 showImage={showImage}
               />
@@ -254,9 +328,6 @@ export default function Home() {
                   <span className="px-3 py-1.5 bg-purple-500/20 text-purple-300 text-xs font-semibold rounded-lg border border-purple-500/30">
                     {currentQuestion.category}
                   </span>
-                  <span className="text-xs text-zinc-500">
-                    ID: {currentQuestion.quiz_id}
-                  </span>
                   {currentQuestion.image_src && (
                     <button
                       onClick={() => setShowImage(!showImage)}
@@ -264,9 +335,12 @@ export default function Home() {
                                bg-zinc-800/50 hover:bg-zinc-700/50 text-zinc-400 hover:text-zinc-200
                                border border-zinc-700/50 hover:border-zinc-600/50"
                     >
-                      {showImage ? '🖼️ Skrýt obrázek' : '🖼️ Zobrazit obrázek'}
+                      {showImage ? 'Skrýt původní otázku' : 'Zobrazit původní otázku'}
                     </button>
                   )}
+                  <span className="text-xs text-zinc-500">
+                    ID: {currentQuestion.quiz_id}
+                  </span>
                 </div>
 
                 {/* Center - Navigation */}
@@ -296,8 +370,21 @@ export default function Home() {
                   </button>
                 </div>
 
-                {/* Right side - Empty space for balance */}
-                <div className="w-[120px]"></div>
+                {/* Right side - Evaluate button */}
+                <div className="flex items-center">
+                  <button
+                    onClick={() => (window as any).__quizEvaluate?.()}
+                    disabled={isSubmitted}
+                    className="px-6 py-2.5 rounded-lg font-semibold text-sm transition-all
+                             border border-purple-400/60 text-purple-300
+                             bg-transparent
+                             hover:bg-purple-500/10
+                             shadow-lg
+                             disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Vyhodnotit
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -387,16 +474,48 @@ export default function Home() {
                     </div>
                   </label>
                 </div>
-                <button
-                  onClick={resetStats}
-                  disabled={Object.keys(questionStats).length === 0}
-                  className="px-4 py-2 text-sm font-medium rounded-lg transition-all
-                           bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300
-                           border border-red-500/30 hover:border-red-500/50
-                           disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Resetovat statistiky
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={exportStats}
+                    disabled={Object.keys(questionStats).length === 0}
+                    className="px-4 py-2 text-sm font-medium rounded-lg transition-all
+                             bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 hover:text-blue-300
+                             border border-blue-500/30 hover:border-blue-500/50
+                             disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    title="Exportovat statistiky do souboru"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Export
+                  </button>
+                  <button
+                    onClick={importStats}
+                    className="px-4 py-2 text-sm font-medium rounded-lg transition-all
+                             bg-green-500/10 hover:bg-green-500/20 text-green-400 hover:text-green-300
+                             border border-green-500/30 hover:border-green-500/50 flex items-center gap-2"
+                    title="Importovat statistiky ze souboru"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L9 8m4-4v12" />
+                    </svg>
+                    Import
+                  </button>
+                  <button
+                    onClick={resetStats}
+                    disabled={Object.keys(questionStats).length === 0}
+                    className="px-4 py-2 text-sm font-medium rounded-lg transition-all
+                             bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300
+                             border border-red-500/30 hover:border-red-500/50
+                             disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    title="Vymazat všechny statistiky"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Reset
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -407,6 +526,92 @@ export default function Home() {
               </div>
             ) : (
               <div className="space-y-6">
+                {/* Category Statistics Table */}
+                <div>
+                  <h3 className="text-xl font-semibold text-purple-300 mb-4">Statistiky podle kategorií</h3>
+                  <div className="border border-zinc-700/30 rounded-xl overflow-hidden bg-zinc-900/30">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="border-zinc-700/50 hover:bg-transparent">
+                          <TableHead className="text-purple-300 font-semibold">Kategorie</TableHead>
+                          <TableHead className="text-purple-300 font-semibold text-center">Otázky</TableHead>
+                          <TableHead className="text-purple-300 font-semibold text-center">Správně</TableHead>
+                          <TableHead className="text-purple-300 font-semibold text-center">Špatně</TableHead>
+                          <TableHead className="text-purple-300 font-semibold text-center">Úspěšnost</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {(() => {
+                          // Calculate stats per category
+                          const categoryStatsMap = new Map<string, { correct: number; incorrect: number; questionCount: number }>();
+
+                          questions.forEach(q => {
+                            const stats = questionStats[q.quiz_id];
+                            if (!stats || (stats.correct + stats.incorrect === 0)) return;
+
+                            const existing = categoryStatsMap.get(q.category) || { correct: 0, incorrect: 0, questionCount: 0 };
+                            existing.correct += stats.correct;
+                            existing.incorrect += stats.incorrect;
+                            existing.questionCount += 1;
+                            categoryStatsMap.set(q.category, existing);
+                          });
+
+                          const categoryStats = Array.from(categoryStatsMap.entries())
+                            .map(([category, stats]) => ({
+                              category,
+                              ...stats,
+                              total: stats.correct + stats.incorrect,
+                              successRate: (stats.correct / (stats.correct + stats.incorrect)) * 100
+                            }))
+                            .sort((a, b) => b.successRate - a.successRate);
+
+                          if (categoryStats.length === 0) {
+                            return (
+                              <TableRow>
+                                <TableCell colSpan={5} className="text-center py-8 text-zinc-500">
+                                  Žádná data
+                                </TableCell>
+                              </TableRow>
+                            );
+                          }
+
+                          return categoryStats.map(({ category, questionCount, correct, incorrect, successRate }) => (
+                            <TableRow key={category} className="border-zinc-700/30 hover:bg-zinc-800/30 transition-colors">
+                              <TableCell>
+                                <span className="text-sm px-3 py-1.5 bg-purple-500/20 text-purple-300 rounded-lg font-medium inline-block">
+                                  {category}
+                                </span>
+                              </TableCell>
+                              <TableCell className="text-center">
+                                <span className="text-zinc-300 font-semibold">{questionCount}</span>
+                              </TableCell>
+                              <TableCell className="text-center">
+                                <span className="text-green-400 font-semibold">{correct}</span>
+                              </TableCell>
+                              <TableCell className="text-center">
+                                <span className="text-red-400 font-semibold">{incorrect}</span>
+                              </TableCell>
+                              <TableCell className="text-center">
+                                <div className="flex items-center justify-center gap-3">
+                                  <span className={`font-semibold ${successRate >= 50 ? 'text-green-400' : 'text-red-400'}`}>
+                                    {successRate.toFixed(1)}%
+                                  </span>
+                                  <div className="w-24 h-2 bg-zinc-700/50 rounded-full overflow-hidden">
+                                    <div
+                                      className={`h-full transition-all ${successRate >= 50 ? 'bg-green-500' : 'bg-red-500'}`}
+                                      style={{ width: `${successRate}%` }}
+                                    />
+                                  </div>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ));
+                        })()}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
+
                 {/* Questions Table */}
                 <div>
                   <h3 className="text-xl font-semibold text-purple-300 mb-4">Všechny otázky</h3>
@@ -461,9 +666,8 @@ export default function Home() {
                             const isExpanded = expandedQuestions.has(question.quiz_id);
 
                             return (
-                              <>
+                              <React.Fragment key={question.quiz_id}>
                                 <TableRow
-                                  key={question.quiz_id}
                                   className="border-zinc-700/30 hover:bg-zinc-800/30 cursor-pointer transition-colors"
                                   onClick={() => toggleQuestionExpanded(question.quiz_id)}
                                 >
@@ -619,7 +823,7 @@ export default function Home() {
                                     </TableCell>
                                   </TableRow>
                                 )}
-                              </>
+                              </React.Fragment>
                             );
                           });
                         })()}
