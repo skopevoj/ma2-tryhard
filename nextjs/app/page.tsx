@@ -237,7 +237,8 @@ export default function Home() {
                     if (!mergedStats[quizId].answerStats![ansIdx]) {
                       mergedStats[quizId].answerStats![ansIdx] = { ...imported.answerStats[idx] };
                     } else {
-                      mergedStats[quizId].answerStats![ansIdx].selected += imported.answerStats[idx].selected || 0;
+                      mergedStats[quizId].answerStats![ansIdx].answered += imported.answerStats[idx].answered || 0;
+                      mergedStats[quizId].answerStats![ansIdx].correctlyAnswered += imported.answerStats[idx].correctlyAnswered || 0;
                     }
                   });
                 }
