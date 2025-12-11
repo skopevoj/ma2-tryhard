@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MA2 Kvíz",
+  title: "MA2 Marnost",
   description: "Interaktivní kvíz pro matematiku",
 };
 
