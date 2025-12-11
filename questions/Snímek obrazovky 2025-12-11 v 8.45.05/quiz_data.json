@@ -2,7 +2,7 @@
   "questions": [
     {
       "question": "Mějme Taylorův polynom $T_{n,a}(x)$ k funkci $f(x)$, která má všechny konečné spojité derivace.",
-      "category": "Taylorovy polynomy, řady a věta",
+      "category": "04.01. Rozstřel",
       "answers": [
         {
           "text": "$T_{n,a}^{(k)}(a) = f^{(k)}(a)$",

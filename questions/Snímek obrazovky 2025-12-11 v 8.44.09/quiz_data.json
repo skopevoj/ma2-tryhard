@@ -2,7 +2,7 @@
   "questions": [
     {
       "question": "Rozhodněte o následujících tvrzení pro funkci $f(x, y) = (-xy + \\ln(xy))$ mající spojité všechny parciální derivace všech řádů.",
-      "category": "Diferenciální počet funkcí více proměnných",
+      "category": "04.01. Rozstřel",
       "answers": [
         {
           "text": "$\\nabla f(x, y) = \\left(\\frac{1}{x} - x, \\frac{1}{y} - y\\right)$",

@@ -2,7 +2,7 @@
   "questions": [
     {
       "question": "Vyberte pravdivé tvrzení pro vektorovou posloupnost $(\\mathbf{x}_k)_{k=1}^\\infty$, $\\mathbf{x}_k = ((-1)^k, \\frac{1}{k})$.",
-      "category": "Číselné a mocninné řady",
+      "category": "04.01. Rozstřel",
       "answers": [
         {
           "text": "Limita $\\mathbf{x}_k$ neexistuje.",

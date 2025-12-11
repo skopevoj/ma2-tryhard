@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "1. $f(x,y) = \\frac{x^3}{3} + xy + \\frac{y^2}{2}$",
+      "category": "25.01. Rozstřel",
+      "answers": [
+        {
+          "text": "$\\nabla f(x,y) = (x^2+y, x+y)$",
+          "correct": true
+        },
+        {
+          "text": "Má 2 lokální extrémy",
+          "correct": false
+        },
+        {
+          "text": "Má jeden sedlový bod a jedno minimum",
+          "correct": true
+        },
+        {
+          "text": "Má právě jeden stacionární bod",
+          "correct": false
+        }
+      ]
+    }
+  ]
+}

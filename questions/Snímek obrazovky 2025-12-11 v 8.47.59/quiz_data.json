@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "7. D \\subset \\mathbb{R}^2 je ohraničená $x = 1, y = 1, y = \\ln(x)$",
+      "category": "25.01. Rozstřel",
+      "answers": [
+        {
+          "text": "(a) D = \\{(x,y) \\in \\mathbb{R}^2 | 0 \\leq y \\leq 1, 1 \\leq x \\leq e^y \\}",
+          "correct": true
+        },
+        {
+          "text": "(b) D = \\{(x,y) \\in \\mathbb{R}^2 | 1 \\leq x \\leq e, \\ln(x) \\leq y \\leq 1 \\}",
+          "correct": true
+        },
+        {
+          "text": "(c) Obsah ohraničené plochy je $\\int_0^1 (\\int_1^{e^y} 1 dx) dy$",
+          "correct": true
+        },
+        {
+          "text": "(d) Obsah ohraničené plochy je $\\int_0^1 e^y dy$",
+          "correct": false
+        }
+      ]
+    }
+  ]
+}

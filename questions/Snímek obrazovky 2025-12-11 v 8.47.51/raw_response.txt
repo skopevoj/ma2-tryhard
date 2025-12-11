@@ -1,0 +1,16 @@
+```json
+{
+    "questions": [
+        {
+            "question": "6. $\\sum_{k=0}^{\\infty} \\frac{(-1)^k}{2^k}(x-1)^k$",
+            "category": "Číselné a mocninné řady",
+            "answers": [
+                {"text": "(a) Poloměr konvergence $R = 2$", "correct": true},
+                {"text": "(b) Obor konvergence $(-2, 2>)$", "correct": false},
+                {"text": "(c) Poloměr konvergence $R = \\frac{1}{2}$", "correct": false},
+                {"text": "(d) Nevím :(", "correct": false}
+            ]
+        }
+    ]
+}
+```

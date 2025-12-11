@@ -2,7 +2,7 @@
   "questions": [
     {
       "question": "Máme množinu $M$ ohraničenou body $(0,0)$, $(0,1)$ a $(1,1)$. Určete objem pod křivkou $f(x, y) = xy$.",
-      "category": "Určitý integrál",
+      "category": "04.01. Rozstřel",
       "answers": [
         {
           "text": "\\int_{0}^{1} \\int_{x}^{1} xy \\, dy \\, dx",

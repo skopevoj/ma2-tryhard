@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "10. $f$ je spojitá funkce, $x \\in D_f = [0, \\infty)$, $f(x) > 0, g(x) = \\int_{0}^{x} f(u)du$. Vyberte pravdivá tvrzení:",
+      "category": "25.01. Rozstřel",
+      "answers": [
+        {
+          "text": "$g$ je rostoucí",
+          "correct": true
+        },
+        {
+          "text": "Monotonie $g$ není zřejmá",
+          "correct": false
+        },
+        {
+          "text": "$\\int_{0}^{+\\infty} f(x)dx$ diverguje",
+          "correct": false
+        },
+        {
+          "text": "nevím :(",
+          "correct": false
+        }
+      ]
+    }
+  ]
+}

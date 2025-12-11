@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "6. $\\sum_{k=0}^{\\infty} \\frac{(-1)^k}{2^k}(x-1)^k$",
+      "category": "25.01. Rozstřel",
+      "answers": [
+        {
+          "text": "(a) Poloměr konvergence $R = 2$",
+          "correct": true
+        },
+        {
+          "text": "(b) Obor konvergence $(-2, 2>)$",
+          "correct": false
+        },
+        {
+          "text": "(c) Poloměr konvergence $R = \\frac{1}{2}$",
+          "correct": false
+        },
+        {
+          "text": "(d) Nevím :(",
+          "correct": false
+        }
+      ]
+    }
+  ]
+}

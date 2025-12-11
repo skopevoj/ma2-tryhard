@@ -1,0 +1,16 @@
+```json
+{
+    "questions": [
+        {
+            "question": "f má v $a \\in \\mathbb{R}$ kone\\v{c}nou derivaci lib. \\v{r}\\'adu",
+            "category": "Taylorovy polynomy, \\v{r}ady a v\\v{e}ta",
+            "answers": [
+                {"text": "$T_{n,a}^{(k)}(a) = f^{(k)}(a)$", "correct": true},
+                {"text": "$T_{n,a}(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(x - a)^k$", "correct": true},
+                {"text": "$\\lim_{x \\to a} T_{n,a} = f(a)$", "correct": true},
+                {"text": "$\\lim_{x \\to \\infty} T_{n,a}(x) = f(x), \\forall x \\in D_f$", "correct": false}
+            ]
+        }
+    ]
+}
+```

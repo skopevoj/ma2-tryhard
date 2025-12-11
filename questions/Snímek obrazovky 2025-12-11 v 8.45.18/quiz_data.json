@@ -2,7 +2,7 @@
   "questions": [
     {
       "question": "Vyberte pravdivá tvrzení o $f(x)$, která má $\\nabla f(a) = 0$.",
-      "category": "Diferenciální počet funkcí více proměnných",
+      "category": "04.01. Rozstřel",
       "answers": [
         {
           "text": "Pokud $\\nabla^2 f(x, y)$ je PSD, tak v $a$ je neostré lokální minimum.",

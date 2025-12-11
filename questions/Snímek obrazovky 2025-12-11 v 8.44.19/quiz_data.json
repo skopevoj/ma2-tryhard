@@ -2,7 +2,7 @@
   "questions": [
     {
       "question": "Rozhodněte o posloupnosti $A(n) = \\sum_{k=0}^{\\log_3(n)-1} \\frac{n}{3^k}$",
-      "category": "Číselné a mocninné řady",
+      "category": "04.01. Rozstřel",
       "answers": [
         {
           "text": "Existuje $c$ kladné reálné, že $A(n) \\leq c \\cdot n$.",

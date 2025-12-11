@@ -2,7 +2,7 @@
   "questions": [
     {
       "question": "Máme kvadratickou formu určenou maticí $M = \\begin{pmatrix} 2 & 2 \\\\ 2 & \\alpha \\end{pmatrix}$",
-      "category": "Diferenciální počet funkcí více proměnných",
+      "category": "04.01. Rozstřel",
       "answers": [
         {
           "text": "Forma je PD pro všechny $\\alpha > 2$",

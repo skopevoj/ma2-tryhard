@@ -2,7 +2,7 @@
   "questions": [
     {
       "question": "Rozhodněte o pravdivosti.",
-      "category": "Neurčitý integrál a primitivní funkce",
+      "category": "04.01. Rozstřel",
       "answers": [
         {
           "text": "$\\int f(x^2) \\, dx = F(2x) + C$",

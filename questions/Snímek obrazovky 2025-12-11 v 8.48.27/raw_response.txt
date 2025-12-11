@@ -1,0 +1,16 @@
+```json
+{
+    "questions": [
+        {
+            "question": "Nechť $f(x) := \\sum_{k=0}^{\\infty} \\frac{x^k}{k!} = e^x$. Vyberte všechna správná tvrzení:",
+            "category": "Taylorovy polynomy, řady a věta",
+            "answers": [
+                {"text": "$(a) x \\in D_f, x > 0 \\implies f(x) > 1+x$", "correct": true},
+                {"text": "$(b) f(x+y) = f(x) \\cdot f(y) \\quad \\forall x, y \\in D_f$", "correct": true},
+                {"text": "$(c) D_f = \\mathbb{R}$", "correct": true},
+                {"text": "$(d) f(1) = e$", "correct": true}
+            ]
+        }
+    ]
+}
+```

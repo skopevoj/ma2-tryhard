@@ -2,7 +2,7 @@
   "questions": [
     {
       "question": "Mějme homogenní LRR s konstantními koeficienty $x_{n+2} + c_1x_{n+1} + c_0x_n = 0$ $n \\geq 1$.",
-      "category": "Lineární rekurentní rovnice",
+      "category": "04.01. Rozstřel",
       "answers": [
         {
           "text": "Existuje pouze jedno řešení $(x_n)^{\\infty}$, kde $x_1 = 1$.",
