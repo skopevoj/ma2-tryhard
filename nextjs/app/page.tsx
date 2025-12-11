@@ -29,7 +29,7 @@ export default function Home() {
   const [questionStats, setQuestionStats] = useState<Record<string, {
     correct: number;
     incorrect: number;
-    answerStats?: Record<number, { selected: number; correct: boolean }>;
+    answerStats?: Record<number, { answered: number; correctlyAnswered: number; isCorrectAnswer: boolean }>;
   }>>({});
   const [statsEnabled, setStatsEnabled] = useState(true);
   const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(new Set());
@@ -119,12 +119,20 @@ export default function Home() {
         newStats[quizId].answerStats = {};
       }
       selectedAnswers.forEach((selected, idx) => {
-        if (selected === true) {
-          const answerCorrect = currentQuestion.answers[idx].correct;
-          if (!newStats[quizId].answerStats![idx]) {
-            newStats[quizId].answerStats![idx] = { selected: 0, correct: answerCorrect };
+        const isCorrectAnswer = currentQuestion.answers[idx].correct;
+        if (!newStats[quizId].answerStats![idx]) {
+          newStats[quizId].answerStats![idx] = { answered: 0, correctlyAnswered: 0, isCorrectAnswer };
+        }
+        // Track all answers that were not "nevím" (null)
+        if (selected !== null) {
+          newStats[quizId].answerStats![idx].answered++;
+          // Check if answer was correct:
+          // - For correct answers: user must select true
+          // - For incorrect answers: user must select false
+          const wasAnsweredCorrectly = (isCorrectAnswer && selected === true) || (!isCorrectAnswer && selected === false);
+          if (wasAnsweredCorrectly) {
+            newStats[quizId].answerStats![idx].correctlyAnswered++;
           }
-          newStats[quizId].answerStats![idx].selected++;
         }
       });
 
@@ -746,21 +754,16 @@ export default function Home() {
                                                 {question.answers.map((answer, idx) => {
                                                   const answerStat = stats.answerStats?.[idx];
                                                   const totalAttempts = stats.correct + stats.incorrect;
-                                                  const selectionRate = answerStat ? (answerStat.selected / totalAttempts) * 100 : 0;
-
-                                                  // Calculate correctness percentage for this specific answer
-                                                  // For correct answers: how many times was it correctly selected
-                                                  // For incorrect answers: how many times was it correctly NOT selected (or marked as No)
-                                                  let correctnessRate = 0;
-                                                  if (answer.correct) {
-                                                    // Correct answer: percentage of times it was selected (Yes)
-                                                    correctnessRate = answerStat ? selectionRate : 0;
-                                                  } else {
-                                                    // Incorrect answer: percentage of times it was NOT selected
-                                                    // (100% - selection rate would be if we tracked "not selected", but we only track selections)
-                                                    // So for incorrect answers, lower selection rate = higher correctness
-                                                    correctnessRate = answerStat ? 100 - selectionRate : 100;
-                                                  }
+                                                  
+                                                  // How many times was this answer actually answered (not "nevím")
+                                                  const timesAnswered = answerStat?.answered || 0;
+                                                  // Percentage of times this answer was answered out of total attempts
+                                                  const answerRate = totalAttempts > 0 ? (timesAnswered / totalAttempts) * 100 : 0;
+                                                  
+                                                  // How many times was this answer answered correctly
+                                                  const timesCorrect = answerStat?.correctlyAnswered || 0;
+                                                  // Percentage of times this answer was answered correctly
+                                                  const correctnessRate = timesAnswered > 0 ? (timesCorrect / timesAnswered) * 100 : 0;
 
                                                   return (
                                                     <TableRow
@@ -781,18 +784,18 @@ export default function Home() {
                                                       </TableCell>
                                                       <TableCell className="text-center whitespace-nowrap">
                                                         <span className="text-zinc-300 font-semibold">
-                                                          {answerStat ? `${answerStat.selected}×` : '0×'}
+                                                          {timesAnswered}×
                                                         </span>
                                                       </TableCell>
                                                       <TableCell className="text-center whitespace-nowrap">
                                                         <div className="flex items-center justify-center gap-2">
                                                           <span className="text-purple-300 font-semibold text-sm">
-                                                            {selectionRate.toFixed(0)}%
+                                                            {answerRate.toFixed(0)}%
                                                           </span>
                                                           <div className="w-12 h-1.5 bg-zinc-700/50 rounded-full overflow-hidden">
                                                             <div
                                                               className="h-full bg-purple-500 transition-all"
-                                                              style={{ width: `${selectionRate}%` }}
+                                                              style={{ width: `${answerRate}%` }}
                                                             />
                                                           </div>
                                                         </div>
