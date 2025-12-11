@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Které z následujících rovností jsou pravdivé?",
+      "category": "Určitý integrál",
+      "answers": [
+        {
+          "text": "$\\int_{0}^{1} x^2 e^x dx = x^2 e^x - \\int_{0}^{2} 2xe^x dx$",
+          "correct": false
+        },
+        {
+          "text": "$\\int_{0}^{\\frac{\\pi}{2}} x \\cos x dx = \\int_{0}^{\\frac{\\pi}{2}} \\sin x dx$",
+          "correct": false
+        },
+        {
+          "text": "$\\int_{0}^{\\frac{\\pi}{2}} x \\sin x dx = \\int_{0}^{\\frac{\\pi}{2}} \\cos x dx$",
+          "correct": true
+        },
+        {
+          "text": "$\\int_{0}^{1} \\arctan x dx = \\frac{\\pi}{4} - \\int_{0}^{1} \\frac{x}{1+x^2} dx$",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "id": 62656315
+}

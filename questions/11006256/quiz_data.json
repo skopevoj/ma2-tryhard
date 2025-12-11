@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Rozhodněte o následujících tvrzení pro funkci $f(x, y) = (-xy + \\ln(xy))$ mající spojité všechny parciální derivace všech řádů.",
+      "category": "04.01. Rozstřel",
+      "answers": [
+        {
+          "text": "$\\nabla f(x, y) = \\left(\\frac{1}{x} - x, \\frac{1}{y} - y\\right)$",
+          "correct": false
+        },
+        {
+          "text": "$\\nabla^2 f(x, y) = \\begin{pmatrix} -\\frac{1}{x^2} & -1 \\\\ -1 & -\\frac{1}{y^2} \\end{pmatrix}$",
+          "correct": true
+        },
+        {
+          "text": "$f$ má nekonečně mnoho stacionárních bodů",
+          "correct": true
+        },
+        {
+          "text": "$\\nabla f(x, y) = \\left(\\frac{1}{x} - y, \\frac{1}{y} - x\\right)$",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "id": 11006256
+}

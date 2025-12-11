@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Nechť funkce $F(x)$ a $G(x)$ jsou primitivní funkce k funkci $f(x)$ na otevřeném intervalu $I$. Vyberte všechna pravdivá tvrzení.",
+      "category": "Neurčitý integrál a primitivní funkce",
+      "answers": [
+        {
+          "text": "Pro každé $x \\in I$ platí $(F - G)'(x) = 0$.",
+          "correct": true
+        },
+        {
+          "text": "Platí $\\int F(x) dx = \\int G(x) dx$.",
+          "correct": false
+        },
+        {
+          "text": "Existuje konstanta $c$ taková, že pro každé $x \\in I$ platí $F(x) = G(x) + c$.",
+          "correct": true
+        },
+        {
+          "text": "Funkce $F(x) - G(x)$ je konstantní na $I$.",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "id": 28403389
+}

@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Uvažujeme funkci $f(x) = \\frac{1}{x}$.",
+      "category": "Taylorovy polynomy, řady a věta",
+      "answers": [
+        {
+          "text": "Pro $n$-tý zbytek v Taylorově vzorci platí $R_{n-1}(x) = \\frac{(-1)^{n+1}}{\\xi^{n+2}}(\\xi+1)^{n+1}$, kde $\\xi$ je číslo mezi $-1$ a $x$.",
+          "correct": false
+        },
+        {
+          "text": "Pro $n$-tý zbytek v Taylorově vzorci platí $R_{n-1}(x) = \\frac{(-1)^{n+1}(x+1)^{n+1}}{x^{n+2}}$.",
+          "correct": false
+        },
+        {
+          "text": "$n$-tý Taylorův polynom funkce $f$ v bodě $-1$ má tvar $T_{n-1}(x) = \\sum_{k=0}^{n}(-1)^{k}(x+1)^{k}$.",
+          "correct": false
+        },
+        {
+          "text": "Pro $n$-tý zbytek v Taylorově vzorci platí $R_{n-1}(x) = -(x+1)^{n}$.",
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "id": 14656121
+}

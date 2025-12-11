@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Které tvrzení o řadě $\\sum_{k=1}^{\\infty} \\frac{1}{k}$ je pravdivé?",
+      "category": "Číselné a mocninné řady",
+      "answers": [
+        {
+          "text": "Pro posloupnost jejich částečných součtů $(s_n)_{n=1}^{\\infty}$ platí $s_n \\sim \\ln n$, pro $n \\to \\infty$.",
+          "correct": true
+        },
+        {
+          "text": "Tato řada konverguje.",
+          "correct": false
+        },
+        {
+          "text": "Pro posloupnost jejich částečných součtů $(s_n)_{n=1}^{\\infty}$ platí $s_n = \\ln n$ pro všechna dost velká $n$.",
+          "correct": false
+        },
+        {
+          "text": "Tato řada splňuje nutnou podmínku konvergence.",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "id": 80253208
+}

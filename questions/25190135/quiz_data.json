@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Uvažujeme mocninnou řadu $\\sum_{k=1}^{\\infty} \\frac{(2x + 1)^k}{k + 2}$.",
+      "category": "Číselné a mocninné řady",
+      "answers": [
+        {
+          "text": "Pro $x$ splňující $|2x + 1| > 1$ mocninná řada diverguje.",
+          "correct": true
+        },
+        {
+          "text": "Poloměr konvergence $R = 2$.",
+          "correct": false
+        },
+        {
+          "text": "Střed této mocninné řady je $a = -1$.",
+          "correct": false
+        },
+        {
+          "text": "Oborem konvergence je interval $(-1/2, 1/2)$.",
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "id": 25190135
+}

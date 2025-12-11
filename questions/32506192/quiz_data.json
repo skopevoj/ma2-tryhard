@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Které z následujících řad jsou konvergentní?",
+      "category": "Číselné a mocninné řady",
+      "answers": [
+        {
+          "text": "$\\sum_{n=1}^{\\infty} 2^{-n}$",
+          "correct": true
+        },
+        {
+          "text": "$\\sum_{n=1}^{\\infty} \\frac{n^2}{3^n}$",
+          "correct": true
+        },
+        {
+          "text": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^n}{n^2}$",
+          "correct": true
+        },
+        {
+          "text": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^n}{n}$",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "id": 32506192
+}

@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "3. Nechť $F(x,y) = \\begin{pmatrix} x^2 + y \\\\ x - y \\end{pmatrix}$",
+      "category": "25.01. Rozstřel",
+      "answers": [
+        {
+          "text": "(a) $DF = \\begin{pmatrix} 2x & 1 \\\\ 1 & -1 \\end{pmatrix}$",
+          "correct": true
+        },
+        {
+          "text": "(b) $DF = \\begin{pmatrix} 2x + 1 \\\\ 0 \\end{pmatrix}$",
+          "correct": false
+        },
+        {
+          "text": "(c) $DF = (2x, -1)$",
+          "correct": false
+        },
+        {
+          "text": "(d) $DF = \\begin{pmatrix} 2 & 1 \\\\ 1 & 0 \\end{pmatrix}$",
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "id": 84303723
+}

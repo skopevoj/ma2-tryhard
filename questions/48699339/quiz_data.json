@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Buď $(a_k)_{k=1}^{\\infty}$ posloupnost s kladnými členy a nechť existuje limita $q = \\lim_{k \\to \\infty} \\frac{a_{k+1}}{a_k}$. Vyberte pravdivá tvrzení.",
+      "category": "Číselné a mocninné řady",
+      "answers": [
+        {
+          "text": "Pokud $q > 1$, pak řada $\\sum_{k=0}^{\\infty} a_k$ diverguje.",
+          "correct": true
+        },
+        {
+          "text": "Pokud $q \\leq 1$, pak řada $\\sum_{k=0}^{\\infty} a_k$ konverguje.",
+          "correct": false
+        },
+        {
+          "text": "Pokud $q \\geq 1$, pak řada $\\sum_{k=0}^{\\infty} a_k$ konverguje.",
+          "correct": false
+        },
+        {
+          "text": "Pokud $q < 1$, pak řada $\\sum_{k=0}^{\\infty} a_k$ konverguje.",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "id": 48699339
+}

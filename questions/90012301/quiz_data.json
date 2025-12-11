@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Mějme zobrazení $f : (0, \\pi)^2 \\to \\mathbb{R}$ dané předpisem $f(x, y) = \\sin x + \\sin y + \\sin(x + y)$. Vyberte všechny pravdivé výroky. (Pozor na definiční obor funkce $f$. Veškeré výroky se k němu vztahují.)",
+      "category": "Diferenciální počet funkcí více proměnných",
+      "answers": [
+        {
+          "text": "Množina stacionárních bodů této funkce je nekonečná.",
+          "correct": false
+        },
+        {
+          "text": "Množina stacionárních bodů této funkce je konečná.",
+          "correct": true
+        },
+        {
+          "text": "Funkce $f$ má právě jeden sedlový bod.",
+          "correct": false
+        },
+        {
+          "text": "Funkce $f$ má právě jedno lokální maximum.",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "id": 90012301
+}

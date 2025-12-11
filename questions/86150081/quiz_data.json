@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Které z následujících řad jsou divergentní?",
+      "category": "Číselné a mocninné řady",
+      "answers": [
+        {
+          "text": "$$\\sum_{n=1}^{\\infty} \\cos\\left(\\frac{\\pi}{2} + n\\pi\\right)$$",
+          "correct": false
+        },
+        {
+          "text": "$$\\sum_{n=1}^{\\infty} c, \\text{ kde } c \\text{ je nenulová} \\text{ konstanta.}$$",
+          "correct": true
+        },
+        {
+          "text": "$$\\sum_{n=1}^{\\infty} \\sqrt[n]{n}.$$",
+          "correct": true
+        },
+        {
+          "text": "$$\\sum_{n=1}^{\\infty} (e/\\pi)^n.$$",
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "id": 86150081
+}

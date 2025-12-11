@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Které z následujících tvrzení jsou pravdivá?",
+      "category": "Určitý integrál",
+      "answers": [
+        {
+          "text": "Normou rozdělení $\\sigma = \\{x_0, x_1, \\dots, x_n\\}$ intervalu $\\langle a,b \\rangle$ nazýváme hodnotu $x_n - x_0$ a označujeme ji $\\nu(\\sigma)$.",
+          "correct": false
+        },
+        {
+          "text": "Pokud existuje Riemannův integrál omezené funkce $f$ na uzavřeném intervalu $\\langle a,b \\rangle$, potom je funkce $f$ spojitá na intervalu $\\langle a,b \\rangle$.",
+          "correct": false
+        },
+        {
+          "text": "Dolní součet omezené funkce $f$ při rozdělení $\\sigma = \\{x_0, x_1, \\dots, x_n\\}$ intervalu $\\langle a,b \\rangle$ je roven $\\sum_{k=1}^{n} (x_k - x_{k-1}) \\inf_{x \\in \\langle x_{k-1}, x_k \\rangle} f(x)$.",
+          "correct": true
+        },
+        {
+          "text": "Riemannův integrál omezené funkce $f$ na uzavřeném intervalu $\\langle a,b \\rangle$ existuje právě tehdy, když $\\overline{\\int_{a}^{b}} f(x) dx = \\underline{\\int_{a}^{b}} f(x) dx$.",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "id": 78842265
+}

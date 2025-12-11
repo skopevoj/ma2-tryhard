@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Nechť $\\varphi$ má spojitou derivaci na $\\mathbb{R}$. Vyberte pravdivá tvrzení.",
+      "category": "Určitý integrál",
+      "answers": [
+        {
+          "text": "Rovnost $\\int_a^b \\frac{\\varphi'(x)}{1+\\varphi^2(x)} \\mathrm{d}x = \\int_{\\varphi(a)}^{\\varphi(b)} \\frac{1}{1+x^2} \\mathrm{d}x$ platí pro libovolná reálná $a$ a $b$.",
+          "correct": true
+        },
+        {
+          "text": "Rovnost $\\int_a^b \\frac{\\varphi'(x)}{1+\\varphi^2(x)} \\mathrm{d}x = \\operatorname{arctg}(\\varphi(b)) - \\operatorname{arctg}(\\varphi(a))$ platí pro libovolná reálná $a$ a $b$.",
+          "correct": true
+        },
+        {
+          "text": "Rovnost $\\int_a^b \\frac{\\varphi'(x)}{1+\\varphi^2(x)} \\mathrm{d}x = \\int_a^b \\frac{1}{1+y^2} \\mathrm{d}y$ platí pro libovolná reálná $a$ a $b$.",
+          "correct": false
+        },
+        {
+          "text": "Rovnost $\\int_a^b \\frac{\\varphi'(x)}{1+\\varphi^2(x)} \\mathrm{d}x = [\\operatorname{arctg}(x)]_{\\varphi(a)}^{\\varphi(b)}$ platí pro libovolná reálná $a$ a $b$.",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "id": 67996544
+}

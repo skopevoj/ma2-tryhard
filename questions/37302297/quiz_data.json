@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Pro řadu $\\sum_{k=1}^{\\infty} q^k$, kde $q$ je reálný parametr, platí:",
+      "category": "Číselné a mocninné řady",
+      "answers": [
+        {
+          "text": "Pokud $q < 1$, pak je absolutně konvergentní.",
+          "correct": false
+        },
+        {
+          "text": "Pokud $q \\neq 1$, pak pro její $n$-tý částečný součet platí $s_n = q\\frac{1 - q^n}{1 - q}$.",
+          "correct": true
+        },
+        {
+          "text": "Pokud $|q| < 1$, pak je konvergentní.",
+          "correct": true
+        },
+        {
+          "text": "Pokud $|q| < 1$, pak pro posloupnost $(s_n)_{n=1}^{\\infty}$ jejich částečných součtů platí $\\lim_{n\\to\\infty} s_n = \\frac{q}{1 - q}$.",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "id": 37302297
+}

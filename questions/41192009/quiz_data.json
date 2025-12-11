@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Rozhodněte, která tvrzení o řadách a jejich součtech jsou pravdivá.",
+      "category": "Číselné a mocninné řady",
+      "answers": [
+        {
+          "text": "$\\sum_{k=0}^{\\infty} q^{2k} = \\frac{1}{1-q^2}$, kdykoliv $|q| < 1$.",
+          "correct": true
+        },
+        {
+          "text": "$\\sum_{k=1}^{\\infty} q^k = \\frac{q}{1-q}$, kdykoliv $|q| < 1$.",
+          "correct": true
+        },
+        {
+          "text": "$\\sum_{k=1}^{\\infty} q^k = \\frac{1}{1-q}$, kdykoliv $|q| < 1$.",
+          "correct": false
+        },
+        {
+          "text": "$\\sum_{k=0}^{\\infty} q^{2k+1} = \\frac{q^2}{1-q^2}$, kdykoliv $|q| < 1$.",
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "id": 41192009
+}

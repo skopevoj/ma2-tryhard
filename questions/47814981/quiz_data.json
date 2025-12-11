@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Mějme funkci $f(x, y) = \\frac{x^3}{3} + xy + \\frac{y^2}{2}$",
+      "category": "01.02. Rozstřel",
+      "answers": [
+        {
+          "text": "Tato funkce má právě 2 lokální extrémy",
+          "correct": false
+        },
+        {
+          "text": "Hessova matice funkce $f$ v bodě $(x, y)^T$ je $\\nabla^2 f(x, y) = \\begin{pmatrix} 2x & 1 \\\\ 1 & 1 \\end{pmatrix}$",
+          "correct": false
+        },
+        {
+          "text": "Tato funkce má právě jeden stacionární bod.",
+          "correct": false
+        },
+        {
+          "text": "Tato funkce má právě jedno ostré lokální minimum a právě jeden sedlový bod",
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "id": 47814981
+}

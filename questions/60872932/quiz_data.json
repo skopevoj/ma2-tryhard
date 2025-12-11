@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "5. $\\alpha > 0, T(n) = 4T(\\frac{n}{2}) + n^{\\alpha}, T(1) = \\Theta(1)$, Která z podmínek je postačující pro $T(n) = \\Theta(n^{\\alpha})$",
+      "category": "25.01. Rozstřel",
+      "answers": [
+        {
+          "text": "(a) $\\alpha > 2$",
+          "correct": true
+        },
+        {
+          "text": "(b) $\\alpha = 2$",
+          "correct": false
+        },
+        {
+          "text": "(c) $\\alpha = 3$",
+          "correct": true
+        },
+        {
+          "text": "(d) $\\alpha < 2$",
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "id": 60872932
+}
