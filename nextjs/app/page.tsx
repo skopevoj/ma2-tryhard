@@ -15,6 +15,7 @@ export default function Home() {
   const [score, setScore] = useState({ correct: 0, incorrect: 0 });
   const [showCategorySelector, setShowCategorySelector] = useState(false);
   const [showImage, setShowImage] = useState(false);
+  const [showAboutModal, setShowAboutModal] = useState(false);
 
   useEffect(() => {
     fetch('/questions.json')
@@ -40,6 +41,21 @@ export default function Home() {
       setCurrentQuestionIndex(0);
     }
   }, [selectedCategories, questions, currentQuestionIndex]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (showAboutModal) return; // Don't navigate when modal is open
+
+      if (e.key === 'ArrowLeft') {
+        handlePrevious();
+      } else if (e.key === 'ArrowRight') {
+        handleNext();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentQuestionIndex, filteredQuestions.length, showAboutModal]);
 
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
@@ -78,12 +94,7 @@ export default function Home() {
   const currentQuestion = filteredQuestions[currentQuestionIndex];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#0f0f1a] to-[#13131f] flex flex-col items-center py-8 px-4 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl animate-pulse delay-1000" />
-      </div>
+    <div className="min-h-screen bg-[#0a0a0f] flex flex-col items-center py-8 px-4 relative">
 
       {/* Header - Category Selector Island */}
       <div className="w-full max-w-4xl mb-6 relative z-[100]">
@@ -217,6 +228,106 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      {/* Footer */}
+      <footer className="w-full max-w-4xl mt-8 relative z-10">
+        <div className="flex items-center justify-center gap-6 text-sm text-zinc-500">
+          <a
+            href="https://github.com/skopevoj/ma2-tryhard"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-purple-400 transition-colors flex items-center gap-2"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+            </svg>
+            GitHub
+          </a>
+          <span className="text-zinc-700">•</span>
+          <span className="text-zinc-600">Discord: @darkkw</span>
+          <span className="text-zinc-700">•</span>
+          <button
+            onClick={() => setShowAboutModal(true)}
+            className="hover:text-purple-400 transition-colors"
+          >
+            O projektu
+          </button>
+        </div>
+      </footer>
+
+      {/* About Modal */}
+      {showAboutModal && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[200] p-4"
+          onClick={() => setShowAboutModal(false)}
+        >
+          <div
+            className="bg-[rgba(20,20,30,0.95)] backdrop-blur-xl border border-purple-500/20 rounded-2xl p-8 max-w-3xl max-h-[80vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-purple-400">MA2 Tryhard</h2>
+              <button
+                onClick={() => setShowAboutModal(false)}
+                className="text-zinc-400 hover:text-white transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="prose prose-invert prose-purple max-w-none">
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold text-purple-300 mb-3">Disclaimer</h3>
+                <p className="text-zinc-300">
+                  Celý repo je kromě otázek 100% vibe coded (Kuznetsov Approved) ✨
+                </p>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold text-purple-300 mb-3">Zdroje otázek</h3>
+                <p className="text-zinc-300 mb-3">Otázky jsou převzaty z FIT Wiki:</p>
+                <ul className="text-sm text-zinc-400 space-y-1">
+                  <li><a href="https://fit-wiki.cz/_media/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/bi-ma2_marast_2022_1.pdf" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">MA2 - Marast 2022/1</a></li>
+                  <li><a href="https://fit-wiki.cz/_media/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/bi-ma2_marast_2022_2.pdf" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">MA2 - Marast 2022/2</a></li>
+                  <li><a href="https://fit-wiki.cz/_media/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/bi-ma2_marast_2022_3.pdf" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">MA2 - Marast 2022/3</a></li>
+                  <li><a href="https://fit-wiki.cz/_media/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/bi-ma2_marast_2022_4.pdf" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">MA2 - Marast 2022/4</a></li>
+                  <li><a href="https://fit-wiki.cz/_media/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/bi-ma2_marast_2022_5.pdf" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">MA2 - Marast 2022/5</a></li>
+                  <li><a href="https://fit-wiki.cz/_media/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/bi-ma2_marast_2022_6.pdf" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">MA2 - Marast 2022/6</a></li>
+                  <li><a href="https://www.figma.com/board/UTTlv8hCsMoNdnTcoCiVgN/ma2?node-id=0-1&p=f" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">MA2 Figma Board</a></li>
+                  <li><a href="https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2025-01-22" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">MA2 Rozstřel 2025-01-22</a></li>
+                  <li><a href="https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2025-01-29" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">MA2 Rozstřel 2025-01-29</a></li>
+                  <li><a href="https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2024-01-25" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">MA2 Rozstřel 2024-01-25</a></li>
+                  <li><a href="https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2024-2-1" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">MA2 Rozstřel 2024-02-01</a></li>
+                  <li><a href="https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2024-2-8" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">MA2 Rozstřel 2024-02-08</a></li>
+                  <li><a href="https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2023-01-04" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">MA2 Rozstřel 2023-01-04</a></li>
+                  <li><a href="https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2023-01-25" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">MA2 Rozstřel 2023-01-25</a></li>
+                  <li><a href="https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2023-02-01" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">MA2 Rozstřel 2023-02-01</a></li>
+                </ul>
+              </div>
+
+              <div className="mb-6">
+                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+                  <p className="text-yellow-200 text-sm">
+                    ⚠️ <strong>Upozornění:</strong> Je možné, že se v otázkách vyskytuje chyba přepisu. Pokud nějakou najdete, vytvořte prosím{' '}
+                    <a href="https://github.com/skopevoj/ma2-tryhard/issues" target="_blank" rel="noopener noreferrer" className="text-yellow-300 hover:text-yellow-200 underline">issue</a>.
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-purple-300 mb-3">Pipeline</h3>
+                <ol className="text-zinc-300 space-y-2 list-decimal list-inside">
+                  <li><strong>Scraping</strong> - Stažení otázek z FIT Wiki</li>
+                  <li><strong>Konverze</strong> - Gemini API převádí screenshoty na JSON formát</li>
+                  <li><strong>Build</strong> - Script generuje statický HTML web</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
