@@ -11,3 +11,10 @@ export interface Question {
     source_folder: string;
     quiz_id: string;
 }
+
+export interface QuestionStats {
+    quiz_id: string;
+    correct: number;
+    incorrect: number;
+    lastAttempt: number;
+}

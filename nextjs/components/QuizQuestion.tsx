@@ -7,7 +7,7 @@ import { Question } from '@/lib/types';
 
 interface QuizQuestionProps {
     question: Question;
-    onSubmit: (selectedAnswers: boolean[], isCorrect: boolean) => void;
+    onSubmit: (selectedAnswers: (boolean | null)[], isCorrect: boolean) => void;
     isSubmitted: boolean;
     showImage: boolean;
 }
@@ -46,6 +46,25 @@ export default function QuizQuestion({ question, onSubmit, isSubmitted, showImag
         }
         // Červená pokud uživatel odpověděl špatně (ano na špatnou, ne na správnou, nebo nevím)
         return `${baseClass} bg-red-500/10 border-red-500/40 shadow-lg shadow-red-500/20`;
+    };
+
+    const handleEvaluate = () => {
+        // Check if all answers are correct
+        // For each answer: 
+        //   - If correct answer: user must select true (ano)
+        //   - If incorrect answer: user must select false (ne)
+        const isCorrect = question.answers.every((answer, idx) => {
+            const userAnswer = selectedAnswers[idx];
+            if (answer.correct) {
+                // Correct answer must be selected as true
+                return userAnswer === true;
+            } else {
+                // Incorrect answer must be selected as false
+                return userAnswer === false;
+            }
+        });
+
+        onSubmit(selectedAnswers, isCorrect);
     };
 
     return (
@@ -132,6 +151,22 @@ export default function QuizQuestion({ question, onSubmit, isSubmitted, showImag
                         </div>
                     </div>
                 ))}
+            </div>
+
+            {/* Evaluate Button */}
+            <div className="flex justify-end mt-6">
+                <button
+                    onClick={handleEvaluate}
+                    disabled={isSubmitted}
+                    className="px-6 py-2.5 rounded-lg font-semibold text-sm transition-all
+                             bg-gradient-to-r from-purple-600 to-purple-500
+                             hover:from-purple-500 hover:to-purple-400
+                             text-white shadow-lg
+                             disabled:opacity-50 disabled:cursor-not-allowed
+                             border border-purple-400/20"
+                >
+                    Vyhodnotit
+                </button>
             </div>
         </div>
     );

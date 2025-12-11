@@ -3,7 +3,16 @@
 import { useState, useEffect } from 'react';
 import CategorySelector from '@/components/CategorySelector';
 import QuizQuestion from '@/components/QuizQuestion';
+import LatexRenderer from '@/components/LatexRenderer';
 import { Question } from '@/lib/types';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 export default function Home() {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -16,6 +25,14 @@ export default function Home() {
   const [showCategorySelector, setShowCategorySelector] = useState(false);
   const [showImage, setShowImage] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
+  const [showStatsModal, setShowStatsModal] = useState(false);
+  const [questionStats, setQuestionStats] = useState<Record<string, {
+    correct: number;
+    incorrect: number;
+    answerStats?: Record<number, { selected: number; correct: boolean }>;
+  }>>({});
+  const [statsEnabled, setStatsEnabled] = useState(true);
+  const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     fetch('/questions.json')
@@ -25,9 +42,19 @@ export default function Home() {
         const uniqueCategories = Array.from(new Set(data.map((q) => q.category)));
         setCategories(uniqueCategories.sort());
       });
-  }, []);
 
-  useEffect(() => {
+    // Load stats from localStorage
+    const savedStats = localStorage.getItem('questionStats');
+    if (savedStats) {
+      setQuestionStats(JSON.parse(savedStats));
+    }
+
+    // Load stats enabled setting
+    const statsEnabledSetting = localStorage.getItem('statsEnabled');
+    if (statsEnabledSetting !== null) {
+      setStatsEnabled(statsEnabledSetting === 'true');
+    }
+  }, []); useEffect(() => {
     if (selectedCategories.length > 0) {
       const filtered = questions.filter((q) =>
         selectedCategories.includes(q.category)
@@ -44,7 +71,7 @@ export default function Home() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (showAboutModal) return; // Don't navigate when modal is open
+      if (showAboutModal || showStatsModal) return; // Don't navigate when modal is open
 
       if (e.key === 'ArrowLeft') {
         handlePrevious();
@@ -55,7 +82,7 @@ export default function Home() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentQuestionIndex, filteredQuestions.length, showAboutModal]);
+  }, [currentQuestionIndex, filteredQuestions.length, showAboutModal, showStatsModal]);
 
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
@@ -66,13 +93,44 @@ export default function Home() {
     setIsSubmitted(false);
   };
 
-  const handleSubmit = (selectedAnswers: boolean[], isCorrect: boolean) => {
+  const handleSubmit = (selectedAnswers: (boolean | null)[], isCorrect: boolean) => {
     setIsSubmitted(true);
     setScore((prev) => ({
       ...prev,
       correct: prev.correct + (isCorrect ? 1 : 0),
       incorrect: prev.incorrect + (isCorrect ? 0 : 1),
     }));
+
+    // Save stats to localStorage only if enabled
+    if (statsEnabled) {
+      const quizId = currentQuestion.quiz_id;
+      const newStats = { ...questionStats };
+      if (!newStats[quizId]) {
+        newStats[quizId] = { correct: 0, incorrect: 0, answerStats: {} };
+      }
+      if (isCorrect) {
+        newStats[quizId].correct++;
+      } else {
+        newStats[quizId].incorrect++;
+      }
+
+      // Track per-answer statistics
+      if (!newStats[quizId].answerStats) {
+        newStats[quizId].answerStats = {};
+      }
+      selectedAnswers.forEach((selected, idx) => {
+        if (selected === true) {
+          const answerCorrect = currentQuestion.answers[idx].correct;
+          if (!newStats[quizId].answerStats![idx]) {
+            newStats[quizId].answerStats![idx] = { selected: 0, correct: answerCorrect };
+          }
+          newStats[quizId].answerStats![idx].selected++;
+        }
+      });
+
+      setQuestionStats(newStats);
+      localStorage.setItem('questionStats', JSON.stringify(newStats));
+    }
   };
 
   const handlePrevious = () => {
@@ -89,6 +147,42 @@ export default function Home() {
       setIsSubmitted(false);
       setShowImage(false);
     }
+  };
+
+  const jumpToQuestion = (quizId: string) => {
+    const index = filteredQuestions.findIndex(q => q.quiz_id === quizId);
+    if (index !== -1) {
+      setCurrentQuestionIndex(index);
+      setIsSubmitted(false);
+      setShowImage(false);
+      setShowStatsModal(false);
+    }
+  };
+
+  const resetStats = () => {
+    if (confirm('Opravdu chcete resetovat všechny statistiky?')) {
+      setQuestionStats({});
+      localStorage.removeItem('questionStats');
+    }
+  };
+
+  const toggleStatsEnabled = (enabled: boolean) => {
+    setStatsEnabled(enabled);
+    localStorage.setItem('statsEnabled', enabled.toString());
+    if (!enabled) {
+      setQuestionStats({});
+      localStorage.removeItem('questionStats');
+    }
+  };
+
+  const toggleQuestionExpanded = (quizId: string) => {
+    const newExpanded = new Set(expandedQuestions);
+    if (newExpanded.has(quizId)) {
+      newExpanded.delete(quizId);
+    } else {
+      newExpanded.add(quizId);
+    }
+    setExpandedQuestions(newExpanded);
   };
 
   const currentQuestion = filteredQuestions[currentQuestionIndex];
@@ -111,6 +205,15 @@ export default function Home() {
             </div>
 
             <div className="flex items-center gap-4">
+              <button
+                onClick={() => setShowStatsModal(true)}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/20 hover:bg-purple-500/20 transition-colors"
+              >
+                <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <span className="text-purple-400 font-semibold text-sm">Statistiky</span>
+              </button>
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-500/10 border border-green-500/20">
                 <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -192,25 +295,8 @@ export default function Home() {
                   </button>
                 </div>
 
-                {/* Right side - Evaluate button */}
-                <button
-                  onClick={() => {
-                    const selectedAnswers = new Array(currentQuestion.answers.length).fill(false);
-                    const isCorrect = selectedAnswers.every(
-                      (selected, idx) => selected === currentQuestion.answers[idx].correct
-                    );
-                    handleSubmit(selectedAnswers, isCorrect);
-                  }}
-                  disabled={isSubmitted}
-                  className="px-6 py-2.5 rounded-lg font-semibold text-sm transition-all
-                           bg-gradient-to-r from-purple-600 to-purple-500
-                           hover:from-purple-500 hover:to-purple-400
-                           text-white shadow-lg shadow-purple-500/25
-                           disabled:opacity-50 disabled:cursor-not-allowed
-                           border border-purple-400/20"
-                >
-                  Vyhodnotit
-                </button>
+                {/* Right side - Empty space for balance */}
+                <div className="w-[120px]"></div>
               </div>
             </div>
           </div>
@@ -255,7 +341,296 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* About Modal */}
+      {/* Statistics Modal */}
+      {showStatsModal && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[200] p-4"
+          onClick={() => setShowStatsModal(false)}
+        >
+          <div
+            className="bg-[rgba(20,20,30,0.95)] backdrop-blur-xl border border-purple-500/20 rounded-2xl p-8 max-w-4xl max-h-[80vh] overflow-y-auto w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-purple-400">Statistiky</h2>
+              <button
+                onClick={() => setShowStatsModal(false)}
+                className="text-zinc-400 hover:text-white transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Disclaimer and Settings */}
+            <div className="mb-6 space-y-3">
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+                <p className="text-blue-200 text-sm">
+                  ℹ️ <strong>Upozornění:</strong> Statistiky jsou uloženy pouze lokálně ve vašem prohlížeči. Pokud smažete data prohlížeče, statistiky budou ztraceny.
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between gap-4 bg-zinc-800/30 border border-zinc-700/50 rounded-lg p-4">
+                <div className="flex-1">
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={statsEnabled}
+                      onChange={(e) => toggleStatsEnabled(e.target.checked)}
+                      className="w-5 h-5 rounded border-2 border-purple-500 bg-zinc-900 checked:bg-purple-500 checked:border-purple-500 transition-colors"
+                    />
+                    <div>
+                      <span className="text-zinc-200 font-medium">Povolit statistiky</span>
+                      <p className="text-xs text-zinc-500">Ukládání odpovědí pro analýzu pokroku</p>
+                    </div>
+                  </label>
+                </div>
+                <button
+                  onClick={resetStats}
+                  disabled={Object.keys(questionStats).length === 0}
+                  className="px-4 py-2 text-sm font-medium rounded-lg transition-all
+                           bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300
+                           border border-red-500/30 hover:border-red-500/50
+                           disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Resetovat statistiky
+                </button>
+              </div>
+            </div>
+
+            {Object.keys(questionStats).length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-zinc-400 text-lg">Zatím nejsou žádné statistiky</p>
+                <p className="text-zinc-500 text-sm mt-2">Začněte odpovídat na otázky</p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {/* Questions Table */}
+                <div>
+                  <h3 className="text-xl font-semibold text-purple-300 mb-4">Všechny otázky</h3>
+                  <div className="border border-zinc-700/30 rounded-xl overflow-hidden bg-zinc-900/30">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="border-zinc-700/50 hover:bg-transparent">
+                          <TableHead className="text-purple-300 font-semibold">Kategorie</TableHead>
+                          <TableHead className="text-purple-300 font-semibold">Otázka</TableHead>
+                          <TableHead className="text-purple-300 font-semibold text-center">Správně</TableHead>
+                          <TableHead className="text-purple-300 font-semibold text-center">Špatně</TableHead>
+                          <TableHead className="text-purple-300 font-semibold text-center">Úspěšnost</TableHead>
+                          <TableHead className="text-purple-300 font-semibold text-center w-[60px]"></TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {(() => {
+                          const questionsWithStats = questions
+                            .map(q => {
+                              const stats = questionStats[q.quiz_id];
+                              if (!stats || (stats.correct + stats.incorrect === 0)) return null;
+
+                              const total = stats.correct + stats.incorrect;
+                              const successRate = (stats.correct / total) * 100;
+
+                              return {
+                                question: q,
+                                stats,
+                                successRate,
+                                total
+                              };
+                            })
+                            .filter(Boolean)
+                            .sort((a, b) => {
+                              if (!a || !b) return 0;
+                              return a.successRate - b.successRate;
+                            });
+
+                          if (questionsWithStats.length === 0) {
+                            return (
+                              <TableRow>
+                                <TableCell colSpan={6} className="text-center py-8 text-zinc-500">
+                                  Žádná data
+                                </TableCell>
+                              </TableRow>
+                            );
+                          }
+
+                          return questionsWithStats.map((item) => {
+                            if (!item) return null;
+                            const { question, stats, successRate } = item;
+                            const isExpanded = expandedQuestions.has(question.quiz_id);
+
+                            return (
+                              <>
+                                <TableRow
+                                  key={question.quiz_id}
+                                  className="border-zinc-700/30 hover:bg-zinc-800/30 cursor-pointer transition-colors"
+                                  onClick={() => toggleQuestionExpanded(question.quiz_id)}
+                                >
+                                  <TableCell>
+                                    <span className="text-xs px-2 py-1 bg-purple-500/20 text-purple-300 rounded font-medium inline-block">
+                                      {question.category}
+                                    </span>
+                                  </TableCell>
+                                  <TableCell className="max-w-md">
+                                    <div className="text-zinc-300 text-sm line-clamp-2">
+                                      <LatexRenderer content={question.question} className="inline" />
+                                    </div>
+                                  </TableCell>
+                                  <TableCell className="text-center">
+                                    <span className="text-green-400 font-semibold">{stats.correct}</span>
+                                  </TableCell>
+                                  <TableCell className="text-center">
+                                    <span className="text-red-400 font-semibold">{stats.incorrect}</span>
+                                  </TableCell>
+                                  <TableCell className="text-center">
+                                    <div className="flex items-center justify-center gap-2">
+                                      <span className={`font-semibold ${successRate >= 50 ? 'text-green-400' : 'text-red-400'}`}>
+                                        {successRate.toFixed(0)}%
+                                      </span>
+                                      <div className="w-12 h-1.5 bg-zinc-700/50 rounded-full overflow-hidden">
+                                        <div
+                                          className={`h-full transition-all ${successRate >= 50 ? 'bg-green-500' : 'bg-red-500'}`}
+                                          style={{ width: `${successRate}%` }}
+                                        />
+                                      </div>
+                                    </div>
+                                  </TableCell>
+                                  <TableCell className="text-center">
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        jumpToQuestion(question.quiz_id);
+                                      }}
+                                      className="p-1.5 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 transition-colors"
+                                      title="Přejít na otázku"
+                                    >
+                                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                      </svg>
+                                    </button>
+                                  </TableCell>
+                                </TableRow>
+                                {isExpanded && (
+                                  <TableRow className="border-zinc-700/30 bg-zinc-900/50 hover:bg-zinc-900/50">
+                                    <TableCell colSpan={6} className="p-0">
+                                      <div className="p-6 space-y-4">
+                                        {/* Full Question */}
+                                        <div>
+                                          <h4 className="text-sm font-semibold text-purple-300 mb-2">Zadání:</h4>
+                                          <LatexRenderer
+                                            content={question.question}
+                                            className="text-zinc-200 leading-relaxed"
+                                          />
+                                        </div>
+
+                                        {/* Answers with Stats */}
+                                        <div>
+                                          <h4 className="text-sm font-semibold text-purple-300 mb-3">Odpovědi a statistiky:</h4>
+                                          <div className="border border-zinc-700/30 rounded-lg overflow-hidden bg-zinc-900/20">
+                                            <Table>
+                                              <TableHeader>
+                                                <TableRow className="border-zinc-700/50 hover:bg-transparent">
+                                                  <TableHead className="text-purple-300 font-semibold text-xs w-[40px]"></TableHead>
+                                                  <TableHead className="text-purple-300 font-semibold text-xs">Odpověď</TableHead>
+                                                  <TableHead className="text-purple-300 font-semibold text-xs text-center">Vybráno</TableHead>
+                                                  <TableHead className="text-purple-300 font-semibold text-xs text-center">% výběru</TableHead>
+                                                  <TableHead className="text-purple-300 font-semibold text-xs text-center">% správnosti</TableHead>
+                                                </TableRow>
+                                              </TableHeader>
+                                              <TableBody>
+                                                {question.answers.map((answer, idx) => {
+                                                  const answerStat = stats.answerStats?.[idx];
+                                                  const totalAttempts = stats.correct + stats.incorrect;
+                                                  const selectionRate = answerStat ? (answerStat.selected / totalAttempts) * 100 : 0;
+
+                                                  // Calculate correctness percentage for this specific answer
+                                                  // For correct answers: how many times was it correctly selected
+                                                  // For incorrect answers: how many times was it correctly NOT selected (or marked as No)
+                                                  let correctnessRate = 0;
+                                                  if (answer.correct) {
+                                                    // Correct answer: percentage of times it was selected (Yes)
+                                                    correctnessRate = answerStat ? selectionRate : 0;
+                                                  } else {
+                                                    // Incorrect answer: percentage of times it was NOT selected
+                                                    // (100% - selection rate would be if we tracked "not selected", but we only track selections)
+                                                    // So for incorrect answers, lower selection rate = higher correctness
+                                                    correctnessRate = answerStat ? 100 - selectionRate : 100;
+                                                  }
+
+                                                  return (
+                                                    <TableRow
+                                                      key={idx}
+                                                      className={`border-zinc-700/30 hover:bg-zinc-800/20 ${answer.correct ? 'bg-green-500/5' : ''
+                                                        }`}
+                                                    >
+                                                      <TableCell className="text-center">
+                                                        <span className={`text-lg font-semibold ${answer.correct ? 'text-green-400' : 'text-zinc-500'}`}>
+                                                          {answer.correct ? '✓' : '○'}
+                                                        </span>
+                                                      </TableCell>
+                                                      <TableCell>
+                                                        <LatexRenderer
+                                                          content={answer.text}
+                                                          className="text-zinc-300 text-sm leading-relaxed"
+                                                        />
+                                                      </TableCell>
+                                                      <TableCell className="text-center whitespace-nowrap">
+                                                        <span className="text-zinc-300 font-semibold">
+                                                          {answerStat ? `${answerStat.selected}×` : '0×'}
+                                                        </span>
+                                                      </TableCell>
+                                                      <TableCell className="text-center whitespace-nowrap">
+                                                        <div className="flex items-center justify-center gap-2">
+                                                          <span className="text-purple-300 font-semibold text-sm">
+                                                            {selectionRate.toFixed(0)}%
+                                                          </span>
+                                                          <div className="w-12 h-1.5 bg-zinc-700/50 rounded-full overflow-hidden">
+                                                            <div
+                                                              className="h-full bg-purple-500 transition-all"
+                                                              style={{ width: `${selectionRate}%` }}
+                                                            />
+                                                          </div>
+                                                        </div>
+                                                      </TableCell>
+                                                      <TableCell className="text-center whitespace-nowrap">
+                                                        <div className="flex items-center justify-center gap-2">
+                                                          <span className={`font-semibold text-sm ${correctnessRate >= 50 ? 'text-green-400' : 'text-red-400'
+                                                            }`}>
+                                                            {correctnessRate.toFixed(0)}%
+                                                          </span>
+                                                          <div className="w-12 h-1.5 bg-zinc-700/50 rounded-full overflow-hidden">
+                                                            <div
+                                                              className={`h-full transition-all ${correctnessRate >= 50 ? 'bg-green-500' : 'bg-red-500'
+                                                                }`}
+                                                              style={{ width: `${correctnessRate}%` }}
+                                                            />
+                                                          </div>
+                                                        </div>
+                                                      </TableCell>
+                                                    </TableRow>
+                                                  );
+                                                })}
+                                              </TableBody>
+                                            </Table>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </TableCell>
+                                  </TableRow>
+                                )}
+                              </>
+                            );
+                          });
+                        })()}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}      {/* About Modal */}
       {showAboutModal && (
         <div
           className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[200] p-4"
