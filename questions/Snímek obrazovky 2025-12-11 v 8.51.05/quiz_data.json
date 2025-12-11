@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "Mějme homogenní LRR $x_{n+2} + c_1 x_{n+1} + c_0 x_n = 0$ pro $n \\geq 1$ kde $c_0 \\in \\mathbb{R} \\setminus \\{0\\}$ a $c_1 \\in \\mathbb{R}$",
+      "category": "01.02. Rozstřel",
+      "answers": [
+        {
+          "text": "Jestli má charakteristický polynom právě jeden kořen $\\lambda$, pak posloupnost ve tvaru $x_n = 4n\\lambda^n$ pro $n \\geq 1$ je řešením této rovnice.",
+          "correct": true
+        },
+        {
+          "text": "Charakteristický polynom této rovnice je $p(\\lambda) = \\lambda^2 + c_1 \\lambda + c_0$",
+          "correct": true
+        },
+        {
+          "text": "Má-li charakteristický polynom právě jeden kořen $\\lambda$ pak libovolné řešení dané rovnice je ve tvaru $x_n = A\\lambda^n$ kde $A$ je reálná konstanta.",
+          "correct": false
+        },
+        {
+          "text": "Existuje nekonečně mnoho řešení dané rovnice $(x_n)_{n=1}^\\infty$ splňující $x_1 = -1$.",
+          "correct": true
+        }
+      ]
+    }
+  ]
+}
