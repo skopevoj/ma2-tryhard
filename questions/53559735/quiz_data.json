@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Mějme funkce $f$ a $g$ mající spojitou první derivaci na $\\mathbb{R}$ a dva body $a, b \\in \\mathbb{R}$ splňující $a < b$. Nechť $F$ je primitivní funkcí k funkci $f$ na $\\mathbb{R}$ a $G$ je primitivní funkce k funkci $g$ na $\\mathbb{R}$.",
+      "category": "01.02.2023 Rozstřel",
+      "answers": [
+        {
+          "text": "$\\int_a^b F(x)g(x) \\, dx = [F(x)G(x)]_a^b - \\int_a^b f(x)G(x) \\, dx$",
+          "correct": false
+        },
+        {
+          "text": "$\\int_a^b f(x)g(x) \\, dx = [f(x)G(x)]_a^b - \\int_a^b f(x)G(x) \\, dx$",
+          "correct": false
+        },
+        {
+          "text": "$\\int_a^b F(x)g(x) \\, dx = [f(x)G(x)]_a^b - \\int_a^b F(x)G(x) \\, dx$",
+          "correct": false
+        },
+        {
+          "text": "$\\int_a^b F(x)g'(x) \\, dx = [F(x)g(x)]_a^b - \\int_a^b f(x)g'(x) \\, dx$",
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "id": 53559735
+}

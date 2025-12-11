@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Vyberte pravdivá tvrzení",
+      "category": "01.02.2023 Rozstřel",
+      "answers": [
+        {
+          "text": "Posloupnost částečných součtů řady $\\sum_{k=1}^{\\infty} \\sqrt{k}$ má asymptotickou těsnou mez $(n^{3/2})$ pro $n \\to \\infty$",
+          "correct": true
+        },
+        {
+          "text": "Řada $\\sum_{k=1}^{\\infty} k^{-2/3}$ je konvergentní",
+          "correct": false
+        },
+        {
+          "text": "Řada $\\sum_{k=1}^{\\infty} k^{-3/2}$ je konvergentní",
+          "correct": true
+        },
+        {
+          "text": "Součet řady $\\sum_{k=1}^{\\infty} \\frac{1}{\\pi^k}$ je $\\frac{1}{\\pi-1}$",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "id": 91142137
+}

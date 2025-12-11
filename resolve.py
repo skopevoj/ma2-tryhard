@@ -156,7 +156,7 @@ def main():
             quiz_data = extract_json_from_response(response_text)
             
             # Force category override (use env var CATEGORY_OVERRIDE or fallback)
-            category_override = os.environ.get("CATEGORY_OVERRIDE") or "22.01.2025 Rozstřel"
+            category_override = os.environ.get("CATEGORY_OVERRIDE") or "01.02.2023 Rozstřel"
             for q in quiz_data.get("questions", []):
                 q["category"] = category_override
 

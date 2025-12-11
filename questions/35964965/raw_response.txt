@@ -1,0 +1,16 @@
+```json
+{
+    "questions": [
+        {
+            "question": "LRR $x_{n+2} + c_1x_{n+1} + c_0x_n = 0$",
+            "category": "Lineární rekurentní rovnice",
+            "answers": [
+                {"text": "Existuje nekonecne mnoho reseni pro pocatecni podminku $x_1 = -1$.", "correct": true},
+                {"text": "Charakteristicky polynom je $p(\\lambda) = \\lambda^2 + c_1\\lambda + c_0$.", "correct": true},
+                {"text": "Pokud existuje jen jeden koren charakteristickeho polynomu, pak libovolne reseni je ve tvaru $An\\lambda^n$.", "correct": false},
+                {"text": "Pokud existuje jen jeden koren charakteristickeho polynomu, pak $4n\\lambda^n$ je resenim LRR.", "correct": true}
+            ]
+        }
+    ]
+}
+```

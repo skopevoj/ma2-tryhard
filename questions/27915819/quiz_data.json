@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Nechť reálná funkce reálné proměnné $f$ má v bodě $a \\in \\mathbb{R}$ konečnou derivaci libovolného řádu. Dále je $T_{n,a}(x)$ její $n$-tý Taylorův polynom v bodě $a$. Pak",
+      "category": "08.02.2024 Rozstřel",
+      "answers": [
+        {
+          "text": "$T_{n,a}^{(k)}(a) = f^{(k)}(a)$ pro $k \\in \\{0, 1, ..., n\\}$",
+          "correct": true
+        },
+        {
+          "text": "$T_{n,a}(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!} (x-a)^k$",
+          "correct": true
+        },
+        {
+          "text": "pátý Taylorův polynom, pak zbytek $R_{n,a}(x)$ je stupen alespoň 6",
+          "correct": false
+        },
+        {
+          "text": "Pokud $f(x)$ je polynom stupne 5, pak plati, ze $f(x) = T_{10,a}(x)$",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "id": 27915819
+}

@@ -1,0 +1,28 @@
+```json
+{
+    "questions": [
+        {
+            "question": "Consider the recurrence relation: $x_{n+2} - x_{n+1} + x_n = 0$. Which of the following statements are true?",
+            "category": "Lineární rekurentní rovnice",
+            "answers": [
+                {
+                    "text": "$p(\\lambda) = \\lambda^2 - \\lambda + 1$",
+                    "correct": true
+                },
+                {
+                    "text": "$\\left( \\cos\\left(\\frac{n\\pi}{3}\\right) \\right)_{n=0}^\\infty$ je \\v{r}e\\v{s}en\\'{i}m.",
+                    "correct": true
+                },
+                {
+                    "text": "$\\left( \\left(\\sin\\left(\\frac{\\pi}{3}\\right)\\right)^n \\right)_{n=0}^\\infty$ je \\v{r}e\\v{s}en\\'{i}m.",
+                    "correct": false
+                },
+                {
+                    "text": "$\\left( \\frac{(1+\\sqrt{3})^n}{2^n} \\right)_{n=0}^\\infty$ je \\v{r}e\\v{s}en\\'{i}m.",
+                    "correct": false
+                }
+            ]
+        }
+    ]
+}
+```

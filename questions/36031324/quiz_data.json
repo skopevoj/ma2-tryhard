@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Pro rekurentní rovnici $T(n) = 2T(n/3) + n$ určete správnou asymptotickou složitost.",
+      "category": "08.02.2024 Rozstřel",
+      "answers": [
+        {
+          "text": "$T(n) = \\Theta(n)$",
+          "correct": true
+        },
+        {
+          "text": "$T(n) = \\Theta(n^{\\log_2 3})$",
+          "correct": false
+        },
+        {
+          "text": "$T(n) = \\Theta(n^{\\log_3 2})$",
+          "correct": false
+        },
+        {
+          "text": "$T(n) = \\Theta(n^{\\log_2 3} * \\ln (n))$",
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "id": 36031324
+}

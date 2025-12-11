@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Nehomogenní LRR s konst. koeficienty: $x_{n+3} + c_2x_{n+2} + c_1x_{n+1} + c_0x_n = b_n$, $c_2, c_1, c_0 \\in \\mathbb{R}$, $c_0 \\neq 0$, $b_n$ je zadana posloupnost",
+      "category": "29.01.2025 Rozstřel",
+      "answers": [
+        {
+          "text": "existuje prave jedno reseni pro $x_n = 1$",
+          "correct": false
+        },
+        {
+          "text": "charakteristicka cisla jsou nutne nenulova komplexni",
+          "correct": true
+        },
+        {
+          "text": "pokud $(x_n)_{n=0}^{\\infty}$ je reseni teto LRR, pak $(2x_n)_{n=0}^{\\infty}$ je reseni pro $(2b_n)_{n=0}^{\\infty}$",
+          "correct": true
+        },
+        {
+          "text": "pokud char. cislo $\\lambda$ ma nasobnost 2 tak posloupnosti $(n\\lambda)_{n=0}^{\\infty} , (n^2\\lambda)_{n=0}^{\\infty}$ resi danou pridruzenou homogenni rovnici",
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "id": 56711435
+}

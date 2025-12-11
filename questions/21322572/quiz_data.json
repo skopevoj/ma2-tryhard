@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Mějme Taylorův polynom $T_{n,a}(x)$ k funkci $f(x)$, která má všechny konečné spojité derivace.",
+      "category": "04.01.2023 Rozstřel",
+      "answers": [
+        {
+          "text": "$T_{n,a}^{(k)}(a) = f^{(k)}(a)$",
+          "correct": true
+        },
+        {
+          "text": "$T_{n,a}(x) = \\sum_{k=0}^{\\infty} \\frac{f^{(k)}(a)}{k!}(x-a)^k$",
+          "correct": false
+        },
+        {
+          "text": "$T_{n,a}(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(x)}{k!}(x-a)^k$",
+          "correct": false
+        },
+        {
+          "text": "$f(x) = T_{n,a}(x) + \\frac{f^{(k+1)}(x)}{(k+1)!}(x-a)^{k+1}$ pro nějaké okolí $a$",
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "id": 21322572
+}

@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Nechť $D \\subset \\mathbb{R}^2$ je uzavřený trojúhelník s vrcholy $(0,0)^T, (1,1)^T, (1,-1)^T$. Mějme funkci $f(x, y) = xy^2$. Pak pro integrál $\\int_D f(x, y) dx dy$ platí",
+      "category": "01.02.2023 Rozstřel",
+      "answers": [
+        {
+          "text": "Je roven 1",
+          "correct": false
+        },
+        {
+          "text": "Je roven $\\int_0^1 x (\\int_{-x}^x y^2 dy) dx$",
+          "correct": false
+        },
+        {
+          "text": "Je kladný",
+          "correct": false
+        },
+        {
+          "text": "Je roven $\\int_{-1}^1 (\\int_0^y xy^2 dx) dy$",
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "id": 23883181
+}

@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Nechť pro posloupnosti $a_n, b_n$ platí $0 \\leq a_k \\leq b_k, \\forall k \\in \\mathbb{N}_0$.",
+      "category": "04.01.2023 Rozstřel",
+      "answers": [
+        {
+          "text": "Pokud $\\sum_{k=0}^{\\infty} b_k$ je konvergentní, tak $\\sum_{k=0}^{\\infty} a_k$ je konvergentní.",
+          "correct": true
+        },
+        {
+          "text": "Pokud $\\sum_{k=0}^{\\infty} a_k$ je konvergentní, tak $\\sum_{k=0}^{\\infty} b_k$ je konvergentní.",
+          "correct": false
+        },
+        {
+          "text": "Pokud $\\sum_{k=0}^{\\infty} a_k$ je divergentní, tak $\\sum_{k=0}^{\\infty} b_k$ je divergentní.",
+          "correct": true
+        },
+        {
+          "text": "Pokud $\\sum_{k=0}^{\\infty} b_k$ je divergentní, tak $\\sum_{k=0}^{\\infty} a_k$ je divergentní.",
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "id": 39238825
+}

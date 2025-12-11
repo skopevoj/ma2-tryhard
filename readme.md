@@ -12,10 +12,20 @@ Otázky jsou převzaty z FIT Wiki:
 - [MA2 - Marast 2022/1](https://fit-wiki.cz/_media/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/bi-ma2_marast_2022_1.pdf)
 - [MA2 - Marast 2022/2](https://fit-wiki.cz/_media/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/bi-ma2_marast_2022_2.pdf)
 - [MA2 - Marast 2022/3](https://fit-wiki.cz/_media/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/bi-ma2_marast_2022_3.pdf)
-- [MA2 - Marast 2022/4](https://fit-wiki.cz/_media/%C5%A1kola/p%C5%99edm%C4%9bty/bi-ma2.21/bi-ma2_marast_2022_4.pdf)
+- [MA2 - Marast 2022/4](https://fit-wiki.cz/_media/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/bi-ma2_marast_2022_4.pdf)
 - [MA2 - Marast 2022/5](https://fit-wiki.cz/_media/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/bi-ma2_marast_2022_5.pdf)
 - [MA2 - Marast 2022/6](https://fit-wiki.cz/_media/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/bi-ma2_marast_2022_6.pdf)
 - [MA2 Figma Board](https://www.figma.com/board/UTTlv8hCsMoNdnTcoCiVgN/ma2?node-id=0-1&p=f)
+- [MA2 Rozstřel 2025-01-22](https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2025-01-22)
+- [MA2 Rozstřel 2025-01-29](https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2025-01-29)
+- [MA2 Rozstřel 2024-01-25](https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2024-01-25)
+- [MA2 Rozstřel 2024-02-01](https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2024-2-1)
+- [MA2 Rozstřel 2024-02-08](https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2024-2-8)
+- [MA2 Rozstřel 2023-01-04](https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2023-01-04)
+- [MA2 Rozstřel 2023-01-25](https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2023-01-25)
+- [MA2 Rozstřel 2023-02-01](https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/bi-ma2.21/ma2_rozstrel_2023-02-01)
+
+
 
 > ⚠️ **Upozornění:** Je možné, že se v otázkách vyskytuje chyba přepisu. Pokud nějakou najdete, vytvořte prosím [issue](../../issues).
 

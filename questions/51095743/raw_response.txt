@@ -1,0 +1,28 @@
+```json
+{
+    "questions": [
+        {
+            "question": "Vyberte pravdivé tvrzení pro vektorovou posloupnost $(\\mathbf{x})_k^{\\infty}$, $\\mathbf{x}_k = ((-1)^k, \\frac{1}{k}).",
+            "category": "Číselné a mocninné řady",
+            "answers": [
+                {
+                    "text": "Limita $\\mathbf{x}_k$ neexistuje.",
+                    "correct": true
+                },
+                {
+                    "text": "Existují dvě limity $\\mathbf{x}_k$ $(-1, 0)$ a $(1, 0)$.",
+                    "correct": false
+                },
+                {
+                    "text": "Existují dva hromadné body $(-1, 0)$ a $(1, 0)$.",
+                    "correct": true
+                },
+                {
+                    "text": "$\\mathbf{x}_k$ konverguje.",
+                    "correct": false
+                }
+            ]
+        }
+    ]
+}
+```

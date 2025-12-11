@@ -1,0 +1,28 @@
+```json
+{
+    "questions": [
+        {
+            "question": "Analyzujte konvergenci následující řady: $\\sum_{k=1}^{\\infty} \\frac{(-1)^k}{\\sqrt{k}-\\sqrt{k-1}}$",
+            "category": "Číselné a mocninné řady",
+            "answers": [
+                {
+                    "text": "konverguje podle Leibnize",
+                    "correct": false
+                },
+                {
+                    "text": "diverguje podle Leibnize",
+                    "correct": false
+                },
+                {
+                    "text": "je konvergentní ale ne absolutne konvergentní",
+                    "correct": false
+                },
+                {
+                    "text": "rada diverguje nebot nesplnuje nutnou podminku konvergence rady",
+                    "correct": true
+                }
+            ]
+        }
+    ]
+}
+```

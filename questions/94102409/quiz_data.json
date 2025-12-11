@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "Jsou následujících kvadraticke formy:",
+      "category": "08.02.2024 Rozstřel",
+      "answers": [
+        {
+          "text": "$q(\\mathbf{x}) = (x+y+z)^2 + (y-z)^2 + z^2$ je PD",
+          "correct": true
+        },
+        {
+          "text": "$q(\\mathbf{x}) = x^2 + yz$ je ID",
+          "correct": true
+        },
+        {
+          "text": "$q(\\mathbf{x}) = (y+z)^2 - (y-z)^2 + 4z^2 + y^2$ je ID",
+          "correct": false
+        },
+        {
+          "text": "$q(\\mathbf{x}) = (y+z)^2 + 4z^2 + y^2$ je PSD",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "id": 94102409
+}

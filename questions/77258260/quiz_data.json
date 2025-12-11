@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "$\\sum_{k=0}^{\\infty} \\frac{(-1)^k}{2^k} (x - 1)^k$",
+      "category": "08.02.2024 Rozstřel",
+      "answers": [
+        {
+          "text": "Poloměr konvergence $R = 2$",
+          "correct": true
+        },
+        {
+          "text": "Poloměr konvergence $R = \\frac{1}{2}$",
+          "correct": false
+        },
+        {
+          "text": "Součet řady pro $x = \\frac{1}{2}$ je $\\frac{4}{3}$",
+          "correct": true
+        },
+        {
+          "text": "Body $(\\frac{1}{2})$ a $(2)$ patří do oboru konvergence",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "id": 77258260
+}

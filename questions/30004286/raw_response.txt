@@ -1,0 +1,28 @@
+```json
+{
+    "questions": [
+        {
+            "question": "Mame $f(x): \\mathbb{R}^n \\rightarrow \\mathbb{R}$, Hessova matice v bode $a$, ve kterem je gradient nulovy",
+            "category": "Diferenciální počet funkcí více proměnných",
+            "answers": [
+                {
+                    "text": "Pokud je Hess. PD, pak je nutne v bode $a$ maximum",
+                    "correct": false
+                },
+                {
+                    "text": "Pokud je Hess. PD, pak je nutne v bode $a$ minimum",
+                    "correct": true
+                },
+                {
+                    "text": "Pokud je Hess. PSD, pak v bode $a$ nutne neni extrem",
+                    "correct": false
+                },
+                {
+                    "text": "Pokud je Hess. ID, pak je nutne $a$ sedlovy bod",
+                    "correct": true
+                }
+            ]
+        }
+    ]
+}
+```
