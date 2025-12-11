@@ -675,7 +675,7 @@ def generate_html(questions):
         
         .answer-row:hover {
             background: var(--bg-tertiary);
-            transform: translateX(4px);
+            //transform: translateX(4px);
             border-color: var(--accent);
         }
         
@@ -1045,7 +1045,7 @@ def generate_html(questions):
                     <div class="theme-buttons">
                         <button class="theme-btn active" onclick="setTheme('dark')">Tmavý</button>
                         <button class="theme-btn" onclick="setTheme('light')">Světlý</button>
-                        <button class="theme-btn" onclick="setTheme('orange')">Oranžový</button>
+                        
                     </div>
                 </div>
                 
