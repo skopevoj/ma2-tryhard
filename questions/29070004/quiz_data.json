@@ -1,0 +1,27 @@
+{
+  "questions": [
+    {
+      "question": "$q(x) = 2(x - y)^2 + 2(y - z)^2 - (x - z)^2$",
+      "category": "22.01.2025 Rozstřel",
+      "answers": [
+        {
+          "text": "tato rovnice neni kvadratickou formu",
+          "correct": false
+        },
+        {
+          "text": "tato rovnice je PSD, ale ne PD kvadratickou formou",
+          "correct": true
+        },
+        {
+          "text": "matice $M$, ze vztahu $q(x) = x^T M x$ vypada nasledovne: $\\\\begin{pmatrix} 1 & -2 & 2 \\\\ -2 & 4 & -2 \\\\ 2 & -2 & 1 \\\\ \\end{pmatrix}$",
+          "correct": false
+        },
+        {
+          "text": "$q(x)$ je typu ID",
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "id": 29070004
+}

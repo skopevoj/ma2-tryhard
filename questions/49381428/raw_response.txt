@@ -1,0 +1,16 @@
+```json
+{
+    "questions": [
+        {
+            "question": "$f(x) = x^2 + y^2 - \\ln(2xy)$, $D_f = (0,+\\infty) \\times (0,+\\infty)$",
+            "category": "Diferenciální počet funkcí více proměnných",
+            "answers": [
+                {"text": "tato funkce má právě $4$ stacionární body.", "correct": false},
+                {"text": "$\\nabla f(x,y) = \\left(2x - \\frac{1}{x}, 2y - \\frac{1}{y}\\right)$", "correct": true},
+                {"text": "$\\nabla^2 f(x,y) = \\begin{pmatrix} 2 + \\frac{1}{x^2} & 0 \\\\ 0 & 2 + \\frac{1}{y^2} \\end{pmatrix}$", "correct": true},
+                {"text": "tato funkce má právě $1$ lokální minimum.", "correct": true}
+            ]
+        }
+    ]
+}
+```

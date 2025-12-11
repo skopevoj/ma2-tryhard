@@ -1,0 +1,16 @@
+```json
+{
+    "questions": [
+        {
+            "question": "Pro řadu $\\sum_{k=1}^{\\infty} \\frac{(-1)^k}{a^k}$ platí:",
+            "category": "Číselné a mocninné řady",
+            "answers": [
+                {"text": "konverguje pro $|a| < 1, a \\neq 0$", "correct": false},
+                {"text": "součet pro $a = 2$ je $-\\frac{1}{3}$", "correct": true},
+                {"text": "pro $a = 1$ je: $s_n = \\frac{1}{2} \\cdot (((-1)^n - 1))$", "correct": true},
+                {"text": "řada konverguje pro $a = 2$, ale nekonverguje absolutně", "correct": false}
+            ]
+        }
+    ]
+}
+```

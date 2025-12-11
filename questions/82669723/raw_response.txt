@@ -1,0 +1,28 @@
+```json
+{
+    "questions": [
+        {
+            "question": "Pro lineární rekurentní rovnici $x_{n+2} - x_{n+1} + x_n = 0$ platí:",
+            "category": "Lineární rekurentní rovnice",
+            "answers": [
+                {
+                    "text": "$p(\\lambda) = \\lambda^2 - \\lambda + 1$",
+                    "correct": true
+                },
+                {
+                    "text": "$(\\cos(\\frac{n*\\pi}{3}))_{n=0}^{\\infty}$ je řešením.",
+                    "correct": true
+                },
+                {
+                    "text": "$((sin(\\frac{\\pi}{3}))^n)_{n=0}^{\\infty}$ je řešením.",
+                    "correct": false
+                },
+                {
+                    "text": "$(( \\frac{1+\\sqrt{3}}{2} )^n)_{n=0}^{\\infty}$ je řešením.",
+                    "correct": false
+                }
+            ]
+        }
+    ]
+}
+```

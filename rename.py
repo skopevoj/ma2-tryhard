@@ -20,7 +20,20 @@ def rename_folders_with_ids():
     # Collect subdirectories that contain quiz_data.json
     all_folders = [f for f in questions_dir.iterdir() if f.is_dir()]
     target_folders = [f for f in all_folders if (f / "quiz_data.json").exists()]
-    
+    # Keep only folders that do NOT already have an 'id' in quiz_data.json
+    folders_without_id = []
+    for f in target_folders:
+        json_file = f / "quiz_data.json"
+        try:
+            with open(json_file, 'r', encoding='utf-8') as jf:
+                data = json.load(jf)
+            if 'id' not in data:
+                folders_without_id.append(f)
+        except Exception:
+            # If file cannot be read or parsed, include it for processing
+            folders_without_id.append(f)
+    target_folders = folders_without_id
+
     if not target_folders:
         print("No folders with quiz_data.json found in questions directory")
         return

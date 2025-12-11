@@ -155,6 +155,11 @@ def main():
             # Extract and parse JSON
             quiz_data = extract_json_from_response(response_text)
             
+            # Force category override (use env var CATEGORY_OVERRIDE or fallback)
+            category_override = os.environ.get("CATEGORY_OVERRIDE") or "22.01.2025 Rozstřel"
+            for q in quiz_data.get("questions", []):
+                q["category"] = category_override
+
             # Save JSON to output folder
             json_path = output_folder / "quiz_data.json"
             with open(json_path, 'w', encoding='utf-8') as f:
