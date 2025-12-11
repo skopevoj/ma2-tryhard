@@ -287,9 +287,9 @@ export default function Home() {
     <div className="min-h-screen bg-[#0a0a0f] flex flex-col items-center py-8 px-4 relative">
 
       {/* Header - Category Selector Island */}
-      <div className="w-full max-w-4xl mb-6 relative z-[100]">
-        <div className="glass-card p-4 rounded-3xl bg-[rgba(20,20,30,0.6)] backdrop-blur-xl border border-purple-500/10 shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(139,92,246,0.05)_inset]">
-          <div className="flex items-center justify-between gap-4">
+      <div className="w-full max-w-4xl mb-4 md:mb-6 relative z-[100] px-2 md:px-0">
+        <div className="glass-card p-3 md:p-4 rounded-2xl md:rounded-3xl bg-[rgba(20,20,30,0.6)] backdrop-blur-xl border border-purple-500/10 shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(139,92,246,0.05)_inset]">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
             <div className="flex items-center gap-3 flex-1">
               <span className="text-lg font-bold text-purple-400 tracking-wider">MARNOST</span>
               <div className="h-6 w-px bg-zinc-700" />
@@ -314,11 +314,11 @@ export default function Home() {
       </div>
 
       {/* Main Content - Question and Controls */}
-      <div className="flex-1 flex items-center justify-center w-full max-w-4xl relative z-[1]">
+      <div className="flex-1 flex items-center justify-center w-full max-w-4xl relative z-[1] px-2 md:px-0">
         {filteredQuestions.length > 0 ? (
-          <div className="w-full space-y-4">
+          <div className="w-full space-y-3 md:space-y-4">
             {/* Question Island */}
-            <div className="rounded-3xl bg-[rgba(20,20,30,0.6)] backdrop-blur-xl border border-purple-500/10 shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(139,92,246,0.05)_inset] p-8">
+            <div className="rounded-2xl md:rounded-3xl bg-[rgba(20,20,30,0.6)] backdrop-blur-xl border border-purple-500/10 shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(139,92,246,0.05)_inset] p-4 md:p-8">
               <QuizQuestion
                 question={currentQuestion}
                 onSubmit={handleSubmit}
@@ -329,50 +329,51 @@ export default function Home() {
             </div>
 
             {/* Controls Island */}
-            <div className="rounded-3xl bg-[rgba(20,20,30,0.6)] backdrop-blur-xl border border-purple-500/10 shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(139,92,246,0.05)_inset] p-4">
-              <div className="flex items-center justify-between gap-4">
+            <div className="rounded-2xl md:rounded-3xl bg-[rgba(20,20,30,0.6)] backdrop-blur-xl border border-purple-500/10 shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(139,92,246,0.05)_inset] p-3 md:p-4">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
                 {/* Left side - Category and ID */}
-                <div className="flex items-center gap-3">
-                  <span className="px-3 py-1.5 bg-purple-500/20 text-purple-300 text-xs font-semibold rounded-lg border border-purple-500/30">
+                <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+                  <span className="px-2 md:px-3 py-1 md:py-1.5 bg-purple-500/20 text-purple-300 text-xs font-semibold rounded-lg border border-purple-500/30">
                     {currentQuestion.category}
                   </span>
                   {currentQuestion.image_src && (
                     <button
                       onClick={() => setShowImage(!showImage)}
-                      className="px-3 py-1.5 text-xs font-medium rounded-lg transition-all
+                      className="px-2 md:px-3 py-1 md:py-1.5 text-xs font-medium rounded-lg transition-all
                                bg-zinc-800/50 hover:bg-zinc-700/50 text-zinc-400 hover:text-zinc-200
-                               border border-zinc-700/50 hover:border-zinc-600/50"
+                               border border-zinc-700/50 hover:border-zinc-600/50 whitespace-nowrap"
                     >
-                      {showImage ? 'Skrýt původní otázku' : 'Zobrazit původní otázku'}
+                      <span className="hidden sm:inline">{showImage ? 'Skrýt původní otázku' : 'Zobrazit původní otázku'}</span>
+                      <span className="sm:hidden">{showImage ? 'Skrýt obr.' : 'Obrázek'}</span>
                     </button>
                   )}
-                  <span className="text-xs text-zinc-500">
+                  <span className="hidden md:inline text-xs text-zinc-500">
                     ID: {currentQuestion.quiz_id}
                   </span>
                 </div>
 
                 {/* Center - Navigation */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center gap-3 order-first sm:order-none">
                   <button
                     onClick={handlePrevious}
                     disabled={currentQuestionIndex === 0}
-                    className="p-2 rounded-xl bg-[rgba(30,30,45,0.6)] backdrop-blur-[10px] border border-purple-500/20 text-purple-300 transition-all hover:bg-purple-500/20 hover:border-purple-500/40 hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(139,92,246,0.3)] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:bg-[rgba(30,30,45,0.6)]"
+                    className="p-2.5 md:p-2 rounded-xl bg-[rgba(30,30,45,0.6)] backdrop-blur-[10px] border border-purple-500/20 text-purple-300 transition-all hover:bg-purple-500/20 hover:border-purple-500/40 hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(139,92,246,0.3)] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:bg-[rgba(30,30,45,0.6)] active:scale-95"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
                   </button>
 
-                  <span className="text-sm text-zinc-400 font-medium min-w-[60px] text-center">
+                  <span className="text-sm md:text-sm text-zinc-400 font-medium min-w-[70px] md:min-w-[60px] text-center">
                     {currentQuestionIndex + 1} / {filteredQuestions.length}
                   </span>
 
                   <button
                     onClick={handleNext}
                     disabled={currentQuestionIndex === filteredQuestions.length - 1}
-                    className="p-2 rounded-xl bg-[rgba(30,30,45,0.6)] backdrop-blur-[10px] border border-purple-500/20 text-purple-300 transition-all hover:bg-purple-500/20 hover:border-purple-500/40 hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(139,92,246,0.3)] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:bg-[rgba(30,30,45,0.6)]"
+                    className="p-2.5 md:p-2 rounded-xl bg-[rgba(30,30,45,0.6)] backdrop-blur-[10px] border border-purple-500/20 text-purple-300 transition-all hover:bg-purple-500/20 hover:border-purple-500/40 hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(139,92,246,0.3)] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:bg-[rgba(30,30,45,0.6)] active:scale-95"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </button>
@@ -397,9 +398,9 @@ export default function Home() {
             </div>
           </div>
         ) : (
-          <div className="w-full rounded-3xl bg-[rgba(20,20,30,0.6)] backdrop-blur-xl border border-purple-500/10 shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(139,92,246,0.05)_inset] p-12">
+          <div className="w-full rounded-2xl md:rounded-3xl bg-[rgba(20,20,30,0.6)] backdrop-blur-xl border border-purple-500/10 shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(139,92,246,0.05)_inset] p-8 md:p-12">
             <div className="text-center">
-              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
+              <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 md:mb-6 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
                 <svg className="w-10 h-10 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
@@ -412,8 +413,8 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="w-full max-w-4xl mt-8 relative z-10">
-        <div className="flex items-center justify-center gap-6 text-sm text-zinc-500">
+      <footer className="w-full max-w-4xl mt-6 md:mt-8 relative z-10 px-2 md:px-0">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-xs md:text-sm text-zinc-500">
           <a
             href="https://github.com/skopevoj/ma2-tryhard"
             target="_blank"
@@ -440,15 +441,15 @@ export default function Home() {
       {/* Statistics Modal */}
       {showStatsModal && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[200] p-4"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[200] p-2 sm:p-4"
           onClick={() => setShowStatsModal(false)}
         >
           <div
-            className="bg-[rgba(20,20,30,0.95)] backdrop-blur-xl border border-purple-500/20 rounded-2xl p-8 max-w-4xl max-h-[80vh] overflow-y-auto w-full"
+            className="bg-[rgba(20,20,30,0.95)] backdrop-blur-xl border border-purple-500/20 rounded-xl md:rounded-2xl p-4 md:p-8 max-w-4xl max-h-[90vh] md:max-h-[80vh] overflow-y-auto w-full"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-purple-400">Statistiky</h2>
+            <div className="flex items-center justify-between mb-4 md:mb-6">
+              <h2 className="text-xl md:text-2xl font-bold text-purple-400">Statistiky</h2>
               <button
                 onClick={() => setShowStatsModal(false)}
                 className="text-zinc-400 hover:text-white transition-colors"
@@ -467,7 +468,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="flex items-center justify-between gap-4 bg-zinc-800/30 border border-zinc-700/50 rounded-lg p-4">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 bg-zinc-800/30 border border-zinc-700/50 rounded-lg p-3 md:p-4">
                 <div className="flex-1">
                   <label className="flex items-center gap-3 cursor-pointer">
                     <input
@@ -477,51 +478,51 @@ export default function Home() {
                       className="w-5 h-5 rounded border-2 border-purple-500 bg-zinc-900 checked:bg-purple-500 checked:border-purple-500 transition-colors"
                     />
                     <div>
-                      <span className="text-zinc-200 font-medium">Povolit statistiky</span>
+                      <span className="text-zinc-200 font-medium text-sm md:text-base">Povolit statistiky</span>
                       <p className="text-xs text-zinc-500">Ukládání odpovědí pro analýzu pokroku</p>
                     </div>
                   </label>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <button
                     onClick={exportStats}
                     disabled={Object.keys(questionStats).length === 0}
-                    className="px-4 py-2 text-sm font-medium rounded-lg transition-all
+                    className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium rounded-lg transition-all
                              bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 hover:text-blue-300
                              border border-blue-500/30 hover:border-blue-500/50
-                             disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                             disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 md:gap-2"
                     title="Exportovat statistiky do souboru"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
-                    Export
+                    <span className="hidden sm:inline">Export</span>
                   </button>
                   <button
                     onClick={importStats}
-                    className="px-4 py-2 text-sm font-medium rounded-lg transition-all
+                    className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium rounded-lg transition-all
                              bg-green-500/10 hover:bg-green-500/20 text-green-400 hover:text-green-300
-                             border border-green-500/30 hover:border-green-500/50 flex items-center gap-2"
+                             border border-green-500/30 hover:border-green-500/50 flex items-center gap-1.5 md:gap-2"
                     title="Importovat statistiky ze souboru"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L9 8m4-4v12" />
                     </svg>
-                    Import
+                    <span className="hidden sm:inline">Import</span>
                   </button>
                   <button
                     onClick={resetStats}
                     disabled={Object.keys(questionStats).length === 0}
-                    className="px-4 py-2 text-sm font-medium rounded-lg transition-all
+                    className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium rounded-lg transition-all
                              bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300
                              border border-red-500/30 hover:border-red-500/50
-                             disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                             disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 md:gap-2"
                     title="Vymazat všechny statistiky"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
-                    Reset
+                    <span className="hidden sm:inline">Reset</span>
                   </button>
                 </div>
               </div>
@@ -754,12 +755,12 @@ export default function Home() {
                                                 {question.answers.map((answer, idx) => {
                                                   const answerStat = stats.answerStats?.[idx];
                                                   const totalAttempts = stats.correct + stats.incorrect;
-                                                  
+
                                                   // How many times was this answer actually answered (not "nevím")
                                                   const timesAnswered = answerStat?.answered || 0;
                                                   // Percentage of times this answer was answered out of total attempts
                                                   const answerRate = totalAttempts > 0 ? (timesAnswered / totalAttempts) * 100 : 0;
-                                                  
+
                                                   // How many times was this answer answered correctly
                                                   const timesCorrect = answerStat?.correctlyAnswered || 0;
                                                   // Percentage of times this answer was answered correctly
@@ -841,11 +842,11 @@ export default function Home() {
       )}      {/* About Modal */}
       {showAboutModal && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[200] p-4"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[200] p-2 sm:p-4"
           onClick={() => setShowAboutModal(false)}
         >
           <div
-            className="bg-[rgba(20,20,30,0.95)] backdrop-blur-xl border border-purple-500/20 rounded-2xl p-8 max-w-3xl max-h-[80vh] overflow-y-auto"
+            className="bg-[rgba(20,20,30,0.95)] backdrop-blur-xl border border-purple-500/20 rounded-xl md:rounded-2xl p-4 md:p-8 max-w-3xl max-h-[90vh] md:max-h-[80vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-6">

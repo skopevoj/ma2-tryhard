@@ -34,10 +34,10 @@ export default function CategorySelector({
             : `${selectedCategories.length} ${selectedCategories.length === 1 ? 'kategorie' : 'kategorií'}`;
 
     return (
-        <div className="relative flex-1 max-w-md" ref={dropdownRef}>
+        <div className="relative flex-1 max-w-full sm:max-w-md" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-4 py-2 rounded-lg text-sm font-medium text-left
+                className="w-full px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium text-left
                          bg-zinc-800/50 hover:bg-zinc-700/50
                          border border-zinc-700/50 hover:border-purple-500/30
                          text-zinc-300 transition-all flex items-center justify-between gap-2"
