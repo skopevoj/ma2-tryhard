@@ -17,7 +17,7 @@ export default function LatexRenderer({ content, className = '' }: LatexRenderer
 
         const processLatex = (text: string) => {
             // Replace display math $$ ... $$
-            let processed = text.replace(/\$\$(.*?)\$\$/gs, (_, math) => {
+            let processed = text.replace(/\$\$([\s\S]*?)\$\$/g, (_, math) => {
                 try {
                     return katex.renderToString(math, { displayMode: true, throwOnError: false });
                 } catch (e) {
