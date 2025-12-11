@@ -1,0 +1,28 @@
+```json
+{
+    "questions": [
+        {
+            "question": "Máme kvadratickou formu určenou maticí $M = \\begin{pmatrix} 2 & 2 \\\\ 2 & \\alpha \\end{pmatrix}$",
+            "category": "Diferenciální počet funkcí více proměnných",
+            "answers": [
+                {
+                    "text": "Forma je PD pro všechny $\\alpha > 2$",
+                    "correct": true
+                },
+                {
+                    "text": "Forma je PSD pro $\\alpha = 2$",
+                    "correct": true
+                },
+                {
+                    "text": "Forma je ID pro $\\alpha < 0$",
+                    "correct": true
+                },
+                {
+                    "text": "Forma je ID pro $\\alpha < 1$",
+                    "correct": true
+                }
+            ]
+        }
+    ]
+}
+```

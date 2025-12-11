@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "Rozhodněte o pravdivosti.",
+      "category": "Neurčitý integrál a primitivní funkce",
+      "answers": [
+        {
+          "text": "$\\int f(x^2) \\, dx = F(2x) + C$",
+          "correct": false
+        },
+        {
+          "text": "$\\int f(x)F(x) \\, dx = \\frac{1}{2}(F(x))^2 + C$",
+          "correct": true
+        },
+        {
+          "text": "$\\int f(x) \\, dx = xf(x) - \\int xF(x) \\, dx$",
+          "correct": false
+        },
+        {
+          "text": "$\\int f(x) \\, dx = \\{g(x) : (a, b) \\to \\mathbb{R} \\mid g(x) = F(x) + C, C \\in \\mathbb{R}\\}$",
+          "correct": true
+        }
+      ]
+    }
+  ]
+}

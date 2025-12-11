@@ -41,6 +41,9 @@ def generate_html(questions):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MARNOST</title>
+    <!-- favicon -->
+    <link rel="icon" href="marnost.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="marnost.ico">
     <script>
         MathJax = {
             tex: {
@@ -1498,6 +1501,18 @@ def main():
     build_folder = Path("./build")
     build_folder.mkdir(exist_ok=True)
     
+    # copy favicon if present (look in script dir and repo root)
+    possible_fav = [
+        Path(__file__).parent / "marnost.ico",
+        Path("./marnost.ico")
+    ]
+    favicon_src = next((p for p in possible_fav if p.exists()), None)
+    if favicon_src:
+        shutil.copy2(favicon_src, build_folder / "marnost.ico")
+        print(f"Copied favicon from {favicon_src} to build/marnost.ico")
+    else:
+        print("Warning: marnost.ico not found; favicon will not be included in build.")
+    
     # Create images folder in build
     images_folder = build_folder / "images"
     if images_folder.exists():
@@ -1527,9 +1542,10 @@ def main():
     # Create Dockerfile
     dockerfile_content = """FROM nginx:alpine
 
-# Copy the HTML file and images to nginx html directory
+# Copy the HTML file, favicon and images to nginx html directory
 COPY index.html /usr/share/nginx/html/
 COPY images /usr/share/nginx/html/images
+COPY marnost.ico /usr/share/nginx/html/marnost.ico
 
 # Copy custom nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
