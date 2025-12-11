@@ -2,12 +2,40 @@ import json
 import shutil
 from pathlib import Path
 import random
+import re
 
 def collect_all_questions():
     """Collect all questions from output folders."""
     output_folder = Path("./questions")
     all_questions = []
     
+    # helper: add \displaystyle in inline math that contains \int (skip $$...$$)
+    def process_math_inline(text: str) -> str:
+        if not text:
+            return text
+        pattern = re.compile(r'(\$\$.*?\$\$)|(\$.*?\$)|\\\((?:.|\n)*?\\\)', re.DOTALL)
+        def repl(m):
+            s = m.group(0)
+            # leave display math ($$...$$) unchanged
+            if s.startswith('$$'):
+                return s
+            # $...$ inline
+            if s.startswith('$') and s.endswith('$'):
+                inner = s[1:-1]
+                if '\\int' in inner and '\\displaystyle' not in inner:
+                    # avoid f-string with backslash; use concatenation
+                    return '$' + '\\displaystyle ' + inner + '$'
+                return s
+            # \( ... \) inline
+            if s.startswith('\\(') and s.endswith('\\)'):
+                inner = s[2:-2]
+                if '\\int' in inner and '\\displaystyle' not in inner:
+                    # avoid f-string with backslash; use concatenation
+                    return '\\(' + '\\displaystyle ' + inner + '\\)'
+                return s
+            return s
+        return pattern.sub(repl, text)
+
     for folder in output_folder.iterdir():
         if folder.is_dir():
             json_file = folder / "quiz_data.json"
@@ -19,6 +47,13 @@ def collect_all_questions():
                         # Find the image file in this folder
                         image_files = list(folder.glob('*'))
                         image_file = next((f for f in image_files if f.suffix.lower() in {'.jpg', '.jpeg', '.png', '.gif', '.bmp'}), None)
+                        
+                        # process math in question and answers to prefer displaystyle for integrals
+                        question_text = question.get('question', '')
+                        question['question'] = process_math_inline(question_text)
+                        for ans in question.get('answers', []):
+                            ans_text = ans.get('text', '')
+                            ans['text'] = process_math_inline(ans_text)
                         
                         question['image'] = f"images/{folder.name}/{image_file.name}" if image_file else None
                         question['source_folder'] = folder.name
