@@ -14,6 +14,7 @@ def collect_all_questions():
             if json_file.exists():
                 with open(json_file, 'r', encoding='utf-8') as f:
                     data = json.load(f)
+                    quiz_id = data.get('id')  # <- read quiz id from json (if present)
                     for question in data.get('questions', []):
                         # Find the image file in this folder
                         image_files = list(folder.glob('*'))
@@ -21,6 +22,8 @@ def collect_all_questions():
                         
                         question['image'] = f"images/{folder.name}/{image_file.name}" if image_file else None
                         question['source_folder'] = folder.name
+                        # attach quiz/folder id to each question (string)
+                        question['quiz_id'] = str(quiz_id) if quiz_id is not None else folder.name
                         all_questions.append(question)
     
     return all_questions
@@ -781,6 +784,17 @@ def generate_html(questions):
             font-weight: 600;
             box-shadow: 0 4px 16px var(--accent-glow);
         }
+
+        /* new: quiz id badge next to category */
+        .quiz-id {
+            display: inline-block;
+            color: var(--text-secondary);
+            background: var(--bg-input);
+            padding: 6px 10px;
+            border-radius: 10px;
+            font-size: 0.85em;
+            border: 1px solid var(--border);
+        }
         
         .toggle-image-btn {
             padding: 6px 14px;
@@ -1288,7 +1302,11 @@ def generate_html(questions):
             container.innerHTML = html;
             
             // Render controls top
-            let controlsHtml = `<div class="category">${q.category || 'Matematika'}</div>`;
+            // show category plus quiz/folder id badge
+            let controlsHtml = `<div style="display:flex;align-items:center;gap:10px;">
+                <div class="category">${q.category || 'Matematika'}</div>
+                <div class="quiz-id">ID: ${q.quiz_id || q.source_folder}</div>
+            </div>`;
             if (q.image) {
                 controlsHtml += `<button class="toggle-image-btn" onclick="toggleImage()">Zobrazit původní otázku</button>`;
             }
