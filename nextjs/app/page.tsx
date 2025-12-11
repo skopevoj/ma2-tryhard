@@ -150,13 +150,28 @@ export default function Home() {
   };
 
   const jumpToQuestion = (quizId: string) => {
-    const index = filteredQuestions.findIndex(q => q.quiz_id === quizId);
-    if (index !== -1) {
-      setCurrentQuestionIndex(index);
-      setIsSubmitted(false);
-      setShowImage(false);
-      setShowStatsModal(false);
+    // Find the question in all questions
+    const question = questions.find(q => q.quiz_id === quizId);
+    if (!question) return;
+
+    // Ensure the category is selected
+    if (!selectedCategories.includes(question.category)) {
+      setSelectedCategories(prev => [...prev, question.category]);
     }
+
+    // Wait for filteredQuestions to update, then find and jump to the question
+    setTimeout(() => {
+      const filtered = questions.filter((q) =>
+        selectedCategories.includes(q.category) || q.category === question.category
+      );
+      const index = filtered.findIndex(q => q.quiz_id === quizId);
+      if (index !== -1) {
+        setCurrentQuestionIndex(index);
+        setIsSubmitted(false);
+        setShowImage(false);
+        setShowStatsModal(false);
+      }
+    }, 100);
   };
 
   const resetStats = () => {
@@ -204,29 +219,15 @@ export default function Home() {
               />
             </div>
 
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setShowStatsModal(true)}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/20 hover:bg-purple-500/20 transition-colors"
-              >
-                <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-                <span className="text-purple-400 font-semibold text-sm">Statistiky</span>
-              </button>
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-500/10 border border-green-500/20">
-                <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span className="text-green-400 font-semibold text-sm">{score.correct}</span>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20">
-                <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-                <span className="text-red-400 font-semibold text-sm">{score.incorrect}</span>
-              </div>
-            </div>
+            <button
+              onClick={() => setShowStatsModal(true)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/20 hover:bg-purple-500/20 transition-colors"
+            >
+              <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              <span className="text-purple-400 font-semibold text-sm">Statistiky</span>
+            </button>
           </div>
         </div>
       </div>
